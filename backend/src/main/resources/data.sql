@@ -1,8 +1,5 @@
-INSERT INTO cities(name, population) VALUES('Bratislava', 432000);
-INSERT INTO cities(name, population) VALUES('Budapest', 1759000);
-INSERT INTO cities(name, population) VALUES('Prague', 1280000);
-INSERT INTO cities(name, population) VALUES('Warsaw', 1748000);
-INSERT INTO cities(name, population) VALUES('Los Angeles', 3971000);
-INSERT INTO cities(name, population) VALUES('New York', 8550000);
-INSERT INTO cities(name, population) VALUES('Edinburgh', 464000);
-INSERT INTO cities(name, population) VALUES('Berlin', 3671000);
+INSERT INTO users(phone, name, surname, middleName, email, place, passwordHash)
+VALUES ('9172833993', 'Alexey', 'Grunskii', 'Anatolievich', 'robochat@mail.ru', 'Saint-Petersburg', 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad');
+
+INSERT INTO users(phone, name, surname, middleName, email, place, passwordHash)
+VALUES ('9999999999', 'Andruha', 'Burakov', 'Aleksandrovich', 'email@mail.ru', 'Tambov', 'aea921d66248a98c8367ca54cdb970af4d3400aa9319ee95ff4170684cbdbf62');

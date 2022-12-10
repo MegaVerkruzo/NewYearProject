@@ -1,8 +1,7 @@
 package com.commercial.backend;
 
-import com.commercial.backend.model.City;
-import com.commercial.backend.service.ICityService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.commercial.backend.model.User;
+import com.commercial.backend.service.IUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,18 +10,18 @@ import java.util.List;
 
 @Controller
 public class MyController {
-    private ICityService cityService;
+    private IUserService userService;
 
-    public MyController(ICityService cityService) {
-        this.cityService = cityService;
+    public MyController(IUserService cityService) {
+        this.userService = cityService;
     }
 
     @GetMapping("/showCities")
-    public String findCities(Model model) {
-        List<City> cities = cityService.findAll();
+    public String findUsers(Model model) {
+        List<User> users = userService.findAll();
 
-        model.addAttribute("cities", cities);
+        model.addAttribute("users", users);
 
-        return "showCities";
+        return "showUsers";
     }
 }
