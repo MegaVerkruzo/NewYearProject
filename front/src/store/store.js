@@ -11,6 +11,7 @@ class Store {
         password: '',
         isAgreePolicy: false
     }
+    attempts = []
 
     constructor() {
         makeAutoObservable(this)
