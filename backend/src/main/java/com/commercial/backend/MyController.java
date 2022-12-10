@@ -16,6 +16,11 @@ public class MyController {
         this.userService = cityService;
     }
 
+    @GetMapping("/hello")
+    public String helloWorld() {
+        return "Hello, world!";
+    }
+
     @GetMapping("/showCities")
     public String findUsers(Model model) {
         List<User> users = userService.findAll();
