@@ -2,14 +2,23 @@ import React from 'react';
 import {fields_login} from "../../static_data/RegisterData";
 import Input from "./Input";
 import store from "../../store/store";
+import {login} from "../../http/userAPI";
+import {observer} from "mobx-react-lite";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({user_data}) => {
-    const onClickLogin = () => {
-        console.log('login')
-    }
+const Login = ({userData}) => {
+    let navigate = useNavigate()
     const onChangeInput = (field, data) => {
         store.changeUserData(field, data)
-        console.log(user_data)
+    }
+    const onSignIn = async () => {
+        try {
+            const resp = await login({phone: userData.phone, password: userData.password})
+            console.log(resp)
+            navigate('/')
+        } catch (e) {
+            console.log(e.message)
+        }
     }
 
     return (
@@ -17,7 +26,7 @@ const Login = ({user_data}) => {
             login
             {
                 fields_login.map(item => <Input
-                    value={user_data[item.field]}
+                    value={userData[item.field]}
                     onChangeInput={(e) => onChangeInput(item.field, e.target.value)}
                     label={item.label}
                     placeholder={item.placeholder}
@@ -25,9 +34,9 @@ const Login = ({user_data}) => {
                     key={item.id}
                 />)
             }
-            <button onClick={onClickLogin}>Войти</button>
+            <button onClick={onSignIn}>Войти</button>
         </div>
     );
 };
 
-export default Login;
+export default observer(Login);

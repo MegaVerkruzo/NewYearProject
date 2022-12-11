@@ -48,6 +48,13 @@ export const fields_reg = [
         placeholder: "Введите пароль",
         type: "password"
     },
+    {
+        id: 8,
+        field: "password",
+        label: "Подтвердите пароль",
+        placeholder: "Повторите пароль",
+        type: "password"
+    }
 ]
 
 export const fields_login = [
