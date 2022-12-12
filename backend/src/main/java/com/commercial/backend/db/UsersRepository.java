@@ -25,10 +25,6 @@ public class UsersRepository {
                 user.getPhone(), user.getName(), user.getSurname(), user.getMiddleName(), user.getEmail(), user.getPlace(), user.getPasswordHash());
     }
 
-    public List<User> selectAll() {
-        return jdbcTemplate.query("SELECT * FROM users", mapper);
-    }
-
     public User findUserByPhone(String phone) {
         List<User> result = jdbcTemplate.query("SELECT * FROM users WHERE phone = ?", mapper, phone);
         if (result.isEmpty()) {

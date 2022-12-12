@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 import java.util.Objects;
 
 @Configuration
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:database.properties")
 public class DBConfig {
 
     Environment env;

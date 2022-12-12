@@ -1,14 +1,10 @@
 package com.commercial.backend.service;
 
 import com.commercial.backend.model.User;
-import com.commercial.backend.model.Token;
 import com.commercial.backend.db.UsersRepository;
 import com.commercial.backend.security.JWTUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService implements IUserService {
@@ -28,7 +24,6 @@ public class UserService implements IUserService {
             user = searchUser;
             userContained = true;
         }
-        Token token = new Token(JWTUtil.generateToken(user));
-        return Pair.of(token.getToken(), userContained);
+        return Pair.of(JWTUtil.generateToken(user), userContained);
     }
 }
