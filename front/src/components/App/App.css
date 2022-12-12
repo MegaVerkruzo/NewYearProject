@@ -40,11 +40,64 @@ h3 {
   margin: 0 auto;
 }
 
-/*Header*/
+/* HEADER */
 .header {
   padding: 10px 0;
   position: fixed;
   width: 100%;
 }
+
+/* MAIN */
+/* GAME */
+.game-field .field__row {
+  display: flex;
+}
+.game-field .cell {
+  width: 40px;
+  height: 40px;
+  border: 2px solid black;
+  border-radius: 25%;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+.game-field .yellow {
+  background: #e5be53;
+}
+.game-field .green {
+  background: #58cc58;
+}
+.game-field .grey {
+  background: gray;
+}
+
+/* KEYBOARD */
+.keyboard {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.keyboard .keyboard__row {
+  display: flex;
+  justify-content: center;
+}
+.keyboard .keyboard__letter {
+  width: 40px;
+  height: 50px;
+  border-radius: 15%;
+  border: 1px solid black;
+  background: lightgray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1.5px;
+  font-size: 20px;
+}
+
+/* FOOTER */
+/* MOBILE */
 
 /*# sourceMappingURL=App.css.map */

@@ -10,18 +10,24 @@ import store from "../../store/store";
 const App = () => {
     const [isLoading, setIsLoading] = useState(false)
     React.useEffect(() => {
-        setIsLoading(true)
-        check().then(data => {
-            store.setUserData(data)
-        }).finally(() => setIsLoading(false))
+        // setIsLoading(true)
+        // check().then(data => {
+        //     store.setUserData(data)
+        // }).finally(() => setIsLoading(false))
     }, [])
 
     return (
         <div className="wrapper">
-            <Header/>
-            <Main/>
-            <Footer/>
+            {
+                isLoading ? 'Загрузка' :
+                    <>
+                        <Header/>
+                        <Main/>
+                        <Footer/>
+                    </>
+            }
         </div>
+
     );
 }
 
