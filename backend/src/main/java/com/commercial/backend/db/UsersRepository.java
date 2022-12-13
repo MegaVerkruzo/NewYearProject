@@ -1,6 +1,8 @@
 package com.commercial.backend.db;
 
 import com.commercial.backend.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -14,6 +16,8 @@ public class UsersRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
+    private final Logger logger = LoggerFactory.getLogger(UsersRepository.class);
+
     private static final IdeaEntityMapper mapper = new IdeaEntityMapper();
 
     public UsersRepository(JdbcTemplate jdbcTemplate) {
@@ -23,6 +27,7 @@ public class UsersRepository {
     public void insert(User user) {
         jdbcTemplate.update("INSERT INTO users (phone, name, surname, middle_name, email, place, password_hash, token) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 user.getPhone(), user.getName(), user.getSurname(), user.getMiddleName(), user.getEmail(), user.getPlace(), user.getPasswordHash(), user.getToken());
+        logger.info("Paste user with phone " + user.getPhone() + " in Database");
     }
 
     public User findUserByPhone(String phone) {

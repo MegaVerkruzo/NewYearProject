@@ -5,4 +5,6 @@ import org.springframework.data.util.Pair;
 
 public interface IUserService {
     Pair<String, Boolean> addNewUserAndGetTokenWithHistory(User user);
+
+    Pair<String, String> getTokenWithCheckingPassword(User user, String rawPassword);
 }

@@ -5,6 +5,7 @@ import com.commercial.backend.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -32,8 +33,16 @@ public class MyController {
         return result;
     }
 
-//    @PostMapping(value = "/login", consumes = "application/json")
-//    public Map<String, Object> loginUser(@RequestBody Map<String, String> json) {
-//
-//    }
+    @PostMapping(value = "/login", consumes = "application/json")
+    public Map<String, String> loginUser(@RequestBody Map<String, String> json) {
+        User user = new User();
+        user.loginUser(json.get("phone"));
+        logger.info("Read JSON\n" + user);
+        HashMap<String, String> result = new HashMap<>();
+        Pair<String, String> pair = userService.getTokenWithCheckingPassword(user, json.get("password"));
+        result.put("token", pair.getFirst());
+        result.put("exception", pair.getSecond());
+        return result;
+    }
+
 }
