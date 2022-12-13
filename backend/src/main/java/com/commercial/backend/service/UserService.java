@@ -19,16 +19,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Pair<String, Boolean> addNewUserAndGetTokenWithHistory(User user) {
+    public Pair<String, String> addNewUserAndGetTokenWithHistory(User user) {
         User searchUser = repository.findUserByPhone(user.getPhone());
-        boolean userContained = false;
         if (searchUser == null) {
             repository.insert(user);
+            return Pair.of(user.getToken(), "");
         } else {
-            user = searchUser;
-            userContained = true;
+            return Pair.of("", "userExists");
         }
-        return Pair.of(user.getToken(), userContained);
     }
 
     @Override

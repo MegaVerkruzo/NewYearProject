@@ -27,9 +27,9 @@ public class MyController {
         User user = new User(json.get("phone"), json.get("name"), json.get("surname"), json.get("middleName"), json.get("email"), json.get("place"), json.get("password"), false);
         logger.info("Read JSON");
         HashMap<String, Object> result = new HashMap<>();
-        Pair<String, Boolean> tokenWithHistory = userService.addNewUserAndGetTokenWithHistory(user);
+        Pair<String, String> tokenWithHistory = userService.addNewUserAndGetTokenWithHistory(user);
         result.put("token", tokenWithHistory.getFirst());
-        result.put("isRegisteredBefore", tokenWithHistory.getSecond());
+        result.put("exception", tokenWithHistory.getSecond());
         return result;
     }
 
