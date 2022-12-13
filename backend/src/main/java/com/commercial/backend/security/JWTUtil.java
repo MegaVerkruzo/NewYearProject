@@ -22,7 +22,6 @@ public class JWTUtil {
     public static String generateToken(User user) throws IllegalArgumentException, JWTCreationException {
         return JWT.create()
                 .withSubject("User Details")
-                .withClaim("id", user.getId())
                 .withClaim("phone", user.getPhone())
                 .withIssuedAt(new Date())
                 .withIssuer("YOUR APPLICATION/PROJECT/COMPANY NAME")

@@ -1,7 +1,8 @@
 package com.commercial.backend.model;
 
+import com.commercial.backend.security.JWTUtil;
+import com.commercial.backend.security.PasswordEncoder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 
@@ -10,9 +11,8 @@ import javax.persistence.*;
 @JsonIgnoreProperties
 public class User {
 
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name="phone")
@@ -36,20 +36,26 @@ public class User {
     @Column(name="password_hash")
     private String passwordHash;
 
+    @Column(name="token")
+    private String token;
+
     public User() {}
 
-    public User(String phone, String name, String surname, String middleName, String email, String place, String password) {
+    public void loginUser(String phone) {
+        this.phone = phone;
+        this.token = JWTUtil.generateToken(this);
+    }
+
+    public User(String phone, String name, String surname, String middleName, String email, String place, String password, Boolean isThisPasswordHash) {
         this.phone = phone;
         this.name = name;
         this.surname = surname;
         this.middleName = middleName;
         this.email = email;
         this.place = place;
-
-        this.passwordHash = new BCryptPasswordEncoder().encode(password);
-//        this.passwordHash = password;
+        this.passwordHash = isThisPasswordHash ? password : PasswordEncoder.getHash(password);
+        this.token = JWTUtil.generateToken(this);
     }
-
 
     public String getPhone() {
         return phone;
@@ -103,13 +109,34 @@ public class User {
         return passwordHash;
     }
 
-    public void setPasswordHash(String password) {
-        this.passwordHash = new BCryptPasswordEncoder().encode(password);
-//        this.passwordHash = password;
+    public void setPassword(String rawPassword) {
+        this.passwordHash = PasswordEncoder.getHash(rawPassword);
     }
 
     public Long getId() {
         return id;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", phone='" + phone + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", email='" + email + '\'' +
+                ", place='" + place + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", token='" + token + '\'' +
+                '}';
+    }
 }

@@ -5,13 +5,14 @@ import com.commercial.backend.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("api")
 public class MyController {
 
     private final IUserService userService;
@@ -21,14 +22,37 @@ public class MyController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/register", consumes = "application/json")
+    @PostMapping(value = "/auth/register", consumes = "application/json")
     public Map<String, Object> registerNewUser(@RequestBody Map<String, String> json) {
-        User user = new User(json.get("phone"), json.get("name"), json.get("surname"), json.get("middleName"), json.get("email"), json.get("place"), json.get("password"));
+        User user = new User(json.get("phone"), json.get("name"), json.get("surname"), json.get("middleName"), json.get("email"), json.get("place"), json.get("password"), false);
         logger.info("Read JSON");
-        HashMap<String, Object> result = new HashMap<>();
-        Pair<String, Boolean> tokenWithHistory = userService.addNewUserAndGetTokenWithHistory(user);
+        Map<String, Object> result = new HashMap<>();
+        Pair<String, String> tokenWithHistory = userService.addNewUserAndGetTokenWithHistory(user);
         result.put("token", tokenWithHistory.getFirst());
-        result.put("isRegisteredBefore", tokenWithHistory.getSecond());
+        result.put("exception", tokenWithHistory.getSecond());
+        return result;
+    }
+
+    @PostMapping(value = "/auth/login", consumes = "application/json")
+    public Map<String, Object> loginUser(@RequestBody Map<String, String> json) {
+        User user = new User();
+        user.loginUser(json.get("phone"));
+        logger.info("Read JSON\n" + user);
+        Map<String, Object> result = new HashMap<>();
+        Pair<String, String> pair = userService.getTokenWithCheckingPassword(user, json.get("password"));
+        result.put("token", pair.getFirst());
+        result.put("exception", pair.getSecond());
+        return result;
+    }
+
+    @PostMapping(consumes = "application/json")
+    public Map<String, Object> check(@RequestBody Map<String, String> json) {
+        String token = json.get("token");
+        logger.info("Read JSON\ntoken: " + token);
+        Map<String, Object> result = new HashMap<>();
+        Pair<String, String> pair = userService.checkTokenWithException(token);
+        result.put("token", pair.getFirst());
+        result.put("exception", pair.getSecond());
         return result;
     }
 }
