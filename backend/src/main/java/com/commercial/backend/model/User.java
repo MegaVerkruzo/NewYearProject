@@ -1,5 +1,6 @@
 package com.commercial.backend.model;
 
+import com.commercial.backend.security.JWTUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -36,9 +37,12 @@ public class User {
     @Column(name="password_hash")
     private String passwordHash;
 
+    @Column(name="token")
+    private String token;
+
     public User() {}
 
-    public User(String phone, String name, String surname, String middleName, String email, String place, String password) {
+    public User(String phone, String name, String surname, String middleName, String email, String place, String password, Boolean isThisPasswordHash) {
         this.phone = phone;
         this.name = name;
         this.surname = surname;
@@ -46,8 +50,12 @@ public class User {
         this.email = email;
         this.place = place;
 
-        this.passwordHash = new BCryptPasswordEncoder().encode(password);
-//        this.passwordHash = password;
+        if (isThisPasswordHash) {
+            this.passwordHash = password;
+        } else {
+            this.passwordHash = new BCryptPasswordEncoder().encode(password);
+        }
+        this.token = JWTUtil.generateToken(this);
     }
 
 
@@ -103,13 +111,19 @@ public class User {
         return passwordHash;
     }
 
-    public void setPasswordHash(String password) {
+    public void setPassword(String password) {
         this.passwordHash = new BCryptPasswordEncoder().encode(password);
-//        this.passwordHash = password;
     }
 
     public Long getId() {
         return id;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

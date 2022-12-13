@@ -21,8 +21,8 @@ public class UsersRepository {
     }
 
     public void insert(User user) {
-        jdbcTemplate.update("INSERT INTO users (phone, name, surname, middle_name, email, place, password_hash) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                user.getPhone(), user.getName(), user.getSurname(), user.getMiddleName(), user.getEmail(), user.getPlace(), user.getPasswordHash());
+        jdbcTemplate.update("INSERT INTO users (phone, name, surname, middle_name, email, place, password_hash, token) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                user.getPhone(), user.getName(), user.getSurname(), user.getMiddleName(), user.getEmail(), user.getPlace(), user.getPasswordHash(), user.getToken());
     }
 
     public User findUserByPhone(String phone) {
@@ -38,7 +38,7 @@ public class UsersRepository {
 
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User(rs.getString("phone"), rs.getString("name"), rs.getString("surname"), rs.getString("middle_name"), rs.getString("email"), rs.getString("place"), rs.getString("password_hash"));
+            return new User(rs.getString("phone"), rs.getString("name"), rs.getString("surname"), rs.getString("middle_name"), rs.getString("email"), rs.getString("place"), rs.getString("password_hash"), true);
         }
     }
 }

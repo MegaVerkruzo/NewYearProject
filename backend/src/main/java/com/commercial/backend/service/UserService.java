@@ -2,7 +2,6 @@ package com.commercial.backend.service;
 
 import com.commercial.backend.model.User;
 import com.commercial.backend.db.UsersRepository;
-import com.commercial.backend.security.JWTUtil;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +23,6 @@ public class UserService implements IUserService {
             user = searchUser;
             userContained = true;
         }
-        return Pair.of(JWTUtil.generateToken(user), userContained);
+        return Pair.of(user.getToken(), userContained);
     }
 }
