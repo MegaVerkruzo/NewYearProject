@@ -41,4 +41,14 @@ public class UserService implements IUserService {
             return Pair.of("", "incorrectPassword");
         }
     }
+
+    @Override
+    public Pair<String, String> checkTokenWithException(String token) {
+        User searchUser = repository.findUserByToken(token);
+        if (searchUser == null) {
+            return Pair.of("", "noUser");
+        } else {
+            return Pair.of(token, "");
+        }
+    }
 }

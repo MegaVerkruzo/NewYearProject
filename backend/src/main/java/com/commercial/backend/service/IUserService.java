@@ -7,4 +7,6 @@ public interface IUserService {
     Pair<String, String> addNewUserAndGetTokenWithHistory(User user);
 
     Pair<String, String> getTokenWithCheckingPassword(User user, String rawPassword);
+
+    Pair<String, String> checkTokenWithException(String token);
 }

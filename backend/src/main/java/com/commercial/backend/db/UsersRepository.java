@@ -39,6 +39,15 @@ public class UsersRepository {
         }
     }
 
+    public User findUserByToken(String token) {
+        List<User> result = jdbcTemplate.query("SELECT * FROM users WHERE token = ?", mapper, token);
+        if (result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
+    }
+
     private static class IdeaEntityMapper implements RowMapper<User> {
 
         @Override
