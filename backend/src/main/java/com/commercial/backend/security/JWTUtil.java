@@ -22,8 +22,8 @@ public class JWTUtil {
     public static String generateToken(User user) throws IllegalArgumentException, JWTCreationException {
         return JWT.create()
                 .withSubject("User Details")
+                .withClaim("id", user.getId())
                 .withClaim("phone", user.getPhone())
-                .withClaim("passwordHash", user.getPasswordHash())
                 .withIssuedAt(new Date())
                 .withIssuer("YOUR APPLICATION/PROJECT/COMPANY NAME")
                 .sign(Algorithm.HMAC256(jwtSecret));
@@ -35,8 +35,6 @@ public class JWTUtil {
                 .withIssuer("YOUR APPLICATION/PROJECT/COMPANY NAME")
                 .build();
         DecodedJWT jwt = verifier.verify(token);
-        return jwt.getClaim("email").asString();
+        return jwt.getClaim("phone").asString();
     }
-
-
 }
