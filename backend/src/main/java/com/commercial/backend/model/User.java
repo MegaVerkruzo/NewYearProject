@@ -1,7 +1,7 @@
 package com.commercial.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 
@@ -46,8 +46,8 @@ public class User {
         this.email = email;
         this.place = place;
 
-//        this.password = new BCryptPasswordEncoder().encode(password);
-        this.passwordHash = password;
+        this.passwordHash = new BCryptPasswordEncoder().encode(password);
+//        this.passwordHash = password;
     }
 
 
@@ -104,8 +104,8 @@ public class User {
     }
 
     public void setPasswordHash(String password) {
-//        this.password = new BCryptPasswordEncoder().encode(password);
-        this.passwordHash = password;
+        this.passwordHash = new BCryptPasswordEncoder().encode(password);
+//        this.passwordHash = password;
     }
 
     public Long getId() {
