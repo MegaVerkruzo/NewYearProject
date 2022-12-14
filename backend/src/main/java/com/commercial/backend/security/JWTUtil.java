@@ -23,7 +23,6 @@ public class JWTUtil {
         return JWT.create()
                 .withSubject("User Details")
                 .withClaim("phone", user.getPhone())
-                .withIssuedAt(new Date())
                 .withIssuer("YOUR APPLICATION/PROJECT/COMPANY NAME")
                 .sign(Algorithm.HMAC256(jwtSecret));
     }
