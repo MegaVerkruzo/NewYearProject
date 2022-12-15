@@ -19,6 +19,7 @@ class Store {
     postLink = ''
     description = null
     isCorrect = false
+    isSound = true
 
     feedback = ''
 
@@ -61,6 +62,10 @@ class Store {
 
     setNewAttemptText(data) {
         this.newAttempt = data
+    }
+
+    setToggleIsSound() {
+        this.isSound = !this.isSound
     }
 }
 

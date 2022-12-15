@@ -9,10 +9,27 @@ const $authHost = axios.create({
 })
 
 const authInterceptor = config => {
-    config.headers.authorization = `Bearer ${localStorage.getItem('token')}`
+    try {
+        config.headers.authorization = `${localStorage.getItem('token')}`
+    } catch (e) {
+        config.headers.authorization = ''
+    }
+    return config
 }
 
-$authHost.interceptors.request.use(authInterceptor)
+function checkConfig(config) {
+    console.log('request => config ====================================');
+    console.log(localStorage.getItem('token'))
+    config.headers.authorization = `${localStorage.getItem('token')}`
+    console.log(config);
+    console.log('request => config ====================================');
+    return config;
+}
+
+$authHost.interceptors.request.use(authInterceptor, function (error) {
+    return Promise.reject(error);
+})
+
 export {
     $host,
     $authHost

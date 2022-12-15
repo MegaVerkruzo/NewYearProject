@@ -6,14 +6,29 @@ import Footer from "../Footer/Footer";
 import {observer} from "mobx-react-lite";
 import {check} from "../../http/userAPI";
 import store from "../../store/store";
+import {useNavigate} from "react-router-dom";
 
 const App = () => {
     const [isLoading, setIsLoading] = useState(false)
+    let navigate = useNavigate()
     React.useEffect(() => {
-        // setIsLoading(true)
-        // check().then(data => {
-        //     store.setUserData(data)
-        // }).finally(() => setIsLoading(false))
+        const fetchData = async () => {
+            setIsLoading(true)
+            if (localStorage.getItem('token')) {
+                const data = await check()
+                if (data?.token) {
+                    localStorage.setItem('token', data.token)
+                } else {
+                    navigate('/login')
+                    alert('Вы не авторизованы')
+                }
+            } else {
+                navigate('/login')
+                alert('Вы не авторизованы')
+            }
+            setIsLoading(false)
+        }
+        fetchData()
     }, [])
 
     return (

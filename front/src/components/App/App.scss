@@ -25,6 +25,7 @@ a {
   }
 
   &:hover {
+    text-decoration: underline;
     color: #dadada;
   }
 }
@@ -188,8 +189,8 @@ h3 {
 
 /* Registration */
 .main {
-  background: url("../../img/Снег.png");
-  //background: url("./img/pngwing.png") no-repeat center center;
+  background: url("../../img/pngwing.png") no-repeat center center, url("../../img/Snow1.png");
+  //background: url("../../img/pngwing.png") no-repeat center center, url("../../img/Snow1.png");
 }
 
 .main__wrapper {

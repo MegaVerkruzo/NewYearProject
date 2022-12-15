@@ -1,5 +1,5 @@
 import React from 'react';
-import {fields_login, fields_reg} from "../../static_data/RegisterData";
+import {fields_login} from "../../static_data/RegisterData";
 import Input from "./Input";
 import store from "../../store/store";
 import {login} from "../../http/userAPI";
@@ -15,9 +15,12 @@ const Login = ({userData}) => {
     }
     const onSignIn = async () => {
         try {
-            const resp = await login({phone: userData.phone, password: userData.password})
-            console.log(resp)
-            navigate('/')
+            const data = await login({phone: userData.phone, password: userData.password})
+            console.log(data)
+            if (data.token) {
+                localStorage.setItem('token', data.token)
+                navigate('/')
+            }
         } catch (e) {
             console.log(e.message)
         }

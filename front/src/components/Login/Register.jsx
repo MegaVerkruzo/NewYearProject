@@ -15,9 +15,12 @@ const Register = ({userData}) => {
     }
     const onSignUp = async () => {
         try {
-            const resp = await registration(userData)
-            console.log(resp)
-            navigate('/')
+            const data = await registration(userData)
+            console.log(data)
+            if (data.token) {
+                localStorage.setItem('token', data.token)
+                navigate('/')
+            }
         } catch (e) {
             navigate('/')
             console.log(e.message)

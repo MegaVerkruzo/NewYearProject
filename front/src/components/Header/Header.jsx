@@ -4,8 +4,14 @@ import {ReactComponent as Sound} from '../../img/Sound.svg'
 import {ReactComponent as NoSound} from '../../img/NoSound.svg'
 import TimerBG from '../../img/TimerBG.png'
 import TimerSnow from '../../img/TimerSnow.svg'
+import store from "../../store/store";
+import {observer} from "mobx-react-lite";
 
 const Header = () => {
+    const toggleIsSound = () => {
+        store.setToggleIsSound()
+    }
+
     return (
         <header className="header">
             <div className="container">
@@ -22,16 +28,16 @@ const Header = () => {
                                 <a href="#">Снегурочка на связи</a>
                             </div>
                             <div className="header__sound">
-                                <button className="sound__btn">
-                                    <Sound/>
+                                <button className="sound__btn" onClick={toggleIsSound}>
+                                    {store.isSound ? <Sound/> : <NoSound />}
                                 </button>
                             </div>
                         </div>
                     </div> : <div className="header__top">
                         <div className="header__left">
                             <div className="header__sound">
-                                <button className="sound__btn">
-                                    <Sound/>
+                                <button className="sound__btn" onClick={toggleIsSound}>
+                                    {store.isSound ? <Sound/> : <NoSound />}
                                 </button>
                             </div>
                         </div>
@@ -83,4 +89,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default observer(Header);

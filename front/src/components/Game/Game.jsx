@@ -3,6 +3,9 @@ import store from "../../store/store";
 import {observer} from "mobx-react-lite";
 import {initialGameData} from "../../static_data/GameData";
 import Keyboard from "./Keyboard";
+import Tree from '../../img/Tree.png'
+import GameField from "./GameField";
+import {ReactComponent as MessageAngle} from '../../img/Message_angle.svg'
 // import {getAllInfo} from "../../http/wordsAPI";
 
 const Game = () => {
@@ -14,28 +17,22 @@ const Game = () => {
             store.setMainInfo(data)
         }
 
-        fetchData()
+        // fetchData()
     }, [])
 
     return (
-        <div>
-            GAME PAGE
-            <div className="game-field">
-                {
-                    store.attempts.map(row => <div className="field__row" key={row.id}>
-                            {
-                                row?.empty ? <></>
-                                    : row.word.map(cell =>
-                                        <div className="cell"
-                                             key={`${row.id}_${cell.id}`}>
-                                            {cell.letter}
-                                        </div>)
-                            }
-                        </div>
-                    )
-                }
+        <div className="main-page__top">
+            <div className="main-page__column">
+                <div className="main-page__title"><h1>Игра «Наряди ёлку»</h1></div>
+                <div className="main-page__text">
+                    <span>Сегодня 19 число, вас ждёт задание в телеграм канале Благополучие</span>
+                    <MessageAngle/>
+                </div>
+                <GameField/>
             </div>
-            {window.innerWidth < 1024 ? <Keyboard/> : ''}
+            <div className="main-page__column">
+                <img src={Tree} alt="Ёлочка"/>
+            </div>
         </div>
     );
 };
