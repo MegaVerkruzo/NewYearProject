@@ -5,8 +5,8 @@ docker-compose up -d
 echo "Done: Launch PostgreSQL"
 
 echo "Init tables"
-docker cp ./src/main/resources/schema.sql backend_postgres_1:/docker-entrypoint-initdb.d/schema.sql
-docker exec -u postgres backend_postgres_1 psql postgres postgres -f docker-entrypoint-initdb.d/schema.sql
+# docker cp ./src/main/resources/schema.sql backend_postgres_1:/docker-entrypoint-initdb.d/schema.sql
+# docker exec -u postgres backend_postgres_1 psql postgres postgres -f docker-entrypoint-initdb.d/schema.sql
 echo "Done: Init tables"
 
 echo "Build project"
