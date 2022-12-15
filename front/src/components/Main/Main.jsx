@@ -1,20 +1,40 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Routes, Route} from "react-router-dom";
 import Login from "../Login/Login";
 import Register from "../Login/Register";
 import store from "../../store/store";
+import Game from "../Game/Game";
+import MainPage from "./MainPage";
+import Rules from "./Rules";
+import HowToPlay from "./How2Play";
+import Meaning from "./Meaning";
+import Feedback from "./Feedback";
 
 const Main = () => {
-    useEffect(() => {
-    }, [])
-
     return (
         <main className="main">
             <div className="container">
-                <Routes>
-                    <Route path="/login" element={<Login user_data={store.user_data}/>}/>
-                    <Route path="/register" element={<Register user_data={store.user_data}/>}/>
-                </Routes>
+                <div className="main__content">
+                    <Routes>
+                        <Route path="/" element={
+                            <div className="main-page">
+                                <MainPage/>
+                                <Rules/>
+                            </div>
+                        }/>
+                        <Route path="/login" element={<Login userData={store.userData}/>}/>
+                        <Route path="/register" element={<Register userData={store.userData}/>}/>
+                        <Route path="/game" element={
+                            <div className="main-page">
+                                <Game/>
+                                <Meaning/>
+                                <Rules/>
+                                <HowToPlay/>
+                                <Feedback/>
+                            </div>
+                        }/>
+                    </Routes>
+                </div>
             </div>
         </main>
     );
