@@ -9,11 +9,13 @@ const Main = () => {
     return (
         <main className="main">
             <div className="container">
-                <Routes>
-                    <Route path="/login" element={<Login userData={store.userData}/>}/>
-                    <Route path="/register" element={<Register userData={store.userData}/>}/>
-                    <Route path="/game" element={<Game/>}/>
-                </Routes>
+                <div className="main__content">
+                    <Routes>
+                        <Route path="/login" element={<Login userData={store.userData}/>}/>
+                        <Route path="/register" element={<Register userData={store.userData}/>}/>
+                        <Route path="/game" element={<Game/>}/>
+                    </Routes>
+                </div>
             </div>
         </main>
     );
