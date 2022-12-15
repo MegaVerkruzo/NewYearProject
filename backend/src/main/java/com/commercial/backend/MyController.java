@@ -22,7 +22,7 @@ public class MyController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/auth/register", consumes = "application/json")
+    @PostMapping(value = "/auth/register", consumes = "application/json", produces = "application/json")
     public Map<String, Object> registerNewUser(@RequestBody Map<String, String> json) {
         User user = new User(json.get("phone"), json.get("name"), json.get("surname"), json.get("middleName"), json.get("email"), json.get("place"), json.get("password"), false);
         logger.info("Read JSON");
@@ -33,7 +33,7 @@ public class MyController {
         return result;
     }
 
-    @PostMapping(value = "/auth/login", consumes = "application/json")
+    @PostMapping(value = "/auth/login", consumes = "application/json", produces = "application/json")
     public Map<String, Object> loginUser(@RequestBody Map<String, String> json) {
         User user = new User();
         user.loginUser(json.get("phone"));
@@ -45,10 +45,9 @@ public class MyController {
         return result;
     }
 
-    @PostMapping(consumes = "application/json")
-    public Map<String, Object> check(@RequestBody Map<String, String> json) {
-        String token = json.get("token");
-        logger.info("Read JSON\ntoken: " + token);
+    @GetMapping(value = "/check", produces = "application/json")
+    public Map<String, Object> check(@RequestHeader("authorization") String token) {
+        logger.info("Read HEADER\ntoken: " + token);
         Map<String, Object> result = new HashMap<>();
         Pair<String, String> pair = userService.checkTokenWithException(token);
         result.put("token", pair.getFirst());
