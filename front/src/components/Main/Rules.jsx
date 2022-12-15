@@ -6,7 +6,7 @@ import {ReactComponent as Rule4} from '../../img/Rule4.svg'
 
 const Rules = () => {
     return (
-        <div className="main-page__rules">
+        <div className="main-page__rules" id="rules">
             <div className="rules__title"><h1>Правила игры</h1></div>
             <div className="rules__container">
                 <div className="rules__item">

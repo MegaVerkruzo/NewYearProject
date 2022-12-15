@@ -21,6 +21,8 @@ class Store {
     isCorrect = false
     isSound = true
 
+    untilNewYear = {days: 0, hours: 0, minutes: 0}
+
     feedback = ''
 
     constructor() {
@@ -66,6 +68,10 @@ class Store {
 
     setToggleIsSound() {
         this.isSound = !this.isSound
+    }
+
+    setUntilNewYear(data) {
+        this.untilNewYear = data
     }
 }
 

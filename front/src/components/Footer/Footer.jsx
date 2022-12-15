@@ -41,7 +41,7 @@ const Footer = () => {
                         </div>
                         <div className="footer__column">
                             <div className="footer__text">
-                                <a href="#">Правила игры</a>
+                                <a href="#rules">Правила игры</a>
                             </div>
                         </div>
                         <div className="footer__column">
@@ -53,7 +53,7 @@ const Footer = () => {
                         </div>
                         <div className="footer__column">
                             <div className="footer__icon">
-                                <a href="#">
+                                <a href="https://t.me/+QnoomH1zp9k0OGUy" target="_blank">
                                     <Telegram/>
                                 </a>
                             </div>
@@ -69,7 +69,7 @@ const Footer = () => {
                                         Меню
                                     </div>
                                     <div className="footer__text">
-                                        <a href="#">Правила игры</a>
+                                        <a href="#rules">Правила игры</a>
                                     </div>
                                 </div>
 
@@ -87,9 +87,8 @@ const Footer = () => {
                         </div>
                         <div className="footer__row">
                             <div className="footer__icon">
-                                <a href="#">
+                                <a href="https://t.me/+QnoomH1zp9k0OGUy" target="_blank">
                                     <Telegram/>
-
                                 </a>
                             </div>
                         </div>

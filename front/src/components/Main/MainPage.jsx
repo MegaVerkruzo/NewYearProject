@@ -11,7 +11,7 @@ const MainPage = () => {
                     <span>Первая игра начнётся 19 декабря в 9:00!</span>
                     <MessageAngle />
                 </div>
-                <button className="main-page__btn">К правилам</button>
+                <a href="#rules" className="main-page__btn">К правилам</a>
             </div>
             <div className="main-page__column">
                 <img src={Tree} alt="Ёлочка"/>

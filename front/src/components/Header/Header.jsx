@@ -6,6 +6,7 @@ import TimerBG from '../../img/TimerBG.png'
 import TimerSnow from '../../img/TimerSnow.svg'
 import store from "../../store/store";
 import {observer} from "mobx-react-lite";
+import Timer from "./Timer";
 
 const Header = () => {
     const toggleIsSound = () => {
@@ -29,7 +30,7 @@ const Header = () => {
                             </div>
                             <div className="header__sound">
                                 <button className="sound__btn" onClick={toggleIsSound}>
-                                    {store.isSound ? <Sound/> : <NoSound />}
+                                    {store.isSound ? <Sound/> : <NoSound/>}
                                 </button>
                             </div>
                         </div>
@@ -37,7 +38,7 @@ const Header = () => {
                         <div className="header__left">
                             <div className="header__sound">
                                 <button className="sound__btn" onClick={toggleIsSound}>
-                                    {store.isSound ? <Sound/> : <NoSound />}
+                                    {store.isSound ? <Sound/> : <NoSound/>}
                                 </button>
                             </div>
                         </div>
@@ -57,31 +58,7 @@ const Header = () => {
                                 <img src={TimerSnow} alt="Снежок" className="timer__snow"/> : ''}
                             До нового года осталось:
                         </div>
-                        <div className="timer__main">
-                            <div className="timer__block">
-                                <div className="timer__num">2</div>
-                                <div className="timer__num">3</div>
-                                <div className="timer__text">Дней</div>
-                            </div>
-                            <div className="timer__splitter">
-                                <div className="splitter__circle"/>
-                                <div className="splitter__circle"/>
-                            </div>
-                            <div className="timer__block">
-                                <div className="timer__num">0</div>
-                                <div className="timer__num">6</div>
-                                <div className="timer__text">Часов</div>
-                            </div>
-                            <div className="timer__splitter">
-                                <div className="splitter__circle"/>
-                                <div className="splitter__circle"/>
-                            </div>
-                            <div className="timer__block">
-                                <div className="timer__num">1</div>
-                                <div className="timer__num">2</div>
-                                <div className="timer__text">Минут</div>
-                            </div>
-                        </div>
+                        <Timer />
                     </div>
                 </div>
             </div>
