@@ -1,17 +1,30 @@
 #!/bin/bash
 
-echo "Launch PostgreSQL"
+printDone() {
+  echo -e "\033[42m$1\033[0m"
+}
+
+text="Delete previous process"
+echo "$text"
+pid=$(top -b -n 1 | grep "java" | awk '{print $1}')
+kill "$pid"
+printDone "$text"
+
+text="Launch PostgreSQL"
+echo "$text"
 docker-compose up -d
-echo "Done: Launch PostgreSQL"
+printDone "$text"
 
-echo "Init tables"
-docker cp ./src/main/resources/schema.sql backend_postgres_1:/docker-entrypoint-initdb.d/schema.sql
-docker exec -u postgres backend_postgres_1 psql postgres postgres -f docker-entrypoint-initdb.d/schema.sql
-echo "Done: Init tables"
+# echo "Init tables"
+# docker cp ./src/main/resources/schema.sql backend_postgres_1:/docker-entrypoint-initdb.d/schema.sql
+# docker exec -u postgres backend_postgres_1 psql postgres postgres -f docker-entrypoint-initdb.d/schema.sql
+# echo "Done: Init tables"
 
-echo "Build project"
+text="Build project"
+echo "$text"
 ./gradlew build
-echo "Done: Build project"
+printDone "$text"
 
 echo "Launch server"
 java -jar ./build/libs/backend-0.0.1-SNAPSHOT.jar &
+# java -jar ./build/libs/backend-0.0.1-SNAPSHOT.jar --server.port=8081
