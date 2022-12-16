@@ -10,24 +10,35 @@ import giftBottom from "../../img/gift_bottom.png";
 
 const Login = ({userData}) => {
     let navigate = useNavigate()
+    React.useEffect(() => {
+        store.setRegError(null)
+    }, [])
     const onChangeInput = (field, data) => {
         store.changeUserData(field, data)
     }
     const onSignIn = async () => {
         try {
+            if (!store.userData.phone || !store.userData.password) {
+                store.setRegError('Не все поля заполнены')
+                return
+            }
             const data = await login({phone: userData.phone, password: userData.password})
-            console.log(data)
             if (data.token) {
                 localStorage.setItem('token', data.token)
                 navigate('/')
+            } else {
+                if (data.exception === 'noUser') {
+                    store.setRegError('Неверно введен номер или пароль')
+                }
             }
         } catch (e) {
             console.log(e.message)
+            store.setRegError('Произошла ошибка сервера')
         }
     }
 
     return (
-        <div>
+        <div className="main-page__login">
             <div className="main__wrapper">
                 <div className="top__gift">
                     <img src={giftTop} alt=""/>
@@ -48,8 +59,9 @@ const Login = ({userData}) => {
                                 key={item.id}
                             />)
                         }
-                        <div className="reg-form__btn">
-                            <button onClick={onSignIn}>Войти</button>
+                        {store.regError && <div className="error">{store.regError}</div>}
+                        <div className="reg-form__btn" onClick={onSignIn}>
+                            <button>Войти</button>
                         </div>
                         <div className="reg-form__bottom-text">
                             Нет аккаунта? <Link to="/register">Зарегистрироваться</Link>
