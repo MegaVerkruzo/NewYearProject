@@ -3,6 +3,10 @@ import Tree from '../../img/Tree.png'
 import {ReactComponent as MessageAngle} from '../../img/Message_angle.svg'
 
 const MainPage = () => {
+    React.useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
+
     return (<>
             {window.innerWidth > 672 ?
                 <div className="main-page__top align-center">

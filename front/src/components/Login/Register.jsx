@@ -82,8 +82,8 @@ const Register = ({userData}) => {
                             <div className="checkbox">
                                 <input type="checkbox" id="checkbox2" className="checkbox"
                                        onChange={(e) => onChangeInput('isAgreePolicy', !userData.isAgreePolicy)}/>
-                                <label htmlFor="checkbox2">Я подтверждаю свое согласие <br/> с
-                                    <a href="https://app.simplenote.com/p/XV73L9" target="_blank" className="underline">политикой
+                                <label htmlFor="checkbox2">Я подтверждаю свое согласие <br/>
+                                    <a href="https://app.simplenote.com/p/XV73L9" target="_blank" className="underline">с политикой
                                         конфиденциальности</a>
                                 </label>
                             </div>
