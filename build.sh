@@ -2,7 +2,7 @@
 
 
 fun() {
-	echo -e "\033[32m$1\033[0m"
+	echo -e "\033[42m$1\033[0m"
 }
 
 # apt install nginx 
@@ -41,5 +41,5 @@ rm /etc/nginx/sites-available/default
 cp ./default_my /etc/nginx/sites-available/default
 fun "Copy nginx"
 
-
-
+./reLaunch.sh
+fun "Restart nginx"
