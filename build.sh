@@ -7,7 +7,9 @@ fun() {
 
 # apt install nginx 
 apt install npm
-fun "Installed nginx and npm"
+curl -sL https://deb.nodesource.com/setup_19.x | sudo -E bash -
+sudo apt install nodejs
+fun "Installed nginx and npm with nodejs"
 
 ./sertBolt.sh	
 fun "Installed sertBolt"
