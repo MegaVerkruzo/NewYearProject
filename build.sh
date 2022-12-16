@@ -6,16 +6,16 @@ fun() {
 }
 
 # apt install nginx 
-apt install npm
-curl -sL https://deb.nodesource.com/setup_19.x | sudo -E bash -
-sudo apt install nodejs
-fun "Installed nginx and npm with nodejs"
+# apt install npm
+# curl -sL https://deb.nodesource.com/setup_19.x | sudo -E bash -
+# sudo apt install nodejs
+# fun "Installed nginx and npm with nodejs"
 
-./sertBolt.sh	
-fun "Installed sertBolt"
+# ./sertBolt.sh	
+# fun "Installed sertBolt"
 
-./AddFirewall.sh
-fun "AddFireWall"
+# ./AddFirewall.sh
+# fun "AddFireWall"
 
 # front
 
@@ -38,7 +38,7 @@ cd ..
 fun "Done backend"
 
 rm /etc/nginx/sites-available/default
-cp ./default_my /etc/nginx/sites-available/default
+# cp ./default_my /etc/nginx/sites-available/default
 fun "Copy nginx"
 
 ./reLaunch.sh
