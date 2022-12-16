@@ -4,7 +4,7 @@ import store from "../../store/store";
 
 const Timer = () => {
     const onTimerChange = () => {
-        const diffInMs = new Date('2023-01-01T00:00:00') - new Date()
+        const diffInMs = new Date('2023-01-01T00:00:00.000+03:00') - new Date(new Date().toLocaleString('en', {timeZone: 'Europe/Moscow'}))
         const days = parseInt(diffInMs / (1000 * 60 * 60 * 24));
         const hours = parseInt(diffInMs / (1000 * 60 * 60)) % 24;
         const minutes = parseInt(diffInMs / (1000 * 60)) % 60;
