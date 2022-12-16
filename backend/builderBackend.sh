@@ -16,8 +16,8 @@ docker-compose up -d
 printDone "$text"
 
 # echo "Init tables"
-# docker cp ./src/main/resources/schema.sql backend_postgres_1:/docker-entrypoint-initdb.d/schema.sql
-# docker exec -u postgres backend_postgres_1 psql postgres postgres -f docker-entrypoint-initdb.d/schema.sql
+docker cp ./src/main/resources/schema.sql backend-postgres-1:/docker-entrypoint-initdb.d/schema.sql
+docker exec -u postgres backend-postgres-1 psql postgres postgres -f docker-entrypoint-initdb.d/schema.sql
 # echo "Done: Init tables"
 
 text="Build project"
