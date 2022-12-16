@@ -12,7 +12,7 @@ const MainPage = () => {
                         href="https://t.me/+QnoomH1zp9k0OGUy" target="_blank">«Благополучие-INFO»</a></span>
                     <MessageAngle/>
                 </div>
-                <a href="#rules" className="main-page__btn">К правилам</a>
+                <a href="https://app.simplenote.com/p/tmCzZ4" target="_blank" className="main-page__btn">К правилам</a>
             </div>
             <div className="main-page__column">
                 <img src={Tree} alt="Ёлочка"/>

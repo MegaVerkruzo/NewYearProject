@@ -42,7 +42,7 @@ const Header = () => {
                         <div className="header__right">
                             <div className="header__burger"/>
                             <div className="header__help">
-                                <a href="#">Снегурочка на связи</a>
+                                <a href="https://t.me/blago2023" target="_blank">Снегурочка на связи</a>
                             </div>
                             <div className="header__sound">
                                 <button className="sound__btn" onClick={toggleIsSound}>
