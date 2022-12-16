@@ -34,19 +34,19 @@ const Footer = () => {
                                 Все права защищены
                             </div>
                             <div className="footer__text">
-                                <a href="#" className="underline">
+                                <a href="https://app.simplenote.com/p/XV73L9" target="_blank" className="underline">
                                     Политика конфиденциальности
                                 </a>
                             </div>
                         </div>
                         <div className="footer__column">
                             <div className="footer__text">
-                                <a href="#rules">Правила игры</a>
+                                <a href="https://app.simplenote.com/p/tmCzZ4" target="_blank">Правила игры</a>
                             </div>
                         </div>
                         <div className="footer__column">
                             <div className="footer__text">
-                                <a href="#">
+                                <a href="https://t.me/blago2023" target="_blank">
                                     Снегурочка на связи
                                 </a>
                             </div>
@@ -69,7 +69,7 @@ const Footer = () => {
                                         Меню
                                     </div>
                                     <div className="footer__text">
-                                        <a href="#rules">Правила игры</a>
+                                        <a href="https://app.simplenote.com/p/tmCzZ4" target="_blank">Правила игры</a>
                                     </div>
                                 </div>
 
@@ -78,7 +78,7 @@ const Footer = () => {
                                         Техподдержка
                                     </div>
                                     <div className="footer__text">
-                                        <a href="#">
+                                        <a href="https://t.me/blago2023" target="_blank">
                                             Снегурочка на связи
                                         </a>
                                     </div>
@@ -95,7 +95,7 @@ const Footer = () => {
                         <div className="footer__row">
                             <div className="footer__column">
                                 <div className="footer__text">
-                                    <a href="#" className="underline">
+                                    <a href="https://app.simplenote.com/p/XV73L9" target="_blank" className="underline">
                                         Политика конфиденциальности
                                     </a>
                                 </div>
