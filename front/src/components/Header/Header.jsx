@@ -70,13 +70,13 @@ const Header = () => {
                         </div>
                         <div className="header__right">
                             <div className={cn("header__burger", {"menu-open": store.isMenuOpen})} onClick={onMenuOpen}><span/></div>
-                            <nav className={cn("menu__nav", {"menu-open": store.isMenuOpen})}
-                                 onClick={onMenuOpen}>
-                                <Logo />
-                                <div className="header__help">
-                                    <a href="https://t.me/blago2023" target="_blank">Снегурочка на связи</a>
-                                </div>
-                            </nav>
+                            {/*<nav className={cn("menu__nav", {"menu-open": store.isMenuOpen})}*/}
+                            {/*     onClick={onMenuOpen}>*/}
+                            {/*    <Logo />*/}
+                            {/*    <div className="header__help">*/}
+                            {/*        <a href="https://t.me/blago2023" target="_blank">Снегурочка на связи</a>*/}
+                            {/*    </div>*/}
+                            {/*</nav>*/}
                         </div>
                     </div>}
                 </div>

@@ -6,7 +6,7 @@ printDone() {
 
 text="Delete previous process"
 echo "$text"
-pid=$(top -b -n 1 | grep "java" | awk '{print $1}' | tr "\n" " ")
+pid=$(top -b -n 1 | grep "java" | awk '{print $1}' | sed -i '$ d' | tr "\n" " ")
 kill "$pid"
 printDone "$text"
 
@@ -17,8 +17,8 @@ docker-compose up -d
 printDone "$text"
 
 # echo "Init tables"
-# docker cp ./src/main/resources/schema.sql backend-postgres-1:/docker-entrypoint-initdb.d/schema.sql
-# docker exec -u postgres backend-postgres-1 psql postgres postgres -f docker-entrypoint-initdb.d/schema.sql
+# docker cp ./src/main/resources/schema.sql backend-postgres-1:/docker-entrypoint-initdb.d/data.sql
+# docker exec -u postgres backend-postgres-1 psql postgres postgres -f docker-entrypoint-initdb.d/data.sql
 # echo "Done: Init tables"
 
 text="Build project"

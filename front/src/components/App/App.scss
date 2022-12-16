@@ -37,7 +37,7 @@ button {
 }
 
 h1 {
-  font-size: 2.2rem;
+  font-size: 2rem;
 }
 
 h2 {
@@ -383,7 +383,7 @@ h3 {
 /* MAIN PAGE */
 .main-page {
   h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 40px;
     text-shadow: 3px 0 0 #244D35;
   }
@@ -404,7 +404,7 @@ h3 {
 .main-page__column {
   img {
     max-width: 600px;
-    max-height: 100vh;
+    max-height: 80vh;
   }
 
   .main-page__title {
@@ -1004,7 +1004,8 @@ h3 {
     }
   }
   .main-page h1, .rules__title {
-    font-size: 1.9rem;
+    text-align: center;
+    font-size: 1.5rem;
     margin-bottom: 10px;
   }
 
@@ -1155,7 +1156,7 @@ h3 {
 
 @media screen and (max-width: 440px) {
   h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   .timer_bg {
@@ -1174,7 +1175,7 @@ h3 {
 
 @media screen and (max-width: 408px) {
   h1 {
-    font-size: 1.7rem;
+    font-size: 1.3rem;
   }
 
   .header__sound {
