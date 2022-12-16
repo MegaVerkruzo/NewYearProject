@@ -1,39 +1,61 @@
 package com.commercial.backend.model;
 
+import com.commercial.backend.security.JWTUtil;
+import com.commercial.backend.security.PasswordEncoder;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name="users", schema = "public")
+@JsonIgnoreProperties
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @Column(name="phone")
     private String phone;
 
+    @Column(name="name")
     private String name;
+
+    @Column(name="surname")
     private String surname;
 
-    @Column(name="middlename")
+    @Column(name="middle_name")
     private String middleName;
+
+    @Column(name="email")
     private String email;
+
+    @Column(name="place")
     private String place;
 
-    @Column(name="passwordhash")
+    @Column(name="password_hash")
     private String passwordHash;
+
+    @Column(name="token")
+    private String token;
 
     public User() {}
 
-    public User(String phone, String surname, String middleName, String email, String place, String passwordHash) {
+    public void loginUser(String phone) {
         this.phone = phone;
+        this.token = JWTUtil.generateToken(this);
+    }
+
+    public User(String phone, String name, String surname, String middleName, String email, String place, String password, Boolean isThisPasswordHash) {
+        this.phone = phone;
+        this.name = name;
         this.surname = surname;
         this.middleName = middleName;
         this.email = email;
         this.place = place;
-        this.passwordHash = passwordHash;
+        this.passwordHash = isThisPasswordHash ? password : PasswordEncoder.getHash(password);
+        this.token = JWTUtil.generateToken(this);
     }
-
 
     public String getPhone() {
         return phone;
@@ -87,15 +109,34 @@ public class User {
         return passwordHash;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String rawPassword) {
+        this.passwordHash = PasswordEncoder.getHash(rawPassword);
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", phone='" + phone + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", email='" + email + '\'' +
+                ", place='" + place + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", token='" + token + '\'' +
+                '}';
     }
 }
