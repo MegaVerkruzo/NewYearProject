@@ -361,6 +361,9 @@ h3 {
   z-index: 2;
   color: black;
 }
+.main-page__column .main-page__text span a {
+  color: #1f422e;
+}
 .main-page__column .main-page__text svg {
   position: absolute;
   bottom: -21px;
