@@ -18,15 +18,23 @@ public class UserService implements IUserService {
         this.repository = usersRepository;
     }
 
+    private boolean checkFieldOnSize(String str) {
+	return str.length() < 250;
+    }
+
     @Override
     public Pair<String, String> addNewUserAndGetTokenWithHistory(User user) {
         User searchUser = repository.findUserByPhone(user.getPhone());
         if (searchUser == null) {
+	 if (checkFieldOnSize(user.getPhone()) && checkFieldOnSize(user.getName()) && checkFieldOnSize(user.getSurname()) && checkFieldOnSize(user.getMiddleName()) && checkFieldOnSize(user.getEmail()) && checkFieldOnSize(user.getPlace()))  {
             repository.insert(user);
             return Pair.of(user.getToken(), "");
+	 } else {
+		 return Pair.of("", "hugeSizeField");
+	 }
         } else {
             return Pair.of("", "userExists");
-        }
+	}
     }
 
     @Override
