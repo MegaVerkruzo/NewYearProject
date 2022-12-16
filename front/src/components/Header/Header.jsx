@@ -9,7 +9,7 @@ import {observer} from "mobx-react-lite";
 import Timer from "./Timer";
 import Music from "../../audio/AngelsOfLight.mp3";
 
-const onSetMusic = () => store.setMusic(Music)
+// const onSetMusic = () => store.setMusic(Music)
 
 const Header = () => {
     // const ref = React.useRef(null);
