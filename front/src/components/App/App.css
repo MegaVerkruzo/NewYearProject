@@ -169,7 +169,11 @@ h3 {
 
 /* Registration */
 .main {
-  background: url("../../img/pngwing.png") no-repeat center center, url("../../img/Snow1.png");
+  background: url("../../img/Snow1.png");
+}
+
+.main-page__login {
+  background: url("../../img/pngwing.png") no-repeat center center;
 }
 
 .main__wrapper {
@@ -259,7 +263,7 @@ h3 {
   -webkit-transform: rotate(-45deg) scale(0);
   transform: rotate(-45deg) scale(0);
   transition: transform ease 0.25s;
-  will-change: transform;
+  wilsp3tJyHSn2Ayl-change: transform;
   position: absolute;
   top: 12px;
   left: 10px;
@@ -294,6 +298,14 @@ h3 {
 }
 .reg-form .reg-form__bottom-text a {
   font-weight: 700;
+}
+.reg-form .error {
+  padding: 10px 0;
+  font-weight: 700;
+}
+
+.main-page__feedback {
+  background: url("../../img/pngwing.png") no-repeat center center;
 }
 
 .feedback-form {
@@ -361,10 +373,12 @@ h3 {
   z-index: 2;
   color: black;
 }
+
 .main-page__column .main-page__text span a {
   color: #1f422e;
   white-space: nowrap;
 }
+
 .main-page__column .main-page__text svg {
   position: absolute;
   bottom: -21px;
@@ -788,6 +802,40 @@ h3 {
   .main-page .main-page__rules .rules__container {
     gap: 0 20px;
   }
+
+  .main-page .main-page__top .main-page__column .main-page__text {
+    padding: 14px 30px;
+    margin-bottom: 50px;
+  }
+}
+@media screen and (max-width: 840px) {
+  .main-page .main-page__rules .rules__item {
+    padding: 10px 15px;
+    border-radius: 15px;
+  }
+  .main-page .main-page__rules .rules__item .rule__icon {
+    margin-bottom: 15px;
+  }
+  .main-page .main-page__rules .rules__item .rule__icon svg {
+    width: 65px;
+    height: 65px;
+  }
+  .main-page .main-page__rules .rules__item .rule__title {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+  }
+  .main-page .main-page__rules .rules__item .rule__text {
+    font-size: 0.9rem;
+  }
+
+  .main-page h1, .rules__title {
+    font-size: 1.9rem;
+    margin-bottom: 10px;
+  }
+
+  .footer__row svg {
+    max-width: 200px;
+  }
 }
 /* MOBILE */
 @media screen and (max-width: 672px) {
@@ -864,6 +912,38 @@ h3 {
   .footer__columns {
     display: grid;
     grid-template-columns: 1fr 1fr;
+  }
+
+  .main-page .main-page__rules .rules__container {
+    grid-template-columns: repeat(2, minmax(min-content, 1fr));
+    gap: 20px 20px;
+  }
+
+  .footer__row svg {
+    max-width: 300px;
+  }
+
+  .main-page__top {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 100px;
+  }
+
+  .main-page .main-page__top .main-page__column .main-page__text {
+    margin-bottom: 20px;
+  }
+
+  .main-page__column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .main-page__column a {
+    margin: 0 auto;
+  }
+
+  .main-page__title h1 {
+    text-align: center;
   }
 }
 @media screen and (max-width: 543px) {

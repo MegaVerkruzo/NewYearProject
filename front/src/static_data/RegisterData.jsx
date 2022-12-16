@@ -17,7 +17,7 @@ export const fields_reg = [
         id: 3,
         field: "middlename",
         label: "Ваше отчество",
-        placeholder: "Введите отчетсво",
+        placeholder: "Введите отчество",
         type: "text"
     },
     {
@@ -68,7 +68,7 @@ export const fields_login = [
     {
         id: 2,
         field: "password",
-        label: "Придумайте пароль",
+        label: "Ваш пароль",
         placeholder: "Введите пароль",
         type: "password"
     },
