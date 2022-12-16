@@ -13,36 +13,34 @@ const Rules = () => {
                     <div className="rule__icon">
                         <Rule1 />
                     </div>
-                    <div className="rule__title">Прочти загадку</div>
-                    <div className="rule__text">Каждый день в нашем телеграм-канале будет публиковаться новая
-                        загадка
+                    <div className="rule__title">Найдите загадку</div>
+                    <div className="rule__text">Каждый день в Telegram-канале будет ждать новая загадка
                     </div>
                 </div>
                 <div className="rules__item">
                     <div className="rule__icon">
                         <Rule2 />
                     </div>
-                    <div className="rule__title">Угадай слово</div>
-                    <div className="rule__text">В загадке будет зашифровано 1 слово, которое тебе нужно будет
-                        отгадать
+                    <div className="rule__title">Угадайте слово</div>
+                    <div className="rule__text">Ответ на загадку – одно слово. Введите его на этой странице
                     </div>
                 </div>
                 <div className="rules__item">
                     <div className="rule__icon">
                         <Rule3 />
                     </div>
-                    <div className="rule__title">Наряди ёлку до конца</div>
+                    <div className="rule__title">Нарядите ёлочку</div>
                     <div className="rule__text">
-                        За каждое угаданное слово на ёлке будет появлятся украшения
+                        За каждое угаданное слово на ёлочке загорится новая игрушка
                     </div>
                 </div>
                 <div className="rules__item">
                     <div className="rule__icon">
                         <Rule4 />
                     </div>
-                    <div className="rule__title">Получи призы</div>
+                    <div className="rule__title">Получите призы</div>
                     <div className="rule__text">
-                        За полностью наряженную ёлку Дед Мороз подарит тебе подарок
+                        За полностью наряженную ёлку Дед Мороз принесёт вам подарок!
                     </div>
                 </div>
             </div>

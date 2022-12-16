@@ -259,7 +259,7 @@ h3 {
   -webkit-transform: rotate(-45deg) scale(0);
   transform: rotate(-45deg) scale(0);
   transition: transform ease 0.25s;
-  will-change: transform;
+  wilsp3tJyHSn2Ayl-change: transform;
   position: absolute;
   top: 12px;
   left: 10px;
@@ -361,6 +361,12 @@ h3 {
   z-index: 2;
   color: black;
 }
+
+.main-page__column .main-page__text span a {
+  color: #1f422e;
+  white-space: nowrap;
+}
+
 .main-page__column .main-page__text svg {
   position: absolute;
   bottom: -21px;
