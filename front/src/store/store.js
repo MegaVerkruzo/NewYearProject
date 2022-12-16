@@ -9,6 +9,7 @@ class Store {
         email: '',
         place: '',
         password: '',
+        password_repeat: '',
         isAgreePolicy: false
     }
     isAuth = false
