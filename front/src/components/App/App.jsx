@@ -19,16 +19,22 @@ const App = () => {
                 if (data?.token) {
                     localStorage.setItem('token', data.token)
                 } else {
-                    navigate('/login')
-                    alert('Вы не авторизованы')
+                    if (new Date() < new Date('2022-12-19T00:00:00.000+03:00')) {
+                        navigate('/register')
+                    } else {
+                        navigate('/login')
+                    }
                 }
             } else {
-                navigate('/login')
-                alert('Вы не авторизованы')
+                if (new Date() < new Date('2022-12-19T00:00:00.000+03:00')) {
+                    navigate('/register')
+                } else {
+                    navigate('/login')
+                }
             }
             setIsLoading(false)
         }
-        // fetchData()
+        fetchData()
     }, [])
 
     return (

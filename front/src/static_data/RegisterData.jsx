@@ -50,7 +50,7 @@ export const fields_reg = [
     },
     {
         id: 8,
-        field: "password",
+        field: "password_repeat",
         label: "Подтвердите пароль",
         placeholder: "Повторите пароль",
         type: "password"
