@@ -33,6 +33,7 @@ const Register = ({userData}) => {
                 store.setRegError('Телефон неверно введен')
                 return
             }
+            console.log(store.userData.isAgreePolicy)
             if (!store.userData.isAgreePolicy) {
                 store.setRegError('Подтвердите согласие с политикой конфиденциальности')
                 return
@@ -89,7 +90,7 @@ const Register = ({userData}) => {
                         </div>
                         {store.regError && <div className="error">{store.regError}</div>}
                         <div className="reg-form__btn" onClick={onSignUp}>
-                            <button disabled={!userData.isAgreePolicy}>Зарегистрироваться</button>
+                            <button>Зарегистрироваться</button>
                         </div>
                         <div className="reg-form__bottom-text">
                             Уже есть аккаунт? <Link to="/login">Войти</Link>
