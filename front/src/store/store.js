@@ -22,6 +22,7 @@ class Store {
     isCorrect = false
     isSound = true
     music = null
+    regError = ''
 
     untilNewYear = {days: 0, hours: 0, minutes: 0}
 
@@ -70,11 +71,15 @@ class Store {
 
     setToggleIsSound() {
         this.isSound = !this.isSound
-        this.isSound ? this.music.play() : this.music.pause()
+        // this.isSound ? this.music.play() : this.music.pause()
     }
 
     setUntilNewYear(data) {
         this.untilNewYear = data
+    }
+
+    setRegError(message) {
+        this.regError = message
     }
 }
 
