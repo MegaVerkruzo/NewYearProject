@@ -8,6 +8,7 @@ import store from "../../store/store";
 import {observer} from "mobx-react-lite";
 import Timer from "./Timer";
 import Music from "../../audio/AngelsOfLight.mp3";
+import cn from "classnames";
 
 // const onSetMusic = () => store.setMusic(Music)
 
@@ -28,6 +29,12 @@ const Header = () => {
         // store.isSound ? ref.current.play() : ref.current.pause()
     }
 
+    const onMenuOpen = () => {
+        store.setMenuToggle()
+        document.body.style.overflowY = store.isMenuOpen ? 'hidden' : 'scroll'
+    }
+
+
     return (
         <header className="header">
             {/*<audio src={Music} ref={ref} muted={true}/>*/}
@@ -40,13 +47,13 @@ const Header = () => {
                             </div>
                         </div>
                         <div className="header__right">
-                            <div className="header__burger"/>
+                            {/*<div className="header__burger" onClick={onMenuOpen}/>*/}
                             <div className="header__help">
                                 <a href="https://t.me/blago2023" target="_blank">Снегурочка на связи</a>
                             </div>
                             <div className="header__sound">
                                 <button className="sound__btn" onClick={toggleIsSound}>
-                                    {store.isSound ? <Sound/> : <NoSound/>}
+                                    {/*{store.isSound ? <Sound/> : <NoSound/>}*/}
                                 </button>
                             </div>
                         </div>
@@ -54,7 +61,7 @@ const Header = () => {
                         <div className="header__left">
                             <div className="header__sound">
                                 <button className="sound__btn" onClick={toggleIsSound}>
-                                    {store.isSound ? <Sound/> : <NoSound/>}
+                                    {/*{store.isSound ? <Sound/> : <NoSound/>}*/}
                                 </button>
                             </div>
                         </div>
@@ -62,7 +69,14 @@ const Header = () => {
                             <img src={TimerSnow} alt="Снежок" className="timer__snow"/>
                         </div>
                         <div className="header__right">
-                            <div className="header__burger"><span/></div>
+                            <div className={cn("header__burger", {"menu-open": store.isMenuOpen})} onClick={onMenuOpen}><span/></div>
+                            <nav className={cn("menu__nav", {"menu-open": store.isMenuOpen})}
+                                 onClick={onMenuOpen}>
+                                <Logo />
+                                <div className="header__help">
+                                    <a href="https://t.me/blago2023" target="_blank">Снегурочка на связи</a>
+                                </div>
+                            </nav>
                         </div>
                     </div>}
                 </div>

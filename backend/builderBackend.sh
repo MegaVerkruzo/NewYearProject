@@ -6,7 +6,7 @@ printDone() {
 
 text="Delete previous process"
 echo "$text"
-pid=$(top -b -n 1 | grep "java" | awk '{print $1}')
+pid=$(top -b -n 1 | grep "java" | awk '{print $1}' | tr "\n" " ")
 kill "$pid"
 printDone "$text"
 

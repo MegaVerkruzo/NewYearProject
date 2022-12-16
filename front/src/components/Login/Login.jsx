@@ -29,6 +29,8 @@ const Login = ({userData}) => {
             } else {
                 if (data.exception === 'noUser') {
                     store.setRegError('Неверно введен номер или пароль')
+                } else if (data.exception === 'hugeSizeField') {
+                    store.setRegError('Размер данных в поле ввода не должен превышать 255 символов')
                 }
             }
         } catch (e) {
