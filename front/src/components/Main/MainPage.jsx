@@ -6,9 +6,9 @@ const MainPage = () => {
     return (
         <div className="main-page__top align-center">
             <div className="main-page__column">
-                <div className="main-page__title"><h1>Игра «Наряди ёлку»</h1></div>
+                <div className="main-page__title"><h1>Новогодняя викторина «Наряди свою ёлочку Благополучия»</h1></div>
                 <div className="main-page__text">
-                    <span>Первая игра начнётся 19 декабря в 9:00!</span>
+                    <span>Первый вопрос будет ждать вас 19 декабря в 09:00 мск в Telegram-канале «Благополучие-INFO»</span>
                     <MessageAngle />
                 </div>
                 <a href="#rules" className="main-page__btn">К правилам</a>

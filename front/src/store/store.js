@@ -20,6 +20,7 @@ class Store {
     description = null
     isCorrect = false
     isSound = true
+    music = null
 
     untilNewYear = {days: 0, hours: 0, minutes: 0}
 
@@ -68,6 +69,7 @@ class Store {
 
     setToggleIsSound() {
         this.isSound = !this.isSound
+        this.isSound ? this.music.play() : this.music.pause()
     }
 
     setUntilNewYear(data) {
