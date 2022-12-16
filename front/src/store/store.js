@@ -23,6 +23,7 @@ class Store {
     isSound = true
     music = null
     regError = ''
+    isMenuOpen = false
 
     untilNewYear = {days: 0, hours: 0, minutes: 0}
 
@@ -80,6 +81,10 @@ class Store {
 
     setRegError(message) {
         this.regError = message
+    }
+
+    setMenuToggle() {
+        this.isMenuOpen = !this.isMenuOpen
     }
 }
 
