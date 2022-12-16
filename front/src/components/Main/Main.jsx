@@ -25,17 +25,17 @@ const Main = () => {
                     }/>
                     <Route path="/login" element={<Login userData={store.userData}/>}/>
                     <Route path="/register" element={<Register userData={store.userData}/>}/>
-                    <Route path="/game" element={
-                        <div className="main-page">
-                            <div className="container">
-                                <Game/>
-                                <Meaning/>
-                                <Rules/>
-                                <HowToPlay/>
-                            </div>
-                            <Feedback/>
-                        </div>
-                    }/>
+                    {/*<Route path="/game" element={*/}
+                    {/*    <div className="main-page">*/}
+                    {/*        <div className="container">*/}
+                    {/*            <Game/>*/}
+                    {/*            <Meaning/>*/}
+                    {/*            <Rules/>*/}
+                    {/*            <HowToPlay/>*/}
+                    {/*        </div>*/}
+                    {/*        <Feedback/>*/}
+                    {/*    </div>*/}
+                    {/*}/>*/}
                 </Routes>
             </div>
         </main>
