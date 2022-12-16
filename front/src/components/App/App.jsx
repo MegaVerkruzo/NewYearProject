@@ -34,7 +34,7 @@ const App = () => {
             }
             setIsLoading(false)
         }
-        // fetchData()
+        fetchData()
     }, [])
 
     return (

@@ -40,6 +40,8 @@ const Register = ({userData}) => {
             } else {
                 if (data.exception === 'userExists') {
                     store.setRegError('Пользователь уже существует')
+                } else if (data.exception === 'hugeSizeField') {
+                    store.setRegError('Размер данных в поле ввода не должен превышать 255 символов')
                 }
             }
         } catch (e) {
