@@ -17,6 +17,7 @@ const Register = ({userData}) => {
         store.changeUserData(field, data)
     }
     const onSignUp = async () => {
+        console.log(store.userData.phone.length)
         try {
             if (store.userData.password !== store.userData.password_repeat) {
                 store.setRegError('Пароли не совпадают')
@@ -26,6 +27,10 @@ const Register = ({userData}) => {
                 || !store.userData.email || !store.userData.phone || !store.userData.password
                 || !store.userData.place) {
                 store.setRegError('Не все поля заполнены')
+                return
+            }
+            if (store.userData.phone.length < 10) {
+                store.setRegError('Телефон неверно введен')
                 return
             }
             if (!store.userData.isAgreePolicy) {
