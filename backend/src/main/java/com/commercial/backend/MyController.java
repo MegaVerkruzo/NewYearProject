@@ -8,9 +8,7 @@ import org.springframework.data.util.Pair;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -54,43 +52,6 @@ public class MyController {
         Pair<String, String> pair = userService.checkTokenWithException(token);
         result.put("token", pair.getFirst());
         result.put("exception", pair.getSecond());
-        return result;
-    }
-
-    private Map<String, Object> letterToMap(String letter, String color) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("letter", letter);
-        map.put("color", color);
-        return map;
-    }
-
-    @GetMapping(value = "/game/try", produces = "application/json")
-    public Map<String, Object> trying() {
-        Map<String, Object> result = new HashMap<>();
-        List<Object> attempt = new ArrayList<>();
-
-        attempt.add(letterToMap("а", "yellow"));
-        attempt.add(letterToMap("в", "yellow"));
-        attempt.add(letterToMap("а", "green"));
-        attempt.add(letterToMap("н", "grey"));
-        attempt.add(letterToMap("с", "yellow"));
-        attempt.add(letterToMap("с", "green"));
-        attempt.add(letterToMap("м", "grey"));
-        attempt.add(letterToMap("о", "grey"));
-        attempt.add(letterToMap("л", "yellow"));
-        attempt.add(letterToMap("а", "green"));
-        attempt.add(letterToMap("с", "green"));
-        attempt.add(letterToMap("л", "green"));
-        attempt.add(letterToMap("а", "green"));
-        attempt.add(letterToMap("в", "green"));
-        attempt.add(letterToMap("а", "green"));
-
-        result.put("letters", attempt);
-        result.put("currentLine", 3);
-        result.put("isEnd", true);
-        result.put("postLink", "t.me/id_post");
-        result.put("correctWord", "robot");
-        result.put("description", "Описание слова после того как закончатся попытки");
         return result;
     }
 }
