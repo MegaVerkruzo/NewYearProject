@@ -12,8 +12,8 @@ sudo ufw enable
 
 sudo ufw allow http
 sudo ufw allow https
-sudo ufw allow 4153/tcp
-sudo ufw allow 4153/udp
+sudo ufw allow 5432/tcp
+sudo ufw allow 5432/udp
 sudo ufw allow 8080/tcp
 sudo ufw allow 8080/udp
 

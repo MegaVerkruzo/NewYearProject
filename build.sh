@@ -63,7 +63,7 @@ read -p "$text" x
 if [[ "$x" == "y" ]]
 then
 	cd backend
-	./builderBackend.sh
+	./buildBackend.sh
 	funDone "Done: backend"
 	cd ..
 fi
