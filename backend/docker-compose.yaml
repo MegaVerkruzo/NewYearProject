@@ -1,10 +1,27 @@
 version: "3"
 services:
-  postgres:
+  SpringBoot:
+    container_name: springboot
+    image: 'docker-spring-boot-postgres:latest'
+    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - PostgresSQL
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgresSQL:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=sp3tJyHSn2Ay
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  PostgresSQL:
     image: postgres
     restart: always
     ports:
-      - "4152:5432"
+      - "5432:5432"
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
