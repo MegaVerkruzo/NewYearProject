@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### PostgreSQL ###
-postgres-data/*
+postgres-data/
