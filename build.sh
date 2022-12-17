@@ -68,10 +68,15 @@ then
 	cd ..
 fi
 
+text="cp nginx (y/n)"
+read -p "$text" x
+if [[ "$x" == "y" ]]
+then
+	rm /etc/nginx/sites-available/default
+	cp ./default /etc/nginx/sites-available/default
+	fun "Done: copy nginx"
+	./reLaunch.sh
+	fun "Restart nginx"
+fi
 
-rm /etc/nginx/sites-available/default
-# cp ./default_my /etc/nginx/sites-available/default
-fun "Copy nginx"
 
-./reLaunch.sh
-fun "Restart nginx"
