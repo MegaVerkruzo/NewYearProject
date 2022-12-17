@@ -11,8 +11,8 @@ import javax.persistence.*;
 @JsonIgnoreProperties
 public class User {
 
+    private static Long size = 0L;
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(name="phone")
@@ -39,14 +39,24 @@ public class User {
     @Column(name="token")
     private String token;
 
-    public User() {}
+    @Column(name="feedback")
+    private String feedback;
+
+    public User() {
+        size++;
+        this.id = size;
+    }
 
     public void loginUser(String phone) {
+        size++;
+        this.id = size;
         this.phone = phone;
         this.token = JWTUtil.generateToken(this);
     }
 
     public User(String phone, String name, String surname, String middleName, String email, String place, String password, Boolean isThisPasswordHash) {
+        size++;
+        this.id = size;
         this.phone = phone;
         this.name = name;
         this.surname = surname;
@@ -123,6 +133,14 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
+    public String getFeedback() {
+        return feedback;
     }
 
     @Override
