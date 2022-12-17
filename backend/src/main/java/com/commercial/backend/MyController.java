@@ -85,8 +85,10 @@ public class MyController {
         attempt.add(letterToMap("в", "green"));
         attempt.add(letterToMap("а", "green"));
 
+        result.put("wordLength", 5);
         result.put("letters", attempt);
         result.put("currentLine", 3);
+        result.put("isPuttedFeedback", true);
         result.put("isEnd", true);
         result.put("postLink", "t.me/id_post");
         result.put("correctWord", "robot");
