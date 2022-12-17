@@ -5,7 +5,6 @@ import com.commercial.backend.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -60,11 +59,11 @@ public class MyController {
     private Map<String, Object> letterToMap(String letter, String color) {
         Map<String, Object> map = new HashMap<>();
         map.put("letter", letter);
-        map.put("color", color);
+        map.put("state", color);
         return map;
     }
 
-    @GetMapping(value = "/game/try", produces = "application/json")
+    @GetMapping(value = "/game/game", produces = "application/json")
     public Map<String, Object> trying() {
         Map<String, Object> result = new HashMap<>();
         List<Object> attempt = new ArrayList<>();
