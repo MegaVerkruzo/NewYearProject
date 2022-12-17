@@ -10,5 +10,5 @@ CREATE TABLE users
     place         VARCHAR(255)       NOT NULL,
     password_hash VARCHAR(255)       NOT NULL,
     token         VARCHAR(255)       NOT NULL,
-    feedback      VARCHAR(255)
+    feedback      TEXT
 );

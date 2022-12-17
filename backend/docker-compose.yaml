@@ -20,6 +20,9 @@ services:
   PostgresSQL:
     image: postgres
     restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile.postgres
     ports:
       - "5432:5432"
     environment:
