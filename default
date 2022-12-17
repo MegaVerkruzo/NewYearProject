@@ -1,37 +1,19 @@
 server {
         listen 80;
-        server_name www.blago2023.ru blago2023.ru;
+        server_name www.testblago2023.ru testblago2023.ru;
         return 301 https://blago2023.ru$request_uri;
 }
 
 server {
         listen 80;
-        server_name http://blago2023.ru;
-        return 301 https://blago2023.ru$request_uri;
+        server_name http://testblago2023.ru;
+        return 301 https://testblago2023.ru$request_uri;
 }
 
-# server {
-#         listen 80 default_server;
-#         listen [::]:80 default_server;
-#
-#         root /home/MegaVerkruzo/NewYearProject/front/static;
-#
-#         index index.html index.htm;
-#
-#         server_name blago2023.ru;
-#
-#         location / {
-#                 try_files $uri $uri/index.html;
-#         }
-#
-#
-# }
-
 server {
+    server_name testblago2023.ru; # managed by Certbot
 
-    server_name blago2023.ru; # managed by Certbot
-
-        gzip on;
+    gzip on;
     gzip_vary on;
     gzip_proxied any;
     gzip_http_version 1.1;
@@ -46,10 +28,9 @@ server {
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
     location / {
-         root /home/MegaVerkruzo/NewYearProject/front/build;
+         root /home/NewYearProject/front/build;
         index index.html;
                 try_files $uri $uri/ /index.html;
-
     }
 
     location /api/ {
@@ -61,29 +42,16 @@ server {
     }
 
     location /static/ {
-         root /home/MegaVerkruzo/NewYearProject/front/build;
+         root /home/NewYearProject/front/build;
         index index.html;
         expires 30d;
         client_max_body_size 50M;
     }
 
     location /media/ {
-        root /home/MegaVerkruzo/NewYearProject/front/build/static/media;
+        root /home/NewYearProject/front/build/static/media;
         expires 30d;
         client_max_body_size 50M;
     }
 }
 
-# server {
-#     if ($host = blago2023.ru) {
-#         return 301 https://$host$request_uri;
-#     } # managed by Certbot
-#
-#
-#         listen 80 ;
-#         listen [::]:80 ;
-#     server_name blago2023.ru;
-#       return 301 https://blago2023.ru$request_uri;
-#     return 404; # managed by Certbot
-# }
-          

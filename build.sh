@@ -1,41 +1,73 @@
 #!/bin/bash
 
 
-fun() {
+funDone() {
 	echo -e "\033[42m$1\033[0m"
 }
 
-# apt install nginx 
-# apt install npm
-# curl -sL https://deb.nodesource.com/setup_19.x | sudo -E bash -
-# sudo apt install nodejs
-# fun "Installed nginx and npm with nodejs"
+text="install nginx (y/n)"
+read -p "$text" x
+if [[ "$x" == "y" ]]
+then
+	apt install nginx 
+	funDone "installed Nginx"
+fi
 
-# ./sertBolt.sh	
-# fun "Installed sertBolt"
+text="install npm (y/n)"
+read -p "$text" x
+if [[ "$x" == "y" ]]
+then
+	apt install npm 
+	funDone "Installed npm"
+fi
 
-# ./AddFirewall.sh
-# fun "AddFireWall"
+text="install nodejs (y/n)"
+read -p "$text" x
+if [[ "$x" == "y" ]]
+then
+	curl -sL https://deb.nodesource.com/setup_19.x | sudo -E bash -
+	sudo apt install nodejs
+ 	funDone "Installed nginx and npm with nodejs"
+fi
 
-# front
 
-cd front
+text="install sertBolt (y/n)"
+read -p "$text" x
+if [[ "$x" == "y" ]]
+then
+	./sertBolt.sh
+	funDone "Done: sertBolt"
+fi
 
-npm i
+text="customize FireWall (y/n)"
+read -p "$text" x
+if [[ "$x" == "y" ]]
+then
+	./AddFirewall.sh
+	funDone "Done: firewal"
+fi
 
-npm run build
+text="frontend install (y/n)"
+read -p "$text" x
+if [[ "$x" == "y" ]]
+then
+	cd front
+	npm i
+	npm run build
+	funDone "Done: frontend"
+	cd ..
+fi
 
-cd ..
-fun "Done frontend"
+text="backend install (y/n)"
+read -p "$text" x
+if [[ "$x" == "y" ]]
+then
+	cd backend
+	./builderBackend.sh
+	funDone "Done: backend"
+	cd ..
+fi
 
-# backend
-
-cd backend
-
-./builderBackend.sh
-
-cd ..
-fun "Done backend"
 
 rm /etc/nginx/sites-available/default
 # cp ./default_my /etc/nginx/sites-available/default
