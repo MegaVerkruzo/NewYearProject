@@ -88,13 +88,10 @@ public class MyController {
 
         Map<String, Object> result = attemptService.addNewWord(token, json.get("word"));
 
-        if (result == null) {
-            result = new HashMap<>();
-            result.put("exception", "noWordInDictionary");
-            return result;
+        if (result.get("exception") == "" || result.get("exception") == null) {
+            result.put("exception", "");
         }
 
-        result.put("exception", "");
         return result;
     }
 

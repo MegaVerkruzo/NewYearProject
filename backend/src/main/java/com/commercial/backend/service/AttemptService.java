@@ -146,12 +146,24 @@ public class AttemptService implements IAttemptService {
         String wortUTF = new String(word.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
         logger.info("adding new word: " + wortUTF);
         if (!russianWordsRepository.isRussianWord(wortUTF)) {
-            return null;
+            Map<String, Object> result = new HashMap<>();
+            result.put("exception", "noWordInDictionary");
+            return result;
         }
         int dayOfMonth = getDayOfMonth();
         Answer answer = answersRepository.getAnswerByDay(dayOfMonth);
 
         logger.info("answer: " + answer.getWord());
+        if (attemptRepository.isExistCorrectAttempt(phone, dayOfMonth)) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("exception", "alreadyExistCorrectAttempt");
+            return result;
+        }
+        if (attemptRepository.findAttemptsByPhoneAndDay(phone, dayOfMonth).size() >= 5) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("exception", "alreadyExist5Attempts");
+            return result;
+        }
 
         attemptRepository.insert(new Attempt(phone, word, attemptRepository.findAttemptsByPhoneAndDay(phone, dayOfMonth).size() + 1, dayOfMonth));
 
