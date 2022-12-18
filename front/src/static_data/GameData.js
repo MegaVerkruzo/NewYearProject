@@ -1,3 +1,5 @@
+import React from "react";
+
 export const initialGameData = JSON.parse(`{
   "letters": [
     {
@@ -88,3 +90,4 @@ const keyboardData = [
         {id: 28, letter: 'и'}, {id: 29, letter: 'т'}, {id: 30, letter: 'ь'}, {id: 31, letter: 'б'},
         {id: 32, letter: 'ю'}, {id: 51, letter: '🠔'}]
 ]
+
