@@ -148,22 +148,24 @@ public class AttemptService implements IAttemptService {
         }
         int dayOfMonth = getDayOfMonth();
         Answer answer = answersRepository.getAnswerByDay(dayOfMonth);
+        Map<String, Object> result = new HashMap<>();
 
         logger.info("answer: " + answer.getWord());
         if (attemptRepository.isExistCorrectAttempt(phone, dayOfMonth)) {
-            Map<String, Object> result = new HashMap<>();
             result.put("exception", "alreadyExistCorrectAttempt");
             return result;
         }
         if (attemptRepository.findAttemptsByPhoneAndDay(phone, dayOfMonth).size() >= 5) {
-            Map<String, Object> result = new HashMap<>();
             result.put("exception", "alreadyExist5Attempts");
+            return result;
+        }
+        if (word.length() != answer.getWord().length()) {
+            result.put("exception", "wrongSize");
             return result;
         }
 
         attemptRepository.insert(new Attempt(phone, word, attemptRepository.findAttemptsByPhoneAndDay(phone, dayOfMonth).size() + 1, dayOfMonth));
 
-        Map<String, Object> result = new HashMap<>();
         result.put("letters", compare(answer.getWord(), word));
         result.put("isCorrect", answer.getWord().equals(word));
         return result;
