@@ -148,6 +148,7 @@ public class AttemptService implements IAttemptService {
         logger.info("CCCCCCCCCCCCCC");
 
         // :TODO add count of good attempts for last days
+        result.put("countCorrectAnswersBefore", dayOfMonth - FIRST_DAY);
         result.put("letters", attemptsInfo);
         result.put("wordLength", answer.getWord().length());
         result.put("currentLine", attempts.size());
