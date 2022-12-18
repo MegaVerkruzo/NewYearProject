@@ -52,7 +52,7 @@ public class AttemptService implements IAttemptService {
         List<Map<String, Object>> result = new ArrayList<>();
         List<Boolean> usedLetters = new ArrayList<>(word.length());
         for (int i = 0; i < word.length(); i++) {
-            usedLetters.add(false);
+            usedLetters.add(word.charAt(i) == answer.charAt(i));
         }
         logger.info("usedLetters size: " + usedLetters.size());
 
@@ -61,17 +61,13 @@ public class AttemptService implements IAttemptService {
         for (int i = 0; i < word.length(); ++i) {
             logger.info("i is " + i + " comparing " + answer.charAt(i) + " and " + word.charAt(i));
             Map<String, Object> currentLetter = new HashMap<>();
-            if (answer.charAt(i) == word.charAt(i)) {
-                usedLetters.set(i, true);
-
+            if (usedLetters.get(i)) {
                 currentLetter.put("letter", word.charAt(i));
                 currentLetter.put("state", "green");
 
                 logger.info("Add letter " + currentLetter.get("letter") + " with state " + currentLetter.get("state"));
 
                 result.add(currentLetter);
-
-                continue;
             }
 
             String state = "grey";
