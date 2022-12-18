@@ -9,14 +9,16 @@ import {onDelete, onEnter, onWrite} from "./GameFunction";
 import {russianLetters} from "../../static_data/GameData";
 
 const keyboardHandler = (e) => {
-    if (e.key === 'Backspace') {
-        onDelete()
-    } else if (e.key === 'Enter') {
-        onEnter()
-    } else if (e.key === ' ') {
-        e.preventDefault()
-    } else if (russianLetters.includes(e.key)) {
-        onWrite(e.key)
+    if (!store.isEnd) {
+        if (e.key === 'Backspace') {
+            onDelete()
+        } else if (e.key === 'Enter') {
+            onEnter()
+        } else if (e.key === ' ') {
+            e.preventDefault()
+        } else if (russianLetters.includes(e.key)) {
+            onWrite(e.key)
+        }
     }
 }
 

@@ -14,15 +14,12 @@ const Feedback = () => {
             }
             const data = await sendFeedback(store.feedback)
             console.log(data)
-            if (data.status === 'ok') {
-                store.setFeedbackError('Спасибо за обратную связь!')
+            if (data.exception === 'noUser') {
+                store.setFeedbackError('Пользователь не зарегистрирован')
+            } else if (data.exception === 'alreadySent') {
+                store.setFeedbackError('Форма уже была отправлена ранее')
             } else {
-                if (data.exception === 'noUser') {
-                    store.setFeedbackError('Пользователь не зарегистрирован')
-                } else if (data.exception === 'alreadySent') {
-                    store.setFeedbackError('Форма уже была отправлена ранее')
-                }
-            }
+                store.setFeedbackError('Спасибо за обратную связь')            }
         } catch (e) {
             store.setFeedbackError('Произошла ошибка сервера')
         }
