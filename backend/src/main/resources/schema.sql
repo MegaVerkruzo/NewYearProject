@@ -30,3 +30,9 @@ CREATE TABLE answers
     post_link    VARCHAR(255),
     description  TEXT
 );
+
+CREATE TABLE russian_words
+(
+    id   SERIAL PRIMARY KEY,
+    word VARCHAR(200) PRIMARY KEY
+)

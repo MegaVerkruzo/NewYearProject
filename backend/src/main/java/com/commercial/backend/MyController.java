@@ -67,12 +67,33 @@ public class MyController {
         return map;
     }
 
-    @GetMapping(value = "/game", produces = "application/json")
+    @GetMapping(value = "/game", consumes = "application/json",produces = "application/json")
     public Map<String, Object> trying(@RequestHeader("authorization") String token) {
         if (check(token).get("exception") != null) {
             return check(token);
         }
 
-        return attemptService.getAllInfo(token);
+        Map<String, Object> result = attemptService.getAllInfo(token);
+
+        result.put("exception", null);
+        return result;
+    }
+
+    @PostMapping(value = "/game/new_attempt", consumes = "application/json", produces = "application/json")
+    public Map<String, Object> newAttempt(@RequestHeader("authorization") String token, @RequestBody Map<String, String> json) {
+        if (check(token).get("exception") != null) {
+            return check(token);
+        }
+
+        Map<String, Object> result = attemptService.addNewWord(json.get("word"));
+
+        if (result == null) {
+            result = new HashMap<>();
+            result.put("exception", "noWordInDictionary");
+            return result;
+        }
+
+        result.put("exception", null);
+        return result;
     }
 }

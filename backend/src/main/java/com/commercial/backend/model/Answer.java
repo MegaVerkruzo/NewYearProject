@@ -1,5 +1,7 @@
 package com.commercial.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,6 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "answers", schema = "public")
+@JsonIgnoreProperties
 public class Answer {
     private static Long size = 0L;
 

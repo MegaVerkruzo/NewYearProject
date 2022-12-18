@@ -2,6 +2,7 @@ package com.commercial.backend.service;
 
 import com.commercial.backend.db.AnswersRepository;
 import com.commercial.backend.db.AttemptsRepository;
+import com.commercial.backend.db.RussianWordsRepository;
 import com.commercial.backend.db.UsersRepository;
 import com.commercial.backend.model.Answer;
 import com.commercial.backend.model.User;
@@ -20,11 +21,13 @@ public class AttemptService implements IAttemptService {
     private final AnswersRepository answersRepository;
     private final UsersRepository usersRepository;
     private final AttemptsRepository attemptRepository;
+    private final RussianWordsRepository russianWordsRepository;
 
-    AttemptService(AnswersRepository answersRepository, UsersRepository usersRepository, AttemptsRepository attemptRepository) {
+    AttemptService(AnswersRepository answersRepository, UsersRepository usersRepository, AttemptsRepository attemptRepository, RussianWordsRepository russianWordsRepository) {
         this.answersRepository = answersRepository;
         this.usersRepository = usersRepository;
         this.attemptRepository = attemptRepository;
+        this.russianWordsRepository = russianWordsRepository;
     }
 
     private List<Map<String, Object>> compare(String answer, String word) {
@@ -73,7 +76,7 @@ public class AttemptService implements IAttemptService {
     public Map<String, Object> getAllInfo(String token) {
         Map<String, Object> result = new HashMap<>();
         User user = usersRepository.findUserByToken(token);
-        String phone = usersRepository.findUserByToken(token).getPhone();
+        String phone = user.getPhone();
         int dayOfMonth = getDayOfMonth();
 
         List<Attempt> attempts = attemptRepository.findAttemptsByPhoneAndDay(phone, dayOfMonth);
@@ -109,6 +112,21 @@ public class AttemptService implements IAttemptService {
         result.put("isPuttedFeedback", isPuttedFeedback);
         result.put("post_link", answer.getPostLink());
         result.put("description", answer.getDescription());
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> addNewWord(String word) {
+        String wortUTF = new String(word.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+        if (!russianWordsRepository.isRussianWord(wortUTF)) {
+            return null;
+        }
+        int dayOfMonth = getDayOfMonth();
+        Answer answer = answersRepository.getAnswerByDay(dayOfMonth);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("letters", compare(answer.getWord(), word));
+        result.put("isCorrect", answer.getWord().equals(word));
         return result;
     }
 }
