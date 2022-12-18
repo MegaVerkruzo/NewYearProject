@@ -67,7 +67,7 @@ public class MyController {
         return map;
     }
 
-    @GetMapping(value = "/game", consumes = "application/json",produces = "application/json")
+    @GetMapping(value = "/game", produces = "application/json")
     public Map<String, Object> trying(@RequestHeader("authorization") String token) {
         if (check(token).get("exception") != "") {
             return check(token);
