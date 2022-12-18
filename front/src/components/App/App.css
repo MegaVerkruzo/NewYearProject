@@ -480,6 +480,7 @@ h3 {
   gap: 15px 15px;
   min-width: 470px;
   margin-bottom: 30px;
+  cursor: pointer;
 }
 .game-field__wrapper.col8 {
   grid-template-columns: repeat(8, 1fr);

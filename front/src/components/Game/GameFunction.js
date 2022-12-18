@@ -34,6 +34,6 @@ export const onEnter = async () => {
             }
         }
     } catch (e) {
-        store.setGameError('Ошибка сервера')
+        store.setGameError('Произошла ошибка сервера')
     }
 }

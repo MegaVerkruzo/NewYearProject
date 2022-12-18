@@ -1,7 +1,7 @@
 import {$authHost} from "./index";
 
 export const getAllInfo = async () => {
-    const {data} = await $authHost.get('/game/game')
+    const {data} = await $authHost.get('/game')
     return data
 }
 

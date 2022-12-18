@@ -43,7 +43,7 @@ const Main = () => {
                         <div className="main-page">
                             <div className="container">
                                 <Game/>
-                                <Meaning/>
+                                {store.description && <Meaning/>}
                                 <Rules/>
                                 <HowToPlay/>
                             </div>
