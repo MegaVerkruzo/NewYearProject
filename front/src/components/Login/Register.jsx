@@ -40,7 +40,7 @@ const Register = ({userData}) => {
             const data = await registration(userData)
             if (data.token) {
                 localStorage.setItem('token', data.token)
-                navigate('/')
+                navigate('/game')
             } else {
                 if (data.exception === 'userExists') {
                     store.setRegError('Пользователь уже существует')

@@ -25,7 +25,7 @@ const Login = ({userData}) => {
             const data = await login({phone: userData.phone, password: userData.password})
             if (data.token) {
                 localStorage.setItem('token', data.token)
-                navigate('/')
+                navigate('/game')
             } else {
                 if (data.exception === 'noUser') {
                     store.setRegError('Неверно введен номер или пароль')
