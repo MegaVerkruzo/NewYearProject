@@ -68,6 +68,7 @@ public class AttemptService implements IAttemptService {
                 logger.info("Add letter " + currentLetter.get("letter") + " with state " + currentLetter.get("state"));
 
                 result.add(currentLetter);
+                continue;
             }
 
             String state = "grey";
