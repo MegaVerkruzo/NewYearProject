@@ -34,6 +34,7 @@ public class AttemptsRepository {
     }
 
     public List<Attempt> findAttemptsByPhoneAndDay(String phone, Integer dayOfMonth) {
+        logger.info("Find attempts with phone " + phone + " and day " + dayOfMonth + " in Database");
         return jdbcTemplate.query("SELECT * FROM attempts WHERE phone = ? and day_of_month = ?", mapper, phone, dayOfMonth);
     }
 

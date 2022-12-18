@@ -105,12 +105,16 @@ public class AttemptService implements IAttemptService {
     public Map<String, Object> getAllInfo(String token) {
         Map<String, Object> result = new HashMap<>();
         User user = usersRepository.findUserByToken(token);
+
+        logger.info("BBBBBBBBBBBBBBBB");
         String phone = user.getPhone();
         int dayOfMonth = getDayOfMonth();
 
         List<Attempt> attempts = attemptRepository.findAttemptsByPhoneAndDay(phone, dayOfMonth);
+        logger.info("CCCFDFDFDFDFDFDF");
         Answer answer = answersRepository.getAnswerByDay(dayOfMonth);
 
+        logger.info("CCCCCCCCCCCCCCC");
         // check if user has already pasted word today
         boolean isEnd = false;
         if (attempts.size() == 5) {
@@ -128,6 +132,7 @@ public class AttemptService implements IAttemptService {
         }
 
 
+
         // if user putted feedback today, then he can't paste feedback today
         boolean isPuttedFeedback = false;
         if (user.getFeedback() == null && dayOfMonth == LAST_DAY && isEnd) {
@@ -139,6 +144,8 @@ public class AttemptService implements IAttemptService {
         for (Attempt attempt : attempts) {
             attemptsInfo.addAll(compare(answer.getWord(), attempt.getWord()));
         }
+
+        logger.info("CCCCCCCCCCCCCC");
 
         // :TODO add count of good attempts for last days
         result.put("letters", attemptsInfo);
