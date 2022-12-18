@@ -48,6 +48,12 @@ public class UsersRepository {
         }
     }
 
+    public void insertFeedbackByToken(String token, String feedback) {
+        jdbcTemplate.update("UPDATE users SET feedback = ? WHERE token = ?",
+                feedback, token);
+        logger.info("Paste feedback " + feedback + " in Database");
+    }
+
     private static class IdeaEntityMapper implements RowMapper<User> {
 
         @Override

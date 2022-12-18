@@ -33,22 +33,22 @@ public class Attempt {
         this.id = size;
     }
 
-    public Attempt(String phone, String word, Integer countAttempt, Integer dayOfWeek) {
+    public Attempt(String phone, String word, Integer countAttempt, Integer dayOfMonth) {
         size++;
         this.id = size;
         this.phone = phone;
         this.word = word;
         this.countAttempt = countAttempt;
-        this.dayOfMonth = dayOfWeek;
+        this.dayOfMonth = dayOfMonth;
     }
 
-    public Attempt(int id, String phone, String word, Integer countAttempt, Integer dayOfWeek) {
+    public Attempt(int id, String phone, String word, Integer countAttempt, Integer dayOfMonth) {
         size++;
         this.id = size;
         this.phone = phone;
         this.word = word;
         this.countAttempt = countAttempt;
-        this.dayOfMonth = dayOfWeek;
+        this.dayOfMonth = dayOfMonth;
     }
 
     public static Long getSize() {

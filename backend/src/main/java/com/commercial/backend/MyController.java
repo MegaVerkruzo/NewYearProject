@@ -97,4 +97,14 @@ public class MyController {
         result.put("exception", "");
         return result;
     }
+
+    @PostMapping(value = "/feedback", produces = "application/json")
+    public Map<String, Object> addFeedback(@RequestHeader("authorization") String token, @RequestBody Map<String, String> json) {
+        logger.info("Read JSON\nfeedback: " + json.get("feedback"));
+        if (check(token).get("exception") != "") {
+            return check(token);
+        }
+
+        return userService.addFeedback(token, json.get("feedback"));
+    }
 }

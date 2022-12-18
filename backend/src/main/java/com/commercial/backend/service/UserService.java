@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class UserService implements IUserService {
     private final UsersRepository repository;
@@ -58,5 +61,19 @@ public class UserService implements IUserService {
         } else {
             return Pair.of(token, "");
         }
+    }
+
+    @Override
+    public Map<String, Object> addFeedback(String token, String feedback) {
+        User user = repository.findUserByToken(token);
+        Map<String, Object> result = new HashMap<>();
+
+        if (user.getFeedback() == null || user.getFeedback().equals("")) {
+            repository.insertFeedbackByToken(token, feedback);
+            result.put("exception", "");
+        } else {
+            result.put("exception", "userAlreadyLeftFeedback");
+        }
+        return result;
     }
 }
