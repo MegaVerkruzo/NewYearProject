@@ -14,13 +14,14 @@ export const onDelete = () => {
 export const onEnter = async () => {
     store.setGameError('')
     try {
-        if (store.isCanSendAttempt) {
+        if (store.isCanSendAttempt && !store.isLoading) {
             let s = ''
             for (let i = 0; i < store.wordLength; i++) {
                 s += store.attempts[store.currentAttempt.curRow * store.wordLength + i].letter
             }
+            store.setIsLoading(true)
             const data = await newAttempt(s)
-            console.log(data)
+            store.setIsLoading(false)
             if (data.exception) {
                 if (data.exception === 'noUser') {
                     store.setGameError('Пользователь не зарегистрирован')

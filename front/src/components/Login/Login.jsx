@@ -22,6 +22,10 @@ const Login = ({userData}) => {
                 store.setRegError('Не все поля заполнены')
                 return
             }
+            if (store.userData.phone.length < 10) {
+                store.setRegError('Телефон неверно введен')
+                return
+            }
             const data = await login({phone: userData.phone, password: userData.password})
             if (data.token) {
                 localStorage.setItem('token', data.token)

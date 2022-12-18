@@ -192,8 +192,8 @@ class Store {
         this.currentAttempt.curRow += 1
         this.currentAttempt.curCol = 0
         this.isEnd = isCorrect
+        this.isCanSendAttempt = false
         if (this.isEnd) {
-            this.isCanSendAttempt = false
             this.countCorrectAnswersBefore += 1
         }
         this.setKeyboardState(letters)

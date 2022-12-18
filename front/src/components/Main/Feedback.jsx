@@ -16,7 +16,7 @@ const Feedback = () => {
             console.log(data)
             if (data.exception === 'noUser') {
                 store.setFeedbackError('Пользователь не зарегистрирован')
-            } else if (data.exception === 'alreadySent') {
+            } else if (data.exception === 'hadFeedback') {
                 store.setFeedbackError('Форма уже была отправлена ранее')
             } else {
                 store.setFeedbackError('Спасибо за обратную связь')            }
