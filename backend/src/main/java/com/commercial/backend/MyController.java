@@ -1,6 +1,7 @@
 package com.commercial.backend;
 
 import com.commercial.backend.model.User;
+import com.commercial.backend.service.IAttemptService;
 import com.commercial.backend.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +18,13 @@ import java.util.Map;
 public class MyController {
 
     private final IUserService userService;
+    private final IAttemptService attemptService;
+
     private final Logger logger = LoggerFactory.getLogger(MyController.class);
 
-    public MyController(IUserService userService) {
+    public MyController(IUserService userService, IAttemptService attemptService) {
         this.userService = userService;
+        this.attemptService = attemptService;
     }
 
     @PostMapping(value = "/auth/register", consumes = "application/json", produces = "application/json")
@@ -56,42 +60,19 @@ public class MyController {
         return result;
     }
 
-    private Map<String, Object> letterToMap(String letter, String color) {
+    private Map<String, Object> letterToMap(String letter, String state) {
         Map<String, Object> map = new HashMap<>();
         map.put("letter", letter);
-        map.put("state", color);
+        map.put("state", state);
         return map;
     }
 
-    @GetMapping(value = "/game/game", produces = "application/json")
-    public Map<String, Object> trying() {
-        Map<String, Object> result = new HashMap<>();
-        List<Object> attempt = new ArrayList<>();
+    @GetMapping(value = "/game", produces = "application/json")
+    public Map<String, Object> trying(@RequestHeader("authorization") String token) {
+        if (check(token).get("exception") != null) {
+            return check(token);
+        }
 
-        attempt.add(letterToMap("а", "yellow"));
-        attempt.add(letterToMap("в", "yellow"));
-        attempt.add(letterToMap("а", "green"));
-        attempt.add(letterToMap("н", "grey"));
-        attempt.add(letterToMap("с", "yellow"));
-        attempt.add(letterToMap("с", "green"));
-        attempt.add(letterToMap("м", "grey"));
-        attempt.add(letterToMap("о", "grey"));
-        attempt.add(letterToMap("л", "yellow"));
-        attempt.add(letterToMap("а", "green"));
-        attempt.add(letterToMap("с", "green"));
-        attempt.add(letterToMap("л", "green"));
-        attempt.add(letterToMap("а", "green"));
-        attempt.add(letterToMap("в", "green"));
-        attempt.add(letterToMap("а", "green"));
-
-        result.put("wordLength", 5);
-        result.put("letters", attempt);
-        result.put("currentLine", 3);
-        result.put("isPuttedFeedback", true);
-        result.put("isEnd", true);
-        result.put("postLink", "t.me/id_post");
-        result.put("correctWord", "robot");
-        result.put("description", "Описание слова после того как закончатся попытки");
-        return result;
+        return attemptService.getAllInfo(token);
     }
 }

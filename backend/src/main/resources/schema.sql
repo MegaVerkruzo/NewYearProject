@@ -15,9 +15,18 @@ CREATE TABLE users
 
 CREATE TABLE attempts
 (
+    id            SERIAL PRIMARY KEY,
+    phone         VARCHAR(15) UNIQUE NOT NULL,
+    word          VARCHAR(20)        NOT NULL,
+    count_attempt INTEGER            NOT NULL,
+    day_of_month  INTEGER            NOT NULL
+);
+
+CREATE TABLE answers
+(
     id           SERIAL PRIMARY KEY,
-    phone        VARCHAR(15) UNIQUE NOT NULL,
-    word         VARCHAR(255)       NOT NULL,
-    countAttempt INTEGER            NOT NULL,
-    dayOfWeek        VARCHAR(255)       NOT NULL
+    word         VARCHAR(20) NOT NULL,
+    day_of_month INTEGER     NOT NULL,
+    post_link    VARCHAR(255),
+    description  TEXT
 );

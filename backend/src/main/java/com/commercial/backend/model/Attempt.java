@@ -1,7 +1,5 @@
 package com.commercial.backend.model;
 
-import com.commercial.backend.security.JWTUtil;
-import com.commercial.backend.security.PasswordEncoder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Column;
@@ -24,23 +22,82 @@ public class Attempt {
     @Column(name="word")
     private String word;
 
-    @Column(name="countAttempt")
+    @Column(name="count_attempt")
     private Integer countAttempt;
 
-    @Column(name="dayOfWeek")
-    private String dayOfWeek;
+    @Column(name="day_of_month")
+    private Integer dayOfMonth;
 
     public Attempt() {
         size++;
         this.id = size;
     }
 
-    public Attempt(String phone, String word, Integer countAttempt, String dayOfWeek) {
+    public Attempt(String phone, String word, Integer countAttempt, Integer dayOfWeek) {
         size++;
         this.id = size;
         this.phone = phone;
         this.word = word;
         this.countAttempt = countAttempt;
-        this.dayOfWeek = dayOfWeek;
+        this.dayOfMonth = dayOfWeek;
+    }
+
+    public static Long getSize() {
+        return size;
+    }
+
+    public static void setSize(Long size) {
+        Attempt.size = size;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    public Integer getCountAttempt() {
+        return countAttempt;
+    }
+
+    public void setCountAttempt(Integer countAttempt) {
+        this.countAttempt = countAttempt;
+    }
+
+    public Integer getDayOfMonth() {
+        return dayOfMonth;
+    }
+
+    public void setDayOfMonth(Integer dayOfMonth) {
+        this.dayOfMonth = dayOfMonth;
+    }
+
+    @Override
+    public String toString() {
+        return "Attempt{" +
+                "id=" + id +
+                ", phone='" + phone + '\'' +
+                ", word='" + word + '\'' +
+                ", countAttempt=" + countAttempt +
+                ", dayOfMonth='" + dayOfMonth + '\'' +
+                '}';
     }
 }
