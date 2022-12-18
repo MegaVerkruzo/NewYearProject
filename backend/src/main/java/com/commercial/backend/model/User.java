@@ -67,6 +67,14 @@ public class User {
         this.token = JWTUtil.generateToken(this);
     }
 
+    public static Long getSize() {
+        return size;
+    }
+
+    public static void setSize(Long size) {
+        User.size = size;
+    }
+
     public String getPhone() {
         return phone;
     }

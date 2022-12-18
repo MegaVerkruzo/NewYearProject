@@ -25,8 +25,10 @@ public class UsersRepository {
     }
 
     public void insert(User user) {
-        jdbcTemplate.update("INSERT INTO users (phone, name, surname, middle_name, email, place, password_hash, token) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                user.getPhone(), user.getName(), user.getSurname(), user.getMiddleName(), user.getEmail(), user.getPlace(), user.getPasswordHash(), user.getToken());
+        User.setSize(User.getSize() + 1);
+        jdbcTemplate.update("INSERT INTO users (id, phone, name, surname, middle_name, email, place, password_hash, token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                User.getSize(), user.getPhone(), user.getName(), user.getSurname(), user.getMiddleName(), user.getEmail(), user.getPlace(), user.getPasswordHash(), user.getToken());
+
         logger.info("Paste user with phone " + user.getPhone() + " in Database");
     }
 
