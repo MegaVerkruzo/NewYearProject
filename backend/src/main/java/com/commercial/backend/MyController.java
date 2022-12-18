@@ -72,6 +72,7 @@ public class MyController {
         if (check(token).get("exception") != "") {
             return check(token);
         }
+        logger.info("AAAAAAAAAAAAAAAAAAAAa");
 
         Map<String, Object> result = attemptService.getAllInfo(token);
 
