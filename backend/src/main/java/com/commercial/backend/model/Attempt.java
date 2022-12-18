@@ -42,6 +42,15 @@ public class Attempt {
         this.dayOfMonth = dayOfWeek;
     }
 
+    public Attempt(int id, String phone, String word, Integer countAttempt, Integer dayOfWeek) {
+        size++;
+        this.id = size;
+        this.phone = phone;
+        this.word = word;
+        this.countAttempt = countAttempt;
+        this.dayOfMonth = dayOfWeek;
+    }
+
     public static Long getSize() {
         return size;
     }

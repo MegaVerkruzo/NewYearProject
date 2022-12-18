@@ -86,7 +86,7 @@ public class MyController {
             return check(token);
         }
 
-        Map<String, Object> result = attemptService.addNewWord(json.get("word"));
+        Map<String, Object> result = attemptService.addNewWord(token, json.get("word"));
 
         if (result == null) {
             result = new HashMap<>();

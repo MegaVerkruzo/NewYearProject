@@ -25,20 +25,20 @@ public class AttemptsRepository {
     }
 
     public void insert(Attempt attempt) {
-        jdbcTemplate.update("INSERT INTO attempts (phone, word, count_attempt, day_of_month) VALUES (?, ?, ?, ?)",
-                attempt.getPhone(), attempt.getWord(), attempt.getCountAttempt(), attempt.getDayOfMonth());
+        jdbcTemplate.update("INSERT INTO attempts (id, phone, word, count_attempt, day_of_month) VALUES (?, ?, ?, ?, ?)",
+                attempt.getCountAttempt(), attempt.getPhone(), attempt.getWord(), attempt.getCountAttempt(), attempt.getDayOfMonth());
         logger.info("Paste attempt with phone " + attempt.getPhone() + " and word " + attempt.getWord() + " in Database");
     }
 
     public List<Attempt> findAttemptsByPhoneAndDay(String phone, Integer dayOfMonth) {
-        return jdbcTemplate.query("SELECT * FROM attempts WHERE phone = ? and day_of_week = ?", mapper, phone, dayOfMonth);
+        return jdbcTemplate.query("SELECT * FROM attempts WHERE phone = ? and day_of_month = ?", mapper, phone, dayOfMonth);
     }
 
     private static class AttemptEntityMapper implements RowMapper<Attempt> {
 
         @Override
         public Attempt mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Attempt(rs.getString("phone"), rs.getString("word"), rs.getInt("count_attempt"), rs.getInt("day_of_week"));
+            return new Attempt(rs.getInt("id"), rs.getString("phone"), rs.getString("word"), rs.getInt("count_attempt"), rs.getInt("day_of_month"));
         }
     }
 }

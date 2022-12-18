@@ -51,6 +51,10 @@ public class AttemptService implements IAttemptService {
 
         List<Map<String, Object>> result = new ArrayList<>();
         List<Boolean> usedLetters = new ArrayList<>(word.length());
+        for (int i = 0; i < word.length(); i++) {
+            usedLetters.add(false);
+        }
+        logger.info("usedLetters size: " + usedLetters.size());
 
         logger.info("starting comparing");
 
@@ -85,6 +89,8 @@ public class AttemptService implements IAttemptService {
 
             currentLetter.put("letter", word.charAt(i));
             currentLetter.put("state", state);
+
+            result.add(currentLetter);
         }
         return result;
     }
@@ -134,7 +140,8 @@ public class AttemptService implements IAttemptService {
     }
 
     @Override
-    public Map<String, Object> addNewWord(String word) {
+    public Map<String, Object> addNewWord(String token, String word) {
+        String phone = usersRepository.findUserByToken(token).getPhone();
         String wortUTF = new String(word.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
         logger.info("adding new word: " + wortUTF);
         if (!russianWordsRepository.isRussianWord(wortUTF)) {
@@ -144,6 +151,8 @@ public class AttemptService implements IAttemptService {
         Answer answer = answersRepository.getAnswerByDay(dayOfMonth);
 
         logger.info("answer: " + answer.getWord());
+
+        attemptRepository.insert(new Attempt(phone, word, attemptRepository.findAttemptsByPhoneAndDay(phone, dayOfMonth).size() + 1, dayOfMonth));
 
         Map<String, Object> result = new HashMap<>();
         result.put("letters", compare(answer.getWord(), word));
