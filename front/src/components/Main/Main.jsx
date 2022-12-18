@@ -9,6 +9,7 @@ import Rules from "./Rules";
 import HowToPlay from "./HowToPlay";
 import Meaning from "./Meaning";
 import Feedback from "./Feedback";
+import {observer} from "mobx-react-lite";
 
 const isContainsTarget = (element) => {
     if (element.classList.contains('game-field__wrapper')) {
@@ -24,8 +25,10 @@ const isContainsTarget = (element) => {
 const Main = () => {
     return (
         <main className="main" onClick={(e) => {
-            isContainsTarget(e.target) ? store.setIsKeyBoardOpen(true) :
-                store.setIsKeyBoardOpen(false)
+            if (!store.isEnd) {
+                isContainsTarget(e.target) ? store.setIsKeyBoardOpen(true) :
+                    store.setIsKeyBoardOpen(false)
+            }
         }}>
             <div className="main__content">
                 <Routes>
@@ -43,11 +46,11 @@ const Main = () => {
                         <div className="main-page">
                             <div className="container">
                                 <Game/>
-                                {store.description && <Meaning/>}
+                                {store.isEnd && <Meaning/>}
                                 <Rules/>
                                 <HowToPlay/>
                             </div>
-                            <Feedback/>
+                            {!store.isPuttedFeedback && <Feedback/>}
                         </div>
                     }/>
                 </Routes>
@@ -56,4 +59,4 @@ const Main = () => {
     );
 };
 
-export default Main;
+export default observer(Main);

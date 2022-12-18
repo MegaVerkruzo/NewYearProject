@@ -4,12 +4,19 @@ import store from "../../store/store";
 import cn from "classnames";
 import {getAllInfo} from "../../http/wordsAPI";
 import {onEnter} from "./GameFunction";
+import {useNavigate} from "react-router-dom";
 
 const GameField = () => {
+    let navigate = useNavigate()
+
     React.useEffect(() => {
         async function fetchData() {
             const data = await getAllInfo()
-            store.setMainInfo(data)
+            if (data.exception === 'noUser') {
+                navigate('/login')
+            } else {
+                store.setMainInfo(data)
+            }
         }
 
         fetchData()
@@ -29,12 +36,12 @@ const GameField = () => {
                 }
             </div>
             {store.gameError && <div className="error">{store.gameError}</div>}
-            <div>
+            {!store.isEnd && <div>
                 <button className="main-page__btn" onClick={() => onEnter()}>Проверить</button>
                 <div className="game-field__attempts">
                     Попыток осталось: {5 - store.currentAttempt.curRow}
                 </div>
-            </div>
+            </div>}
         </div>
     );
 };

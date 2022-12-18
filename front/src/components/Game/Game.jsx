@@ -1,12 +1,10 @@
 import React from 'react';
 import store from "../../store/store";
 import {observer} from "mobx-react-lite";
-import {initialGameData} from "../../static_data/GameData";
 import Tree from '../../img/Tree.png'
 import GameField from "./GameField";
 import {ReactComponent as MessageAngle} from '../../img/Message_angle.svg'
 import cn from "classnames";
-import {getAllInfo} from "../../http/wordsAPI";
 
 const Game = () => {
     return (

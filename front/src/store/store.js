@@ -66,19 +66,12 @@ class Store {
         this.isAuth = true
     }
 
-    setMainInfo({letters, currentLine, description, isEnd, postLink, wordLength, isPuttedFeedback}) {
-        this.attempts = letters
-        for (let i = 0; i < wordLength * (5 - currentLine); i++) {
-            this.attempts.push({letter: '', state: ''})
-        }
+    setKeyboardState(letters) {
         for (let i = 0; i < this.keyboardData.length; i++) {
             for (let j = 0; j < this.keyboardData[i].length; j++) {
                 if (this.keyboardData[i][j].id < 50) {
                     let state = ''
-                    let a = letters.find(item => {
-                        return item.letter === this.keyboardData[i][j].letter && item.state === 'grey'
-                    })
-                    if (a) {
+                    if (letters.find(item => item.letter === this.keyboardData[i][j].letter && item.state === 'grey')) {
                         state = 'grey'
                     }
                     if (letters.find(item => item.letter === this.keyboardData[i][j].letter && item.state === 'yellow')) {
@@ -87,20 +80,26 @@ class Store {
                     if (letters.find(item => item.letter === this.keyboardData[i][j].letter && item.state === 'green')) {
                         state = 'green'
                     }
-                    this.keyboardData[i][j].state = state
+                    if (state) {
+                        this.keyboardData[i][j].state = state
+                    }
                 }
             }
         }
+    }
+
+    setMainInfo({letters, currentLine, description, isEnd, postLink, wordLength, isPuttedFeedback}) {
+        this.attempts = letters
+        for (let i = 0; i < wordLength * (5 - currentLine); i++) {
+            this.attempts.push({letter: '', state: ''})
+        }
+        this.setKeyboardState(letters)
         this.currentAttempt = {curRow: currentLine, curCol: 0}
         this.description = description
         this.isEnd = isEnd
         this.postLink = postLink
         this.wordLength = wordLength
         this.isPuttedFeedback = isPuttedFeedback
-    }
-
-    setNewAttempt({attempt, is_correct}) {
-        this.isCorrect = is_correct
     }
 
     setFeedbackText(data) {
@@ -142,7 +141,7 @@ class Store {
 
     setNewLetter(letter) {
         if (!this.isEnd && this.currentAttempt.curRow < 5 && this.currentAttempt.curCol < this.wordLength) {
-            this.attempts[this.currentAttempt.curRow  * this.wordLength + this.currentAttempt.curCol].letter = letter
+            this.attempts[this.currentAttempt.curRow * this.wordLength + this.currentAttempt.curCol].letter = letter
             this.currentAttempt.curCol += 1
         }
         if (this.currentAttempt.curCol === this.wordLength) {
@@ -152,10 +151,20 @@ class Store {
 
     deleteLetter() {
         if (!this.isEnd && this.currentAttempt.curRow < 5 && this.currentAttempt.curCol > 0) {
-            this.attempts[this.currentAttempt.curRow  * this.wordLength + this.currentAttempt.curCol - 1].letter = ''
+            this.attempts[this.currentAttempt.curRow * this.wordLength + this.currentAttempt.curCol - 1].letter = ''
             this.currentAttempt.curCol -= 1
             this.isCanSendAttempt = false
         }
+    }
+
+    setNewAttempt({letters, is_correct}) {
+        for (let i = 0; i < this.wordLength; i++) {
+            this.attempts[this.currentAttempt.curRow * this.wordLength + i] = letters[i]
+        }
+        this.currentAttempt.curRow += 1
+        this.currentAttempt.curCol = 0
+        this.isEnd = is_correct
+        this.setKeyboardState(letters)
     }
 }
 

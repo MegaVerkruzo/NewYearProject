@@ -7,7 +7,6 @@ import {observer} from "mobx-react-lite";
 import {check} from "../../http/userAPI";
 import {useNavigate} from "react-router-dom";
 import Keyboard from "../Game/Keyboard";
-import {onWrite} from "../Game/GameFunction";
 
 const App = () => {
     const [isLoading, setIsLoading] = useState(false)
