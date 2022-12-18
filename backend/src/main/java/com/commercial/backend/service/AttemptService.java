@@ -131,6 +131,7 @@ public class AttemptService implements IAttemptService {
         }
 
         result.put("letters", attemptsInfo);
+        result.put("wordLength", answer.getWord().length());
         result.put("currentLine", attempts.size());
         result.put("isEnd", isEnd);
         result.put("isPuttedFeedback", isPuttedFeedback);
