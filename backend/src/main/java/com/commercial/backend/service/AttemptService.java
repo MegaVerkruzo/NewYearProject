@@ -35,11 +35,15 @@ public class AttemptService implements IAttemptService {
         this.russianWordsRepository = russianWordsRepository;
     }
 
+    private static int today = 19;
+
     private int getDayOfMonth() {
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(new Date());
-        logger.info("Day of month: " + calendar.get(Calendar.DAY_OF_MONTH));
-        return calendar.getInstance(TimeZone.getTimeZone("GMT+3")).get(Calendar.DAY_OF_MONTH);
+        return today;
+        // :TODO check
+//        Calendar calendar = new GregorianCalendar();
+//        calendar.setTime(new Date());
+//        logger.info("Day of month: " + calendar.get(Calendar.DAY_OF_MONTH));
+//        return calendar.getInstance(TimeZone.getTimeZone("GMT+3")).get(Calendar.DAY_OF_MONTH);
     }
 
     private List<Map<String, Object>> compare(String answer, String word) {
@@ -97,7 +101,6 @@ public class AttemptService implements IAttemptService {
         return result;
     }
 
-
     @Override
     public Map<String, Object> getAllInfo(String token) {
         Map<String, Object> result = new HashMap<>();
@@ -112,13 +115,18 @@ public class AttemptService implements IAttemptService {
         boolean isEnd = false;
         if (attempts.size() == 5) {
             isEnd = true;
+            today++;
         }
-        for (Attempt attempt : attempts) {
-            if (attempt.getWord().equals(answer.getWord())) {
-                isEnd = true;
-                break;
+        if (!isEnd) {
+            for (Attempt attempt : attempts) {
+                if (attempt.getWord().equals(answer.getWord())) {
+                    isEnd = true;
+                    today++;
+                    break;
+                }
             }
         }
+
 
         // if user putted feedback today, then he can't paste feedback today
         boolean isPuttedFeedback = false;
@@ -175,6 +183,9 @@ public class AttemptService implements IAttemptService {
 
         result.put("letters", compare(answer.getWord(), word));
         result.put("isCorrect", answer.getWord().equals(word));
+        if (answer.getWord().equals(word)) {
+            today++;
+        }
         return result;
     }
 }
