@@ -155,6 +155,7 @@ public class User {
                 ", place='" + place + '\'' +
                 ", passwordHash='" + passwordHash + '\'' +
                 ", token='" + token + '\'' +
+                ", feedback='" + feedback + '\'' +
                 '}';
     }
 }

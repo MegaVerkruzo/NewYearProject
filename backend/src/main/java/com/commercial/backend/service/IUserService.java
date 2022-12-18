@@ -12,5 +12,5 @@ public interface IUserService {
 
     Pair<String, String> checkTokenWithException(String token);
 
-    Map<String, Object> addFeedback(String token, String feedback);
+    Pair<String, String> addFeedback(String token, String feedback);
 }

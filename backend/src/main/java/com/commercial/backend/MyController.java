@@ -95,13 +95,30 @@ public class MyController {
         return result;
     }
 
-    @PostMapping(value = "/feedback", produces = "application/json")
+    @PostMapping(value = "/feedback", consumes = "application/json", produces = "application/json")
     public Map<String, Object> addFeedback(@RequestHeader("authorization") String token, @RequestBody Map<String, String> json) {
-        logger.info("Read JSON\nfeedback: " + json.get("feedback"));
-        if (check(token).get("exception") != "") {
-            return check(token);
+        String feedback = json.get("feedback");
+        Map<String, Object> tokenCheck = check(token);
+        logger.info("Read JSON\nfeedback: " + feedback);
+
+        if (tokenCheck.get("exception") != "") {
+            logger.info("Token is not valid, exception: " + tokenCheck.get("exception"));
+            return tokenCheck;
         }
 
-        return userService.addFeedback(token, json.get("feedback"));
+        Map<String, Object> result = new HashMap<>();
+
+        if (feedback == null || feedback.equals("")) {
+            logger.info("Feedback is empty");
+            result.put("exception", "noFeedback");
+            return result;
+        }
+
+        Pair<String, String> resultPair = userService.addFeedback(token, feedback);
+
+        logger.info("exception is " + resultPair.getFirst());
+        result.put(resultPair.getFirst(), resultPair.getSecond());
+
+        return result;
     }
 }

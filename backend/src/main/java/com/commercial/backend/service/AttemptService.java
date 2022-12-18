@@ -132,6 +132,7 @@ public class AttemptService implements IAttemptService {
             attemptsInfo.addAll(compare(answer.getWord(), attempt.getWord()));
         }
 
+        // :TODO add count of good attempts for last days
         result.put("letters", attemptsInfo);
         result.put("wordLength", answer.getWord().length());
         result.put("currentLine", attempts.size());

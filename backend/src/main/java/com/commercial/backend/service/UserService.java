@@ -22,35 +22,32 @@ public class UserService implements IUserService {
     }
 
     private boolean checkFieldOnSize(String str) {
-	return str.length() < 250;
+        return str.length() < 250;
     }
 
     @Override
     public Pair<String, String> addNewUserAndGetTokenWithHistory(User user) {
         User searchUser = repository.findUserByPhone(user.getPhone());
         if (searchUser == null) {
-	 if (checkFieldOnSize(user.getPhone()) && checkFieldOnSize(user.getName()) && checkFieldOnSize(user.getSurname()) && checkFieldOnSize(user.getMiddleName()) && checkFieldOnSize(user.getEmail()) && checkFieldOnSize(user.getPlace()))  {
-            repository.insert(user);
-            return Pair.of(user.getToken(), "");
-	 } else {
-		 return Pair.of("", "hugeSizeField");
-	 }
+            if (checkFieldOnSize(user.getPhone()) && checkFieldOnSize(user.getName()) && checkFieldOnSize(user.getSurname()) && checkFieldOnSize(user.getMiddleName()) && checkFieldOnSize(user.getEmail()) && checkFieldOnSize(user.getPlace())) {
+                repository.insert(user);
+                return Pair.of(user.getToken(), "");
+            } else {
+                return Pair.of("", "hugeSizeField");
+            }
         } else {
             return Pair.of("", "userExists");
-	}
+        }
     }
 
     @Override
     public Pair<String, String> getTokenWithCheckingPassword(User user, String rawPassword) {
         User searchUser = repository.findUserByPhone(user.getPhone());
-        if (searchUser == null) {
+        if (searchUser == null || !PasswordEncoder.checkHash(rawPassword, searchUser.getPasswordHash())) {
             return Pair.of("", "noUser");
         }
-        if (PasswordEncoder.checkHash(rawPassword, searchUser.getPasswordHash())) {
-            return Pair.of(user.getToken(), "");
-        } else {
-            return Pair.of("", "incorrectPassword");
-        }
+
+        return Pair.of(user.getToken(), "");
     }
 
     @Override
@@ -64,16 +61,21 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Map<String, Object> addFeedback(String token, String feedback) {
+    public Pair<String, String> addFeedback(String token, String feedback) {
         User user = repository.findUserByToken(token);
-        Map<String, Object> result = new HashMap<>();
 
-        if (user.getFeedback() == null || user.getFeedback().equals("")) {
-            repository.insertFeedbackByToken(token, feedback);
-            result.put("exception", "");
-        } else {
-            result.put("exception", "userAlreadyLeftFeedback");
+        logger.info("Find user " + user);
+
+        if (user == null) {
+            return Pair.of("", "noUser");
         }
-        return result;
+
+        if (user.getFeedback() != null) {
+            logger.info("Feedback already exists");
+            return Pair.of("exception", "hadFeedback");
+        }
+
+        repository.insertFeedbackByToken(token, feedback);
+        return Pair.of("exception", "");
     }
 }
