@@ -11,12 +11,14 @@ const GameField = () => {
 
     React.useEffect(() => {
         async function fetchData() {
+            store.setIsLoading(true)
             const data = await getAllInfo()
             if (data.exception === 'noUser') {
                 navigate('/login')
             } else {
                 store.setMainInfo(data)
             }
+            store.setIsLoading(false)
         }
 
         fetchData()

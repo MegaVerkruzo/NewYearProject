@@ -7,13 +7,14 @@ import {observer} from "mobx-react-lite";
 import {check} from "../../http/userAPI";
 import {useNavigate} from "react-router-dom";
 import Keyboard from "../Game/Keyboard";
+import IsLoading from "../Main/isLoading";
+import store from "../../store/store";
 
 const App = () => {
-    const [isLoading, setIsLoading] = useState(false)
     let navigate = useNavigate()
     React.useEffect(() => {
         const fetchData = async () => {
-            setIsLoading(true)
+            store.setIsLoading(true)
             if (localStorage.getItem('token')) {
                 const data = await check()
                 if (data?.token) {
@@ -32,7 +33,7 @@ const App = () => {
                     navigate('/login')
                 }
             }
-            setIsLoading(false)
+            store.setIsLoading(false)
         }
         fetchData()
     }, [])
@@ -40,13 +41,13 @@ const App = () => {
     return (
         <div className="wrapper">
             {
-                isLoading ? 'Загрузка' :
-                    <>
-                        <Header/>
-                        <Main/>
-                        <Keyboard/>
-                        <Footer/>
-                    </>
+                <>
+                    <Header/>
+                    {store.isLoading && <IsLoading/>}
+                    <Main/>
+                    <Keyboard/>
+                    <Footer/>
+                </>
             }
         </div>
 

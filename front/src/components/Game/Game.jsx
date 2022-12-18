@@ -5,8 +5,29 @@ import Tree from '../../img/Tree.png'
 import GameField from "./GameField";
 import {ReactComponent as MessageAngle} from '../../img/Message_angle.svg'
 import cn from "classnames";
+import {onDelete, onEnter, onWrite} from "./GameFunction";
+import {russianLetters} from "../../static_data/GameData";
+
+const keyboardHandler = (e) => {
+    if (e.key === 'Backspace') {
+        onDelete()
+    } else if (e.key === 'Enter') {
+        onEnter()
+    } else if (e.key === ' ') {
+        e.preventDefault()
+    } else if (russianLetters.includes(e.key)) {
+        onWrite(e.key)
+    }
+}
 
 const Game = () => {
+    React.useEffect(() => {
+        document.addEventListener('keydown', keyboardHandler)
+        return () => {
+            document.removeEventListener('keydown', keyboardHandler)
+        }
+    }, [])
+
     return (
         <div className="main-page__top game">
             <div className="main-page__column col1">

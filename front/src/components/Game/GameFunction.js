@@ -19,7 +19,6 @@ export const onEnter = async () => {
             for (let i = 0; i < store.wordLength; i++) {
                 s += store.attempts[store.currentAttempt.curRow * store.wordLength + i].letter
             }
-            console.log(s)
             const data = await newAttempt(s)
             console.log(data)
             if (data.exception) {
@@ -27,6 +26,12 @@ export const onEnter = async () => {
                     store.setGameError('Пользователь не зарегистрирован')
                 } else if (data.exception === 'noWordInDictionary') {
                     store.setGameError('Некорректное слово')
+                } else if (data.exception === 'alreadyExistCorrectAttempt') {
+                    store.setGameError('Вы уже завершили игру на сегодня')
+                } else if (data.exception === 'alreadyExist5Attempts') {
+                    store.setGameError('Вы уже сделали 5 попыток')
+                } else if (data.exception === 'wrongSize') {
+                    store.setGameError('Неверная длина слова')
                 }
             } else {
                 store.setIsKeyBoardOpen(false)

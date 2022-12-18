@@ -744,6 +744,21 @@ h3 {
   fill: white;
 }
 
+.loading {
+  position: absolute;
+  z-index: 60;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loading svg {
+  width: 30vw;
+  height: 30vw;
+}
+
 /* MEDIA */
 @media screen and (max-width: 1440px) {
   * {

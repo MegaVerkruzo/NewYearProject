@@ -30,28 +30,46 @@ class Store {
     isMenuOpen = false
     isKeyboardOpen = false
     isCanSendAttempt = false
+    countCorrectAnswersBefore = 0
+    isLoading = false
 
     untilNewYear = {days: 0, hours: 0, minutes: 0}
 
     feedback = ''
 
-    keyboardData = [
-        [
-            {id: 1, letter: 'й', state: ''}, {id: 2, letter: 'ц', state: ''}, {id: 3, letter: 'у', state: ''},
-            {id: 4, letter: 'к', state: ''}, {id: 5, letter: 'е', state: ''}, {id: 6, letter: 'н', state: ''},
-            {id: 7, letter: 'г', state: ''}, {id: 8, letter: 'ш', state: ''}, {id: 9, letter: 'щ', state: ''},
-            {id: 10, letter: 'з', state: ''}, {id: 11, letter: 'х', state: ''}, {id: 12, letter: 'ъ', state: ''}],
-        [
-            {id: 13, letter: 'ф', state: ''}, {id: 14, letter: 'ы', state: ''}, {id: 15, letter: 'в', state: ''},
-            {id: 16, letter: 'а', state: ''}, {id: 17, letter: 'п', state: ''}, {id: 18, letter: 'р', state: ''},
-            {id: 19, letter: 'о', state: ''}, {id: 20, letter: 'л', state: ''}, {id: 21, letter: 'д', state: ''},
-            {id: 22, letter: 'ж', state: ''}, {id: 23, letter: 'э', state: ''}],
-        [
-            {id: 52, letter: '✓'}, {id: 24, letter: 'я', state: ''}, {id: 25, letter: 'ч', state: ''},
-            {id: 26, letter: 'с', state: ''}, {id: 27, letter: 'м', state: ''}, {id: 28, letter: 'и', state: ''},
-            {id: 29, letter: 'т', state: ''}, {id: 30, letter: 'ь', state: ''}, {id: 31, letter: 'б', state: ''},
-            {id: 32, letter: 'ю', state: ''}, {id: 51, letter: '🠔'}]
-    ]
+    keyboardData = [[{id: 1, letter: 'й', state: ''}, {id: 2, letter: 'ц', state: ''}, {
+        id: 3,
+        letter: 'у',
+        state: ''
+    }, {id: 4, letter: 'к', state: ''}, {id: 5, letter: 'е', state: ''}, {id: 6, letter: 'н', state: ''}, {
+        id: 7,
+        letter: 'г',
+        state: ''
+    }, {id: 8, letter: 'ш', state: ''}, {id: 9, letter: 'щ', state: ''}, {id: 10, letter: 'з', state: ''}, {
+        id: 11,
+        letter: 'х',
+        state: ''
+    }, {id: 12, letter: 'ъ', state: ''}], [{id: 13, letter: 'ф', state: ''}, {id: 14, letter: 'ы', state: ''}, {
+        id: 15,
+        letter: 'в',
+        state: ''
+    }, {id: 16, letter: 'а', state: ''}, {id: 17, letter: 'п', state: ''}, {id: 18, letter: 'р', state: ''}, {
+        id: 19,
+        letter: 'о',
+        state: ''
+    }, {id: 20, letter: 'л', state: ''}, {id: 21, letter: 'д', state: ''}, {id: 22, letter: 'ж', state: ''}, {
+        id: 23,
+        letter: 'э',
+        state: ''
+    }], [{id: 52, letter: '✓'}, {id: 24, letter: 'я', state: ''}, {id: 25, letter: 'ч', state: ''}, {
+        id: 26,
+        letter: 'с',
+        state: ''
+    }, {id: 27, letter: 'м', state: ''}, {id: 28, letter: 'и', state: ''}, {id: 29, letter: 'т', state: ''}, {
+        id: 30,
+        letter: 'ь',
+        state: ''
+    }, {id: 31, letter: 'б', state: ''}, {id: 32, letter: 'ю', state: ''}, {id: 51, letter: '🠔'}]]
 
     constructor() {
         makeAutoObservable(this)
@@ -88,7 +106,16 @@ class Store {
         }
     }
 
-    setMainInfo({letters, currentLine, description, isEnd, postLink, wordLength, isPuttedFeedback}) {
+    setMainInfo({
+                    letters,
+                    currentLine,
+                    description,
+                    isEnd,
+                    postLink,
+                    wordLength,
+                    isPuttedFeedback,
+                    countCorrectAnswersBefore
+                }) {
         this.attempts = letters
         for (let i = 0; i < wordLength * (5 - currentLine); i++) {
             this.attempts.push({letter: '', state: ''})
@@ -100,6 +127,7 @@ class Store {
         this.postLink = postLink
         this.wordLength = wordLength
         this.isPuttedFeedback = isPuttedFeedback
+        this.countCorrectAnswersBefore = countCorrectAnswersBefore
     }
 
     setFeedbackText(data) {
@@ -164,7 +192,15 @@ class Store {
         this.currentAttempt.curRow += 1
         this.currentAttempt.curCol = 0
         this.isEnd = is_correct
+        if (this.isEnd) {
+            this.isCanSendAttempt = false
+            this.countCorrectAnswersBefore += 1
+        }
         this.setKeyboardState(letters)
+    }
+
+    setIsLoading(value) {
+        this.isLoading = value
     }
 }
 
