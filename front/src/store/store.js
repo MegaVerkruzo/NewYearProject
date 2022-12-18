@@ -185,13 +185,13 @@ class Store {
         }
     }
 
-    setNewAttempt({letters, is_correct}) {
+    setNewAttempt({letters, isCorrect}) {
         for (let i = 0; i < this.wordLength; i++) {
             this.attempts[this.currentAttempt.curRow * this.wordLength + i] = letters[i]
         }
         this.currentAttempt.curRow += 1
         this.currentAttempt.curCol = 0
-        this.isEnd = is_correct
+        this.isEnd = isCorrect
         if (this.isEnd) {
             this.isCanSendAttempt = false
             this.countCorrectAnswersBefore += 1
