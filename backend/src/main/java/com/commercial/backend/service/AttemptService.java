@@ -50,9 +50,14 @@ public class AttemptService implements IAttemptService {
         logger.info("compare size of two strings: " + answer.length() + " and " + word.length());
 
         List<Map<String, Object>> result = new ArrayList<>();
-        List<Boolean> usedLetters = new ArrayList<>(word.length());
+        List<Integer> usedLetters = new ArrayList<>(word.length());
         for (int i = 0; i < word.length(); i++) {
-            usedLetters.add(word.charAt(i) == answer.charAt(i));
+            if (word.charAt(i) == answer.charAt(i)) {
+                usedLetters.add(0); // 0 - green, 1 - yellow, 2 - grey
+            } else {
+                usedLetters.add(2);
+            }
+            logger.info("usedLetters[" + i + "] = " + usedLetters.get(i));
         }
         logger.info("usedLetters size: " + usedLetters.size());
 
@@ -61,7 +66,7 @@ public class AttemptService implements IAttemptService {
         for (int i = 0; i < word.length(); ++i) {
             logger.info("i is " + i + " comparing " + answer.charAt(i) + " and " + word.charAt(i));
             Map<String, Object> currentLetter = new HashMap<>();
-            if (usedLetters.get(i)) {
+            if (usedLetters.get(i) == 0) {
                 currentLetter.put("letter", word.charAt(i));
                 currentLetter.put("state", "green");
 
@@ -73,12 +78,12 @@ public class AttemptService implements IAttemptService {
 
             String state = "grey";
             for (int j = 0; j < answer.length(); ++j) {
-                if (usedLetters.get(j)) {
+                if (usedLetters.get(j) == 0) {
                     continue;
                 }
 
                 if (word.charAt(i) == answer.charAt(j)) {
-                    usedLetters.set(j, true);
+                    usedLetters.set(j, 1);
                     state = "yellow";
                     break;
                 }
