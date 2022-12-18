@@ -1,5 +1,6 @@
 package com.commercial.backend;
 
+import org.hibernate.annotations.SQLInsert;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;

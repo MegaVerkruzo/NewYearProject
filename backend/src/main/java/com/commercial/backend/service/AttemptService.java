@@ -5,11 +5,14 @@ import com.commercial.backend.db.AttemptsRepository;
 import com.commercial.backend.db.RussianWordsRepository;
 import com.commercial.backend.db.UsersRepository;
 import com.commercial.backend.model.Answer;
-import com.commercial.backend.model.User;
 import com.commercial.backend.model.Attempt;
+import com.commercial.backend.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -17,6 +20,8 @@ public class AttemptService implements IAttemptService {
 
     private final int FIRST_DAY = 19;
     private final int LAST_DAY = 23;
+
+    private final Logger logger = LoggerFactory.getLogger(AttemptService.class);
 
     private final AnswersRepository answersRepository;
     private final UsersRepository usersRepository;
@@ -30,20 +35,36 @@ public class AttemptService implements IAttemptService {
         this.russianWordsRepository = russianWordsRepository;
     }
 
+    private int getDayOfMonth() {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+        logger.info("Day of month: " + calendar.get(Calendar.DAY_OF_MONTH));
+        return calendar.getInstance(TimeZone.getTimeZone("GMT+3")).get(Calendar.DAY_OF_MONTH);
+    }
+
     private List<Map<String, Object>> compare(String answer, String word) {
-        String answerUTF = new String(answer.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
-        String wordUTF = new String(word.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+        answer = new String(answer.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+        word = new String(word.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+
+        logger.info("comparing two strings: " + answer + " and " + word);
+        logger.info("compare size of two strings: " + answer.length() + " and " + word.length());
 
         List<Map<String, Object>> result = new ArrayList<>();
-        List<Boolean> usedLetters = new ArrayList<>(wordUTF.length());
+        List<Boolean> usedLetters = new ArrayList<>(word.length());
+
+        logger.info("starting comparing");
 
         for (int i = 0; i < word.length(); ++i) {
+            logger.info("i is " + i + " comparing " + answer.charAt(i) + " and " + word.charAt(i));
             Map<String, Object> currentLetter = new HashMap<>();
-            if (answerUTF.charAt(i) == wordUTF.charAt(i)) {
+            if (answer.charAt(i) == word.charAt(i)) {
                 usedLetters.set(i, true);
 
                 currentLetter.put("letter", word.charAt(i));
                 currentLetter.put("state", "green");
+
+                logger.info("Add letter " + currentLetter.get("letter") + " with state " + currentLetter.get("state"));
+
                 result.add(currentLetter);
 
                 continue;
@@ -55,8 +76,8 @@ public class AttemptService implements IAttemptService {
                     continue;
                 }
 
-                if (wordUTF.charAt(i) == answerUTF.charAt(j)) {
-                    usedLetters.set(i, true);
+                if (word.charAt(i) == answer.charAt(j)) {
+                    usedLetters.set(j, true);
                     state = "yellow";
                     break;
                 }
@@ -68,9 +89,6 @@ public class AttemptService implements IAttemptService {
         return result;
     }
 
-    private int getDayOfMonth() {
-        return Calendar.getInstance(TimeZone.getTimeZone("GMT+3")).DAY_OF_MONTH;
-    }
 
     @Override
     public Map<String, Object> getAllInfo(String token) {
@@ -118,11 +136,14 @@ public class AttemptService implements IAttemptService {
     @Override
     public Map<String, Object> addNewWord(String word) {
         String wortUTF = new String(word.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+        logger.info("adding new word: " + wortUTF);
         if (!russianWordsRepository.isRussianWord(wortUTF)) {
             return null;
         }
         int dayOfMonth = getDayOfMonth();
         Answer answer = answersRepository.getAnswerByDay(dayOfMonth);
+
+        logger.info("answer: " + answer.getWord());
 
         Map<String, Object> result = new HashMap<>();
         result.put("letters", compare(answer.getWord(), word));

@@ -35,4 +35,4 @@ CREATE TABLE russian_words
 (
     id   SERIAL PRIMARY KEY,
     word VARCHAR(200) PRIMARY KEY
-)
+);

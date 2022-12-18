@@ -32,6 +32,8 @@ public class AnswersRepository {
     public Answer getAnswerByDay(Integer dayOfMonth) {
         List<Answer> result = jdbcTemplate.query("SELECT * FROM answers WHERE day_of_month = ?", mapper, dayOfMonth);
 
+        logger.info("Get size of result" + result.size());
+
         if (result.isEmpty()) {
             return null;
         } else {

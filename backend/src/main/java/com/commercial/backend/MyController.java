@@ -69,19 +69,20 @@ public class MyController {
 
     @GetMapping(value = "/game", consumes = "application/json",produces = "application/json")
     public Map<String, Object> trying(@RequestHeader("authorization") String token) {
-        if (check(token).get("exception") != null) {
+        if (check(token).get("exception") != "") {
             return check(token);
         }
 
         Map<String, Object> result = attemptService.getAllInfo(token);
 
-        result.put("exception", null);
+        result.put("exception", "");
         return result;
     }
 
     @PostMapping(value = "/game/new_attempt", consumes = "application/json", produces = "application/json")
     public Map<String, Object> newAttempt(@RequestHeader("authorization") String token, @RequestBody Map<String, String> json) {
-        if (check(token).get("exception") != null) {
+        logger.info("Read JSON\nword: " + json.get("word"));
+        if (check(token).get("exception") != "") {
             return check(token);
         }
 
@@ -93,7 +94,7 @@ public class MyController {
             return result;
         }
 
-        result.put("exception", null);
+        result.put("exception", "");
         return result;
     }
 }

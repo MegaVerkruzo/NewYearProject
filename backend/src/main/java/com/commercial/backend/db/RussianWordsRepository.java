@@ -23,6 +23,7 @@ public class RussianWordsRepository {
     }
 
     public boolean isRussianWord(String word) {
+        logger.info("Check if word " + word + " is russian");
         return jdbcTemplate.query("SELECT * FROM russian_words WHERE word = ?", mapper, word).size() > 0;
     }
 
