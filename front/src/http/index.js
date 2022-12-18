@@ -17,15 +17,6 @@ const authInterceptor = config => {
     return config
 }
 
-function checkConfig(config) {
-    console.log('request => config ====================================');
-    console.log(localStorage.getItem('token'))
-    config.headers.authorization = `${localStorage.getItem('token')}`
-    console.log(config);
-    console.log('request => config ====================================');
-    return config;
-}
-
 $authHost.interceptors.request.use(authInterceptor, function (error) {
     return Promise.reject(error);
 })

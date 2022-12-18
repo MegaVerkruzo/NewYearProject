@@ -16,11 +16,11 @@ const Header = () => {
     // const ref = React.useRef(null);
 
     // React.useEffect(() => {
-        // ref.current.play()
-        // ref.current.addEventListener('ended', onSetMusic);
-        // return () => {
-        //     ref.current.removeEventListener('ended', onSetMusic);
-        // };
+    // ref.current.play()
+    // ref.current.addEventListener('ended', onSetMusic);
+    // return () => {
+    //     ref.current.removeEventListener('ended', onSetMusic);
+    // };
     // }, [])
 
     const toggleIsSound = () => {
@@ -47,13 +47,13 @@ const Header = () => {
                             </div>
                         </div>
                         <div className="header__right">
-                            {/*<div className="header__burger" onClick={onMenuOpen}/>*/}
+                            <div className="header__burger" onClick={onMenuOpen}/>
                             <div className="header__help">
                                 <a href="https://t.me/blago2023" target="_blank">Снегурочка на связи</a>
                             </div>
                             <div className="header__sound">
                                 <button className="sound__btn" onClick={toggleIsSound}>
-                                    {/*{store.isSound ? <Sound/> : <NoSound/>}*/}
+                                    {store.isSound ? <Sound/> : <NoSound/>}
                                 </button>
                             </div>
                         </div>
@@ -61,7 +61,7 @@ const Header = () => {
                         <div className="header__left">
                             <div className="header__sound">
                                 <button className="sound__btn" onClick={toggleIsSound}>
-                                    {/*{store.isSound ? <Sound/> : <NoSound/>}*/}
+                                    {store.isSound ? <Sound/> : <NoSound/>}
                                 </button>
                             </div>
                         </div>
@@ -69,14 +69,17 @@ const Header = () => {
                             <img src={TimerSnow} alt="Снежок" className="timer__snow"/>
                         </div>
                         <div className="header__right">
-                            <div className={cn("header__burger", {"menu-open": store.isMenuOpen})} onClick={onMenuOpen}><span/></div>
-                            {/*<nav className={cn("menu__nav", {"menu-open": store.isMenuOpen})}*/}
-                            {/*     onClick={onMenuOpen}>*/}
-                            {/*    <Logo />*/}
-                            {/*    <div className="header__help">*/}
-                            {/*        <a href="https://t.me/blago2023" target="_blank">Снегурочка на связи</a>*/}
-                            {/*    </div>*/}
-                            {/*</nav>*/}
+                            <div className={cn("header__burger", {"menu-open": store.isMenuOpen})} onClick={onMenuOpen}>
+                                <span/></div>
+                            <nav className={cn("menu__nav", {"menu-open": store.isMenuOpen})}
+                                 onClick={onMenuOpen}>
+                                <div className="header__logo">
+                                    <Logo/>
+                                </div>
+                                <div className="header__help">
+                                    <a href="https://t.me/blago2023" target="_blank">Снегурочка на связи</a>
+                                </div>
+                            </nav>
                         </div>
                     </div>}
                 </div>

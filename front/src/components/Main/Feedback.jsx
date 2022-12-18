@@ -1,8 +1,33 @@
 import React from 'react';
 import giftTop from "../../img/gift_top.png";
 import giftBottom from "../../img/gift_bottom.png";
+import store from "../../store/store";
+import {observer} from "mobx-react-lite";
+import {sendFeedback} from "../../http/userAPI";
 
 const Feedback = () => {
+    const onSendFeedback = async () => {
+        try {
+            if (!store.feedback?.trim()) {
+                store.setFeedbackError('Форма не может быть пустой')
+                return
+            }
+            const data = await sendFeedback(store.feedback)
+            console.log(data)
+            if (data.status === 'ok') {
+                store.setFeedbackError('Спасибо за обратную связь!')
+            } else {
+                if (data.exception === 'noUser') {
+                    store.setFeedbackError('Пользователь не зарегистрирован')
+                } else if (data.exception === 'alreadySent') {
+                    store.setFeedbackError('Форма уже была отправлена ранее')
+                }
+            }
+        } catch (e) {
+            store.setFeedbackError('Произошла ошибка сервера')
+        }
+    }
+
     return (
         <div className="main-page__feedback">
             <div className="main__wrapper">
@@ -17,11 +42,14 @@ const Feedback = () => {
                         <div className="reg-form__input">
                             <label>
                                 <div className="label__text">Напишите, что вы думаете о игре</div>
-                                <textarea placeholder="Дорогой Дедушка Мороз, ..."/>
+                                <textarea placeholder="Дорогой Дедушка Мороз, ..."
+                                          onChange={(e) => store.setFeedbackText(e.target.value)}
+                                          value={store.feedback}/>
                             </label>
                         </div>
+                        {store.feedbackError && <div className="error">{store.feedbackError}</div>}
                         <div className="reg-form__btn feedback-form__btn">
-                            <button>Отправить</button>
+                            <button onClick={() => onSendFeedback()}>Отправить</button>
                         </div>
                     </div>
                 </div>
@@ -33,4 +61,4 @@ const Feedback = () => {
     );
 };
 
-export default Feedback;
+export default observer(Feedback);

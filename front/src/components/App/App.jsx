@@ -5,8 +5,9 @@ import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import {observer} from "mobx-react-lite";
 import {check} from "../../http/userAPI";
-import store from "../../store/store";
 import {useNavigate} from "react-router-dom";
+import Keyboard from "../Game/Keyboard";
+import {onWrite} from "../Game/GameFunction";
 
 const App = () => {
     const [isLoading, setIsLoading] = useState(false)
@@ -34,7 +35,7 @@ const App = () => {
             }
             setIsLoading(false)
         }
-        fetchData()
+        // fetchData()
     }, [])
 
     return (
@@ -44,6 +45,7 @@ const App = () => {
                     <>
                         <Header/>
                         <Main/>
+                        <Keyboard/>
                         <Footer/>
                     </>
             }

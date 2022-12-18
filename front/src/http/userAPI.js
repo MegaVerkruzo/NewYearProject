@@ -28,7 +28,7 @@ export const check = async () => {
 
 }
 
-export const feedback = async (feedback) => {
+export const sendFeedback = async (feedback) => {
     const {data} = await $authHost.post('/feedback', {feedback})
     return data
 }

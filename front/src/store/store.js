@@ -13,21 +13,45 @@ class Store {
         isAgreePolicy: false
     }
     isAuth = false
-    attempts = []
-    newAttempt = ''
-    attemptsLeft = 0
-    wordLength = 0
+
+    currentAttempt = {curRow: 0, curCol: 0}
+    wordLength = 5
     postLink = ''
     description = null
-    isCorrect = false
+    isEnd = false
+    isPuttedFeedback = false
+    attempts = Array(this.wordLength * 5).fill({letter: '', state: ''})
+
     isSound = true
     music = null
     regError = ''
+    gameError = ''
+    feedbackError = ''
     isMenuOpen = false
+    isKeyboardOpen = false
+    isCanSendAttempt = false
 
     untilNewYear = {days: 0, hours: 0, minutes: 0}
 
     feedback = ''
+
+    keyboardData = [
+        [
+            {id: 1, letter: 'й', state: ''}, {id: 2, letter: 'ц', state: ''}, {id: 3, letter: 'у', state: ''},
+            {id: 4, letter: 'к', state: ''}, {id: 5, letter: 'е', state: ''}, {id: 6, letter: 'н', state: ''},
+            {id: 7, letter: 'г', state: ''}, {id: 8, letter: 'ш', state: ''}, {id: 9, letter: 'щ', state: ''},
+            {id: 10, letter: 'з', state: ''}, {id: 11, letter: 'х', state: ''}, {id: 12, letter: 'ъ', state: ''}],
+        [
+            {id: 13, letter: 'ф', state: ''}, {id: 14, letter: 'ы', state: ''}, {id: 15, letter: 'в', state: ''},
+            {id: 16, letter: 'а', state: ''}, {id: 17, letter: 'п', state: ''}, {id: 18, letter: 'р', state: ''},
+            {id: 19, letter: 'о', state: ''}, {id: 20, letter: 'л', state: ''}, {id: 21, letter: 'д', state: ''},
+            {id: 22, letter: 'ж', state: ''}, {id: 23, letter: 'э', state: ''}],
+        [
+            {id: 52, letter: '✓'}, {id: 24, letter: 'я', state: ''}, {id: 25, letter: 'ч', state: ''},
+            {id: 26, letter: 'с', state: ''}, {id: 27, letter: 'м', state: ''}, {id: 28, letter: 'и', state: ''},
+            {id: 29, letter: 'т', state: ''}, {id: 30, letter: 'ь', state: ''}, {id: 31, letter: 'б', state: ''},
+            {id: 32, letter: 'ю', state: ''}, {id: 51, letter: '🠔'}]
+    ]
 
     constructor() {
         makeAutoObservable(this)
@@ -42,32 +66,45 @@ class Store {
         this.isAuth = true
     }
 
-    setMainInfo({attempts, word_length, attempts_left, post_link, description}) {
-        this.attempts = attempts
-        if (attempts.length < 5) {
-            let cur_id = attempts[attempts.length - 1].id + 1
-            for (let i = 0; i < attempts_left; i++) {
-                this.attempts.push({id: cur_id + i, empty: true})
+    setMainInfo({letters, currentLine, description, isEnd, postLink, wordLength, isPuttedFeedback}) {
+        this.attempts = letters
+        for (let i = 0; i < wordLength * (5 - currentLine); i++) {
+            this.attempts.push({letter: '', state: ''})
+        }
+        for (let i = 0; i < this.keyboardData.length; i++) {
+            for (let j = 0; j < this.keyboardData[i].length; j++) {
+                if (this.keyboardData[i][j].id < 50) {
+                    let state = ''
+                    let a = letters.find(item => {
+                        return item.letter === this.keyboardData[i][j].letter && item.state === 'grey'
+                    })
+                    if (a) {
+                        state = 'grey'
+                    }
+                    if (letters.find(item => item.letter === this.keyboardData[i][j].letter && item.state === 'yellow')) {
+                        state = 'yellow'
+                    }
+                    if (letters.find(item => item.letter === this.keyboardData[i][j].letter && item.state === 'green')) {
+                        state = 'green'
+                    }
+                    this.keyboardData[i][j].state = state
+                }
             }
         }
-        this.wordLength = word_length
-        this.attemptsLeft = attempts_left
-        this.postLink = post_link
+        this.currentAttempt = {curRow: currentLine, curCol: 0}
         this.description = description
-        console.log(this.attempts)
+        this.isEnd = isEnd
+        this.postLink = postLink
+        this.wordLength = wordLength
+        this.isPuttedFeedback = isPuttedFeedback
     }
 
     setNewAttempt({attempt, is_correct}) {
         this.isCorrect = is_correct
-        this.attempts.push(attempt)
     }
 
     setFeedbackText(data) {
         this.feedback = data
-    }
-
-    setNewAttemptText(data) {
-        this.newAttempt = data
     }
 
     setToggleIsSound() {
@@ -85,6 +122,40 @@ class Store {
 
     setMenuToggle() {
         this.isMenuOpen = !this.isMenuOpen
+    }
+
+    setIsKeyBoardOpen(value) {
+        this.isKeyboardOpen = value
+    }
+
+    setIsCanSendAttempt() {
+        this.isCanSendAttempt = !this.isCanSendAttempt
+    }
+
+    setGameError(message) {
+        this.gameError = message
+    }
+
+    setFeedbackError(message) {
+        this.feedbackError = message
+    }
+
+    setNewLetter(letter) {
+        if (!this.isEnd && this.currentAttempt.curRow < 5 && this.currentAttempt.curCol < this.wordLength) {
+            this.attempts[this.currentAttempt.curRow  * this.wordLength + this.currentAttempt.curCol].letter = letter
+            this.currentAttempt.curCol += 1
+        }
+        if (this.currentAttempt.curCol === this.wordLength) {
+            this.isCanSendAttempt = true
+        }
+    }
+
+    deleteLetter() {
+        if (!this.isEnd && this.currentAttempt.curRow < 5 && this.currentAttempt.curCol > 0) {
+            this.attempts[this.currentAttempt.curRow  * this.wordLength + this.currentAttempt.curCol - 1].letter = ''
+            this.currentAttempt.curCol -= 1
+            this.isCanSendAttempt = false
+        }
     }
 }
 

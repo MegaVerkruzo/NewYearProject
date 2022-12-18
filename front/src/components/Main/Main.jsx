@@ -10,9 +10,23 @@ import HowToPlay from "./HowToPlay";
 import Meaning from "./Meaning";
 import Feedback from "./Feedback";
 
+const isContainsTarget = (element) => {
+    if (element.classList.contains('game-field__wrapper')) {
+        return true;
+    }
+    if (element.classList.contains('main')) {
+        return false;
+    }
+
+    return isContainsTarget(element.parentElement)
+}
+
 const Main = () => {
     return (
-        <main className="main">
+        <main className="main" onClick={(e) => {
+            isContainsTarget(e.target) ? store.setIsKeyBoardOpen(true) :
+                store.setIsKeyBoardOpen(false)
+        }}>
             <div className="main__content">
                 <Routes>
                     <Route path="/" element={
@@ -25,17 +39,17 @@ const Main = () => {
                     }/>
                     <Route path="/login" element={<Login userData={store.userData}/>}/>
                     <Route path="/register" element={<Register userData={store.userData}/>}/>
-                    {/*<Route path="/game" element={*/}
-                    {/*    <div className="main-page">*/}
-                    {/*        <div className="container">*/}
-                    {/*            <Game/>*/}
-                    {/*            <Meaning/>*/}
-                    {/*            <Rules/>*/}
-                    {/*            <HowToPlay/>*/}
-                    {/*        </div>*/}
-                    {/*        <Feedback/>*/}
-                    {/*    </div>*/}
-                    {/*}/>*/}
+                    <Route path="/game" element={
+                        <div className="main-page">
+                            <div className="container">
+                                <Game/>
+                                <Meaning/>
+                                <Rules/>
+                                <HowToPlay/>
+                            </div>
+                            <Feedback/>
+                        </div>
+                    }/>
                 </Routes>
             </div>
         </main>

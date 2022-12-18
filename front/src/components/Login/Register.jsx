@@ -17,7 +17,6 @@ const Register = ({userData}) => {
         store.changeUserData(field, data)
     }
     const onSignUp = async () => {
-        console.log(store.userData.phone.length)
         try {
             if (store.userData.password !== store.userData.password_repeat) {
                 store.setRegError('Пароли не совпадают')
@@ -33,7 +32,6 @@ const Register = ({userData}) => {
                 store.setRegError('Телефон неверно введен')
                 return
             }
-            console.log(store.userData.isAgreePolicy)
             if (!store.userData.isAgreePolicy) {
                 store.setRegError('Подтвердите согласие с политикой конфиденциальности')
                 return
@@ -81,9 +79,11 @@ const Register = ({userData}) => {
                         <div className="reg-form__input last">
                             <div className="checkbox">
                                 <input type="checkbox" id="checkbox2" className="checkbox"
-                                       onChange={(e) => onChangeInput('isAgreePolicy', !userData.isAgreePolicy)}/>
+                                       onChange={(e) => onChangeInput('isAgreePolicy', !userData.isAgreePolicy)}
+                                       value={userData.isAgreePolicy}/>
                                 <label htmlFor="checkbox2">Я подтверждаю свое согласие <br/>
-                                    <a href="https://app.simplenote.com/p/XV73L9" target="_blank" className="underline">с политикой
+                                    <a href="https://app.simplenote.com/p/XV73L9" target="_blank" className="underline">с
+                                        политикой
                                         конфиденциальности</a>
                                 </label>
                             </div>
