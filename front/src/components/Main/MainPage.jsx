@@ -1,5 +1,5 @@
 import React from 'react';
-import Tree from '../../img/Tree.png'
+import Tree from '../../img/Tree.gif'
 import {ReactComponent as MessageAngle} from '../../img/Message_angle.svg'
 
 const MainPage = () => {

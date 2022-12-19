@@ -32,6 +32,8 @@ class Store {
     isCanSendAttempt = false
     countCorrectAnswersBefore = 0
     isLoading = false
+    isFormLoading = false
+    isFeedbackJustSent = false
 
     untilNewYear = {days: 0, hours: 0, minutes: 0}
 
@@ -201,6 +203,14 @@ class Store {
 
     setIsLoading(value) {
         this.isLoading = value
+    }
+
+    setIsFormLoading(value) {
+        this.isFormLoading = value
+    }
+
+    setIsFeedbackJustSent() {
+        this.isFeedbackJustSent = true
     }
 }
 

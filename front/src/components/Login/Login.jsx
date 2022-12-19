@@ -7,6 +7,7 @@ import {observer} from "mobx-react-lite";
 import {Link, useNavigate} from "react-router-dom";
 import giftTop from "../../img/gift_top.png";
 import giftBottom from "../../img/gift_bottom.png";
+import {ReactComponent as Spinner} from "../../img/spinner.svg";
 
 const Login = ({userData}) => {
     let navigate = useNavigate()
@@ -18,6 +19,7 @@ const Login = ({userData}) => {
     }
     const onSignIn = async () => {
         try {
+            store.setRegError('')
             if (!store.userData.phone || !store.userData.password) {
                 store.setRegError('Не все поля заполнены')
                 return
@@ -26,7 +28,9 @@ const Login = ({userData}) => {
                 store.setRegError('Телефон неверно введен')
                 return
             }
+            store.setIsFormLoading(true)
             const data = await login({phone: userData.phone, password: userData.password})
+            store.setIsFormLoading(false)
             if (data.token) {
                 localStorage.setItem('token', data.token)
                 navigate('/game')
@@ -39,6 +43,7 @@ const Login = ({userData}) => {
             }
         } catch (e) {
             console.log(e.message)
+            store.setIsFormLoading(false)
             store.setRegError('Произошла ошибка сервера')
         }
     }
@@ -66,6 +71,7 @@ const Login = ({userData}) => {
                             />)
                         }
                         {store.regError && <div className="error">{store.regError}</div>}
+                        {store.isFormLoading && <div className="form_loading"><Spinner/></div>}
                         <div className="reg-form__btn" onClick={onSignIn}>
                             <button>Войти</button>
                         </div>

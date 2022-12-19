@@ -42,7 +42,7 @@ h2 {
 }
 
 h3 {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
 }
 
 .wrapper {
@@ -751,14 +751,29 @@ h3 {
   right: 0;
   bottom: 0;
   z-index: 60;
+  min-width: 100vw;
+  min-height: 100vh;
   background: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .loading svg {
-  width: 30vw;
-  height: 30vw;
+  width: 10vw;
+  height: 10vw;
+}
+
+.form_loading svg {
+  width: 80px;
+  height: 80px;
+}
+
+.thanks {
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 /* MEDIA */

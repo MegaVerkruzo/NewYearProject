@@ -7,28 +7,28 @@ const HowToPlay = () => {
             <div className="how2play__main">
                 <div className="how2play__container">
                     <div className="how2play__subtitle">
-                        Если вы ввели слово, то каждая буква окраситься в соответсвующий цвет:
+                        Введите ваш вариант ответа. После этого каждая буква окрасится в один из трёх цветов:
                     </div>
                     <div className="how2play__letters">
                         <div className="letter__item">
                             <div className="example__cell green">
                                 <div className="letter">г</div>
                             </div>
-                            <div className="letter__text">Зеленый цвет ячейки означает, что буква угадана.</div>
+                            <div className="letter__text">Зелёный: правильная буква на правильном месте, отлично!</div>
                         </div>
                         <div className="letter__item">
                             <div className="example__cell yellow">
                                 <div className="letter">о</div>
                             </div>
-                            <div className="letter__text">Желтый цвет ячейки означает, что буква угадана, но
-                                стоит не на своем месте
+                            <div className="letter__text">Жёлтый: такая буква есть, но стоит на другом месте, подумайте
+                                ещё
                             </div>
                         </div>
                         <div className="letter__item">
                             <div className="example__cell gray">
                                 <div className="letter">т</div>
                             </div>
-                            <div className="letter__text">Серый цвет ячейки означает, что буквы нет в слове
+                            <div className="letter__text">Серый: нет такой буквы в этом слове
                             </div>
                         </div>
                     </div>

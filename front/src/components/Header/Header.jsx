@@ -7,7 +7,7 @@ import TimerSnow from '../../img/TimerSnow.svg'
 import store from "../../store/store";
 import {observer} from "mobx-react-lite";
 import Timer from "./Timer";
-import Music from "../../audio/AngelsOfLight.mp3";
+// import Music from "../../audio/AngelsOfLight.mp3";
 import cn from "classnames";
 
 // const onSetMusic = () => store.setMusic(Music)
@@ -37,7 +37,6 @@ const Header = () => {
 
     return (
         <header className="header">
-            {/*<audio src={Music} ref={ref} muted={true}/>*/}
             <div className="container">
                 <div className="header__row">
                     {window.innerWidth > 1140 ? <div className="header__top">

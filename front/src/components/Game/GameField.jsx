@@ -5,20 +5,27 @@ import cn from "classnames";
 import {getAllInfo} from "../../http/wordsAPI";
 import {onEnter} from "./GameFunction";
 import {useNavigate} from "react-router-dom";
+import {ReactComponent as Spinner} from "../../img/spinner.svg";
+
 
 const GameField = () => {
     let navigate = useNavigate()
 
     React.useEffect(() => {
         async function fetchData() {
-            store.setIsLoading(true)
-            const data = await getAllInfo()
-            if (data.exception === 'noUser') {
-                navigate('/login')
-            } else {
-                store.setMainInfo(data)
+            try {
+                store.setIsFormLoading(true)
+                const data = await getAllInfo()
+                store.setIsFormLoading(false)
+                if (data.exception === 'noUser') {
+                    navigate('/login')
+                } else {
+                    store.setMainInfo(data)
+                }
+            } catch (e) {
+                store.setIsFormLoading(false)
+                store.setGameError('Произошла ошибка сервера')
             }
-            store.setIsLoading(false)
         }
 
         fetchData()
@@ -38,6 +45,7 @@ const GameField = () => {
                 }
             </div>
             {store.gameError && <div className="error">{store.gameError}</div>}
+            {store.isFormLoading && <div className="form_loading"><Spinner/></div>}
             {!store.isEnd && <div>
                 <button className="main-page__btn" onClick={() => onEnter()}>Проверить</button>
                 <div className="game-field__attempts">

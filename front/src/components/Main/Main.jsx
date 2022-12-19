@@ -36,6 +36,7 @@ const Main = () => {
                         <div className="main-page">
                             <div className="container">
                                 <MainPage/>
+                                {!store.isPuttedFeedback && <Feedback/>}
                                 <Rules/>
                             </div>
                         </div>

@@ -11,7 +11,7 @@ import Tree2 from './../../img/2.png'
 import Tree3 from './../../img/3.png'
 import Tree4 from './../../img/4.png'
 import Tree5 from './../../img/5.png'
-import Tree6 from './../../img/7.png'
+import Tree6 from './../../img/Tree.gif'
 
 const photos = [{count: 0, img: Tree1}, {count: 1, img: Tree2}, {count: 2, img: Tree3},
     {count: 3, img: Tree4}, {count: 4, img: Tree5}, {count: 5, img: Tree6}]
@@ -33,6 +33,7 @@ const keyboardHandler = (e) => {
 
 const Game = () => {
     React.useEffect(() => {
+        window.scrollTo(0, 0)
         document.addEventListener('keydown', keyboardHandler)
         return () => {
             document.removeEventListener('keydown', keyboardHandler)
@@ -47,13 +48,15 @@ const Game = () => {
             </div>
             <div className={cn("main-page__column col2", {'keyboard-open': store.isKeyboardOpen})}>
                 <div className="main-page__text">
-                    <span>Сегодня 19 число, вас ждёт задание в телеграм канале Благополучие</span>
+                    <span>Сегодня 19 число, вас ждёт задание в телеграм канале <a
+                        href="https://t.me/+QnoomH1zp9k0OGUy" target="_blank">«Благополучие-INFO»</a></span>
                     <MessageAngle/>
                 </div>
                 <GameField/>
             </div>
             <div className="main-page__column  col3">
-                <img src={photos[store.countCorrectAnswersBefore]} alt="Ёлочка" className="game-tree"/>
+                <img src={photos[Math.min(store.countCorrectAnswersBefore, photos.length - 1)].img} alt="Ёлочка"
+                     className="game-tree"/>
             </div>
         </div>
     );

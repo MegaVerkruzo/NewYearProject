@@ -14,14 +14,15 @@ export const onDelete = () => {
 export const onEnter = async () => {
     store.setGameError('')
     try {
-        if (store.isCanSendAttempt && !store.isLoading) {
+        store.setRegError('')
+        if (store.isCanSendAttempt && !store.isLoading && !store.isFormLoading) {
             let s = ''
             for (let i = 0; i < store.wordLength; i++) {
                 s += store.attempts[store.currentAttempt.curRow * store.wordLength + i].letter
             }
-            store.setIsLoading(true)
+            store.setIsFormLoading(true)
             const data = await newAttempt(s)
-            store.setIsLoading(false)
+            store.setIsFormLoading(false)
             if (data.exception) {
                 if (data.exception === 'noUser') {
                     store.setGameError('Пользователь не зарегистрирован')
@@ -40,6 +41,7 @@ export const onEnter = async () => {
             }
         }
     } catch (e) {
+        store.setIsFormLoading(false)
         store.setGameError('Произошла ошибка сервера')
     }
 }
