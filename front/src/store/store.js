@@ -203,6 +203,9 @@ class Store {
         if (this.isSound && this.sound && this.isEnd) {
             this.sound?.play()
         }
+        if (this.currentAttempt.curRow >= 5) {
+            this.isEnd = true
+        }
     }
 
     setIsLoading(value) {
