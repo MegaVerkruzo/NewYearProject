@@ -1,9 +1,13 @@
 import React from 'react';
 import Tree from '../../img/Tree.png'
 import {ReactComponent as MessageAngle} from '../../img/Message_angle.svg'
+import {useNavigate} from "react-router-dom";
 
 const MainPage = () => {
+    let navigate = useNavigate()
+
     React.useEffect(() => {
+        navigate('/game')
         window.scrollTo(0, 0)
     }, [])
 
