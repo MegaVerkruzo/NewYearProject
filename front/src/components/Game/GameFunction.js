@@ -14,7 +14,6 @@ export const onDelete = () => {
 export const onEnter = async () => {
     store.setGameError('')
     try {
-        store.setRegError('')
         if (store.isCanSendAttempt && !store.isLoading && !store.isFormLoading) {
             let s = ''
             for (let i = 0; i < store.wordLength; i++) {
@@ -44,6 +43,7 @@ export const onEnter = async () => {
             }
         }
     } catch (e) {
+        console.log(e.message)
         store.setIsFormLoading(false)
         store.setGameError('Произошла ошибка сервера')
     }

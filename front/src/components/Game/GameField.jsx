@@ -16,7 +16,6 @@ const GameField = () => {
             try {
                 store.setIsFormLoading(true)
                 const data = await getAllInfo()
-                console.log(store)
                 store.setIsFormLoading(false)
                 if (data.exception === 'noUser') {
                     navigate('/login')
