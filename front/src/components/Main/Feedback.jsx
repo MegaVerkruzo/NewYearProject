@@ -59,7 +59,7 @@ const Feedback = () => {
                 </div> : <div className="reg-form feedback-form">
                     <div className="reg-form__wrapper">
                         <div className="thanks">
-                            <h2>Спасибо за участие в викторине! Итоги ищите в нашем telegram-канале.<br/><br/>До встречи в Новом году.<br/><br/>Ваше благополучие</h2>
+                            <h2>Спасибо за участие в викторине! Итоги ищите в нашем telegram-канале.<br/><br/>До встречи в Новом году.<br/><br/>Ваше Благополучие</h2>
                         </div>
                     </div>
                 </div>}
