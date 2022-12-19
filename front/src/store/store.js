@@ -138,7 +138,7 @@ class Store {
     }
 
     setSoundEffect(sound) {
-        this.sound = sound
+        this.sound = new Audio(sound)
     }
 
     setUntilNewYear(data) {

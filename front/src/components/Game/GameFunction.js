@@ -35,8 +35,9 @@ export const onEnter = async () => {
                     store.setGameError('Неверная длина слова')
                 }
             } else {
-                if (store.isSound) {
-                    store.sound.play()
+                if (store.isSound && store.sound) {
+                    console.log(store.sound)
+                    store.sound?.play()
                 }
                 store.setIsKeyBoardOpen(false)
                 store.setNewAttempt(data)
