@@ -47,8 +47,10 @@ const Main = () => {
                             <div className="container">
                                 <Game/>
                                 {store.isEnd && <Meaning/>}
-                                <Rules/>
-                                <HowToPlay/>
+                                {!store.isPuttedFeedback && <>
+                                    <Rules/>
+                                    <HowToPlay/>
+                                </>}
                             </div>
                             {store.isPuttedFeedback && <Feedback/>}
                         </div>
