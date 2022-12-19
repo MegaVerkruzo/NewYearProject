@@ -200,6 +200,9 @@ class Store {
             this.countCorrectAnswersBefore += 1
         }
         this.setKeyboardState(letters)
+        if (this.isSound && this.sound && this.isEnd) {
+            this.sound?.play()
+        }
     }
 
     setIsLoading(value) {
