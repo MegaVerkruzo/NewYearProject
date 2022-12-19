@@ -187,10 +187,11 @@ class Store {
         }
     }
 
-    setNewAttempt({letters, isCorrect, description}) {
+    setNewAttempt({letters, isCorrect, description, isPuttedFeedback}) {
         for (let i = 0; i < this.wordLength; i++) {
             this.attempts[this.currentAttempt.curRow * this.wordLength + i] = letters[i]
         }
+        this.isPuttedFeedback = isPuttedFeedback
         this.currentAttempt.curRow += 1
         this.currentAttempt.curCol = 0
         this.isEnd = isCorrect
