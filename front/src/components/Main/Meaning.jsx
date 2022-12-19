@@ -7,8 +7,8 @@ const Meaning = () => {
         <div className="main-page__meaning">
             <div className="meaning__title"><h1>Слово дня</h1></div>
             <div className="meaning__text">
-                <div style="color: red;">{store.description === "1" &&
-                    <div>
+                <div style={{color: "black"}}>{store.description === "1" &&
+                    <div style={{color: "black"}}>
                         Мы загадали приставку «Кибер», потому что в «Снабжении» проводится кибертурнир – ежегодное
                         командное соревнование для всех любителей виртуальных баталий.
                         <br/><br/>
@@ -36,7 +36,8 @@ const Meaning = () => {
                         Кстати, многим так понравилось соревноваться, что турнир «Благополучия» был продлен еще на
                         несколько недель по просьбам спортсменов.
                         <br/><br/>
-                        Новое слово ищите в telegram-канале завтра в 16.00 мск!</div>}</div>
+                        Новое слово ищите в telegram-канале завтра в 16.00 мск!</div>}
+                </div>
                 <MessageAngle/>
             </div>
         </div>
