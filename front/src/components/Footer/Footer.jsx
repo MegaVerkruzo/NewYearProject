@@ -41,7 +41,7 @@ const Footer = () => {
                         </div>
                         <div className="footer__column">
                             <div className="footer__text">
-                                <a href="https://app.simplenote.com/p/tmCzZ4" target="_blank">Правила игры</a>
+                                <a href="https://app.simplenote.com/p/0RWqgQ" target="_blank">Правила игры</a>
                             </div>
                         </div>
                         <div className="footer__column">
@@ -69,7 +69,7 @@ const Footer = () => {
                                         Меню
                                     </div>
                                     <div className="footer__text">
-                                        <a href="https://app.simplenote.com/p/tmCzZ4" target="_blank">Правила игры</a>
+                                        <a href="https://app.simplenote.com/p/0RWqgQ" target="_blank">Правила игры</a>
                                     </div>
                                 </div>
 

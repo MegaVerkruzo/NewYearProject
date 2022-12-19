@@ -39,7 +39,7 @@ const Feedback = () => {
                 {!store.isFeedbackJustSent ? <div className="reg-form feedback-form">
                     <div className="reg-form__wrapper">
                         <div className="reg-form__title">
-                            <h3>Для участия в розыгрыше супер-призов, ответьте на вопрос Деду Морозу:
+                            <h3>Для участия в розыгрыше супер-призов, ответьте на вопрос:
                                 Какое мероприятие (активность, обучение и т.д.) нужно провести в рамках программы
                                 «Благополучие» в следующем году?</h3>
                         </div>

@@ -42,7 +42,7 @@ const MainPage = () => {
                         href="https://t.me/+QnoomH1zp9k0OGUy" target="_blank">«Благополучие-INFO»</a></span>
                             <MessageAngle/>
                         </div>
-                        <a href="https://app.simplenote.com/p/tmCzZ4" target="_blank" className="main-page__btn">К
+                        <a href="https://app.simplenote.com/p/0RWqgQ" target="_blank" className="main-page__btn">К
                             правилам</a>
                     </div>
                 </div>
