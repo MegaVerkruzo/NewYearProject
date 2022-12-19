@@ -50,7 +50,7 @@ const Game = () => {
             </div>
             <div className={cn("main-page__column col2", {'keyboard-open': store.isKeyboardOpen})}>
                 <div className="main-page__text">
-                    <span>Сегодня 19 число, вас ждёт задание в телеграм канале <a
+                    <span>Сегодня {new Date().getDate()} декабря, вас ждёт задание в телеграм канале <a
                         href="https://t.me/+QnoomH1zp9k0OGUy" target="_blank">«Благополучие-INFO»</a></span>
                     <MessageAngle/>
                 </div>
