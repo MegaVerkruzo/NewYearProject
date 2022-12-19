@@ -7,8 +7,8 @@ const Meaning = () => {
         <div className="main-page__meaning">
             <div className="meaning__title"><h1>Слово дня</h1></div>
             <div className="meaning__text">
-                <div>{store.description === "1" &&
-                    <div color={"black"}>
+                <div style="color: red;">{store.description === "1" &&
+                    <div>
                         Мы загадали приставку «Кибер», потому что в «Снабжении» проводится кибертурнир – ежегодное
                         командное соревнование для всех любителей виртуальных баталий.
                         <br/><br/>
