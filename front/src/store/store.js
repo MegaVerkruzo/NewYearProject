@@ -16,14 +16,13 @@ class Store {
 
     currentAttempt = {curRow: 0, curCol: 0}
     wordLength = 5
-    postLink = ''
     description = null
     isEnd = false
     isPuttedFeedback = false
     attempts = Array(this.wordLength * 5).fill({letter: '', state: ''})
 
     isSound = true
-    music = null
+    sound = null
     regError = ''
     gameError = ''
     feedbackError = ''
@@ -113,7 +112,6 @@ class Store {
                     currentLine,
                     description,
                     isEnd,
-                    postLink,
                     wordLength,
                     isPuttedFeedback,
                     countCorrectAnswersBefore
@@ -126,7 +124,6 @@ class Store {
         this.currentAttempt = {curRow: currentLine, curCol: 0}
         this.description = description
         this.isEnd = isEnd
-        this.postLink = postLink
         this.wordLength = wordLength
         this.isPuttedFeedback = isPuttedFeedback
         this.countCorrectAnswersBefore = countCorrectAnswersBefore
@@ -138,7 +135,10 @@ class Store {
 
     setToggleIsSound() {
         this.isSound = !this.isSound
-        // this.isSound ? this.music.play() : this.music.pause()
+    }
+
+    setSoundEffect(sound) {
+        this.sound = sound
     }
 
     setUntilNewYear(data) {
@@ -187,13 +187,14 @@ class Store {
         }
     }
 
-    setNewAttempt({letters, isCorrect}) {
+    setNewAttempt({letters, isCorrect, description}) {
         for (let i = 0; i < this.wordLength; i++) {
             this.attempts[this.currentAttempt.curRow * this.wordLength + i] = letters[i]
         }
         this.currentAttempt.curRow += 1
         this.currentAttempt.curCol = 0
         this.isEnd = isCorrect
+        this.description = description
         this.isCanSendAttempt = false
         if (this.isEnd) {
             this.countCorrectAnswersBefore += 1

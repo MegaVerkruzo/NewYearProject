@@ -12,6 +12,7 @@ import Tree3 from './../../img/3.png'
 import Tree4 from './../../img/4.png'
 import Tree5 from './../../img/5.png'
 import Tree6 from './../../img/Tree.gif'
+import sound from './../../audio/magic_sound.mp3'
 
 const photos = [{count: 0, img: Tree1}, {count: 1, img: Tree2}, {count: 2, img: Tree3},
     {count: 3, img: Tree4}, {count: 4, img: Tree5}, {count: 5, img: Tree6}]
@@ -34,6 +35,7 @@ const keyboardHandler = (e) => {
 const Game = () => {
     React.useEffect(() => {
         window.scrollTo(0, 0)
+        store.setSoundEffect(sound)
         document.addEventListener('keydown', keyboardHandler)
         return () => {
             document.removeEventListener('keydown', keyboardHandler)

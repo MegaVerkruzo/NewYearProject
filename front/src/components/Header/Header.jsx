@@ -10,23 +10,10 @@ import Timer from "./Timer";
 // import Music from "../../audio/AngelsOfLight.mp3";
 import cn from "classnames";
 
-// const onSetMusic = () => store.setMusic(Music)
 
 const Header = () => {
-    // const ref = React.useRef(null);
-
-    // React.useEffect(() => {
-    // ref.current.play()
-    // ref.current.addEventListener('ended', onSetMusic);
-    // return () => {
-    //     ref.current.removeEventListener('ended', onSetMusic);
-    // };
-    // }, [])
-
     const toggleIsSound = () => {
-        // console.log(ref.current)
         store.setToggleIsSound()
-        // store.isSound ? ref.current.play() : ref.current.pause()
     }
 
     const onMenuOpen = () => {

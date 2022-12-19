@@ -16,6 +16,7 @@ const GameField = () => {
             try {
                 store.setIsFormLoading(true)
                 const data = await getAllInfo()
+                console.log(store)
                 store.setIsFormLoading(false)
                 if (data.exception === 'noUser') {
                     navigate('/login')
@@ -33,7 +34,7 @@ const GameField = () => {
 
     return (
         <div className="game-field" id="game-field">
-            <div className={"game-field__wrapper"}>
+            <div className={cn("game-field__wrapper", {"col8": store.wordLength === 8})}>
                 {
                     store.attempts.map((item, index) =>
                         <div key={index}

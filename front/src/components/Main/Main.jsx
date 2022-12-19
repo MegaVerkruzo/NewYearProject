@@ -51,7 +51,7 @@ const Main = () => {
                                 <Rules/>
                                 <HowToPlay/>
                             </div>
-                            {!store.isPuttedFeedback && <Feedback/>}
+                            {store.isPuttedFeedback && <Feedback/>}
                         </div>
                     }/>
                 </Routes>
