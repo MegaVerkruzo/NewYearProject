@@ -9,7 +9,7 @@ const MainPage = () => {
     React.useEffect(() => {
         navigate('/game')
         window.scrollTo(0, 0)
-    }, [])
+    }, [navigate])
 
     return (<>
             {window.innerWidth > 672 ?

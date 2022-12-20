@@ -1,5 +1,3 @@
-import React from "react";
-
 export const initialGameData = JSON.parse(`{
   "letters": [
     {
@@ -73,21 +71,8 @@ export const initialGameData = JSON.parse(`{
 export const russianLetters = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н',
     'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ь', 'ы', 'ъ', 'э', 'ю', 'я']
 
-const keyboardData = [
-    [
-        {id: 1, letter: 'й'}, {id: 2, letter: 'ц'}, {id: 3, letter: 'у'}, {id: 4, letter: 'к'},
-        {id: 5, letter: 'е'}, {id: 6, letter: 'н'}, {id: 7, letter: 'г'}, {id: 8, letter: 'ш'},
-        {id: 9, letter: 'щ'}, {id: 10, letter: 'з'}, {id: 11, letter: 'х'}, {id: 12, letter: 'ъ'}],
-    [
-        {id: 13, letter: 'ф'}, {id: 14, letter: 'ы'}, {id: 15, letter: 'в'}, {id: 16, letter: 'а'},
-        {id: 17, letter: 'п'}, {id: 18, letter: 'р'}, {id: 19, letter: 'о'}, {id: 20, letter: 'л'},
-        {id: 21, letter: 'д'}, {id: 22, letter: 'ж'}, {id: 23, letter: 'э'}],
-    [
-        {id: 52, letter: '✓'}, {id: 24, letter: 'я'}, {id: 25, letter: 'ч'}, {id: 26, letter: 'с'}, {
-        id: 27,
-        letter: 'м'
-    },
-        {id: 28, letter: 'и'}, {id: 29, letter: 'т'}, {id: 30, letter: 'ь'}, {id: 31, letter: 'б'},
-        {id: 32, letter: 'ю'}, {id: 51, letter: '🠔'}]
-]
+
+export const photos = [{count: 0, img: 'https://i.postimg.cc/m2pGXc00/1.png'}, {count: 1, img: 'https://i.postimg.cc/YSYKCdhH/2.png'}, {count: 2, img: 'https://i.postimg.cc/T1kB4SHr/3.png'},
+    {count: 3, img: 'https://i.postimg.cc/DZP9qmrp/4.png'}, {count: 4, img: 'https://i.postimg.cc/yx6wnBn1/5.png'}, {count: 5, img: 'https://i.postimg.cc/L6brkcPS/Tree.gif'}]
+
 
