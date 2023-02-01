@@ -41,7 +41,7 @@ Now you may check registration and login.
 If you want to play in game wordle. You need to fill table russian_words with russian words (I have unpublished nodejs script for this)
 And you need to fill table answers.
 
-![image with example of filled table answers](https://imgur.com/a/bii1UKW)
+![image with example of filled table answers](https://i.imgur.com/2bGMqlI.png)
 
 Then if you has these things, you need to know that time in answers table is UTC+0, so you need to paste this time.
 Time between answers is 1 minutes because it's time is default in Common.java  
