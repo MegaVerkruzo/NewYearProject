@@ -1,0 +1,89 @@
+server {
+        listen 80;
+        server_name www.blago2023.ru blago2023.ru;
+        return 301 https://blago2023.ru$request_uri;
+}
+
+server {
+        listen 80;
+        server_name http://blago2023.ru;
+        return 301 https://blago2023.ru$request_uri;
+}
+
+# server {
+#         listen 80 default_server;
+#         listen [::]:80 default_server;
+#
+#         root /home/MegaVerkruzo/NewYearProject/front/static;
+#
+#         index index.html index.htm;
+#
+#         server_name blago2023.ru;
+#
+#         location / {
+#                 try_files $uri $uri/index.html;
+#         }
+#
+#
+# }
+
+server {
+
+    server_name blago2023.ru; # managed by Certbot
+
+        gzip on;
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_http_version 1.1;
+    gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript application/javascript;
+
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/blago2023.ru/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/blago2023.ru/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+    location / {
+         root /home/MegaVerkruzo/NewYearProject/front/build;
+        index index.html;
+                try_files $uri $uri/ /index.html;
+
+    }
+
+    location /api/ {
+       proxy_pass http://127.0.0.1:8080;
+        proxy_set_header Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        client_max_body_size 50M;
+    }
+
+    location /static/ {
+         root /home/MegaVerkruzo/NewYearProject/front/build;
+        index index.html;
+        expires 30d;
+        client_max_body_size 50M;
+    }
+
+    location /media/ {
+        root /home/MegaVerkruzo/NewYearProject/front/build/static/media;
+        expires 30d;
+        client_max_body_size 50M;
+    }
+}
+
+# server {
+#     if ($host = blago2023.ru) {
+#         return 301 https://$host$request_uri;
+#     } # managed by Certbot
+#
+#
+#         listen 80 ;
+#         listen [::]:80 ;
+#     server_name blago2023.ru;
+#       return 301 https://blago2023.ru$request_uri;
+#     return 404; # managed by Certbot
+# }
+          
