@@ -6,6 +6,7 @@ import java.util.*;
 
 public class Common {
     // :APPROVED
+
     public static Map<String, Object> pairToMap(String a, Object b) {
         Map<String, Object> map = new HashMap<>();
         map.put(a, b);
