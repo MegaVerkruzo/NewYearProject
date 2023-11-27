@@ -1,4 +1,4 @@
-package com.commercial.backend.db;
+package com.commercial.backend.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +13,7 @@ import java.util.Objects;
 @PropertySource("classpath:database.properties")
 public class DBConfig {
 
+    // :TODO change environment thing
     Environment env;
 
     public DBConfig(Environment env) {
