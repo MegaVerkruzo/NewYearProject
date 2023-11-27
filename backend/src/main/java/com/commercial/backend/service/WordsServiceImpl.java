@@ -1,25 +1,30 @@
 package com.commercial.backend.service;
 
-import com.commercial.backend.db.RussianWordsRepository;
-import com.commercial.backend.model.RussianWord;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import static com.commercial.backend.Common.getWordInUTF8;
 
 @Service
 public class WordsServiceImpl implements WordsService {
-    private RussianWordsRepository repository;
+    private final Set<String> words;
 
-    public WordsServiceImpl(RussianWordsRepository repository) {
-        this.repository = repository;
+    public WordsServiceImpl() throws URISyntaxException, IOException {
+        this.words = getContent();
     }
+
     @Override
     public boolean isWordExists(String word) {
-        return repository.isWordExists(word);
+        return words.contains(word);
+    }
+
+    private Set<String> getContent() throws URISyntaxException, IOException {
+        var is = WordsServiceImpl.class.getClassLoader().getResourceAsStream("russian_utf_norm.txt");
+        return Arrays.stream(new String(is.readAllBytes(), StandardCharsets.UTF_8).split("\n")).collect(Collectors.toSet());
     }
 }
