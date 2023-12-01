@@ -3,7 +3,7 @@ services:
   SpringBoot:
     container_name: springboot
     image: 'docker-spring-boot-postgres:latest'
-    restart: always
+    restart: on-failure
     build:
       context: ./
       dockerfile: Dockerfile
@@ -19,7 +19,7 @@ services:
 
   PostgresSQL:
     image: postgres
-    restart: always
+    restart: on-failure
     build:
       context: ./
       dockerfile: Dockerfile.postgres
