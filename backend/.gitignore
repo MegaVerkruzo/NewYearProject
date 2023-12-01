@@ -38,3 +38,6 @@ out/
 
 ### PostgreSQL ###
 postgres-data/
+
+### Docker passwords ###
+*.env

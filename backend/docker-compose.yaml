@@ -1,8 +1,6 @@
 version: "3"
 services:
   SpringBoot:
-    container_name: springboot
-    # Here I choose invailable image because I want always use my DockerFile build
     image: 'scratch'
     restart: on-failure
     build:
@@ -12,23 +10,13 @@ services:
       - "8080:8080"
     depends_on:
       - PostgresSQL
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgresSQL:5432/postgres
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=sp3tJyHSn2Ay
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
   PostgresSQL:
-    image: postgres
+    image: 'postgres:15'
     restart: on-failure
-    build:
-      context: ./
-      dockerfile: Dockerfile.postgres
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: sp3tJyHSn2Ay
+    env_file:
+      - production.env
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
