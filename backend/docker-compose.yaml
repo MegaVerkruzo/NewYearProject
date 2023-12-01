@@ -3,7 +3,7 @@ services:
   SpringBoot:
     container_name: springboot
     # Here I choose invailable image because I want always use my DockerFile build
-    image: 'spring-boot-java'
+    image: 'scratch'
     restart: on-failure
     build:
       context: ./
