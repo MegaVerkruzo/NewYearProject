@@ -1,13 +1,24 @@
 version: "3"
 services:
-  SpringBoot:
+  Backend:
     image: 'scratch'
     restart: on-failure
     build:
       context: ./backend/
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.backend
     ports:
       - "8080:8080"
+    depends_on:
+      - PostgresSQL
+
+  Admin:
+    image: 'scratch-image'
+    restart: on-failure
+    build:
+      context: ./admin/
+      dockerfile: Dockerfile.admin
+    ports:
+      - "8000:8000"
     depends_on:
       - PostgresSQL
 
