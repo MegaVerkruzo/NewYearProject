@@ -4,7 +4,7 @@ services:
     image: 'scratch'
     restart: on-failure
     build:
-      context: ./
+      context: ./backend/
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
@@ -17,6 +17,6 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - production.env
+      - postgres/db.env
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ./postgres/postgres-data:/var/lib/postgresql/data
