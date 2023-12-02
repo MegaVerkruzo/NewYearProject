@@ -1,0 +1,22 @@
+version: "3"
+services:
+  SpringBoot:
+    image: 'scratch'
+    restart: on-failure
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - PostgresSQL
+
+  PostgresSQL:
+    image: 'postgres:15'
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    env_file:
+      - postgres/db.env
+    volumes:
+      - ./postgres/postgres-data:/var/lib/postgresql/data

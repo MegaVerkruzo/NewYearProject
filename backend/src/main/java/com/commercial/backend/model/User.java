@@ -4,42 +4,46 @@ import com.commercial.backend.security.JWTUtil;
 import com.commercial.backend.security.PasswordEncoder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name="users", schema = "public")
+@Table(name = "users", schema = "public")
 @JsonIgnoreProperties
 public class User {
 
     private static Long size = 0L;
     @Id
+    @Column(name = "id")
     private Long id;
 
-    @Column(name="phone")
+    @Column(name = "phone")
     private String phone;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name="surname")
+    @Column(name = "surname")
     private String surname;
 
-    @Column(name="middle_name")
+    @Column(name = "middle_name")
     private String middleName;
 
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name="place")
+    @Column(name = "place")
     private String place;
 
-    @Column(name="password_hash")
+    @Column(name = "password_hash")
     private String passwordHash;
 
-    @Column(name="token")
+    @Column(name = "token")
     private String token;
 
-    @Column(name="feedback")
+    @Column(name = "feedback")
     private String feedback;
 
     public User() {
@@ -72,79 +76,39 @@ public class User {
     }
 
     public void setSize(Long size) {
-        this.size = size;
+        User.size = size;
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getSurname() {
         return surname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public String getMiddleName() {
         return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getPlace() {
         return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
     }
 
     public String getPasswordHash() {
         return passwordHash;
     }
 
-    public void setPassword(String rawPassword) {
-        this.passwordHash = PasswordEncoder.getHash(rawPassword);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
     public String getToken() {
         return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
     }
 
     public String getFeedback() {

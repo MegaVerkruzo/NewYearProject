@@ -1,2 +1,5 @@
 .idea
 backend/postgres-data/
+
+# For hiding passports
+**/*.env

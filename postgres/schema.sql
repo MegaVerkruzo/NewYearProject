@@ -1,5 +1,4 @@
-drop table IF EXISTS users;
-create TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     id            SERIAL PRIMARY KEY,
     phone         VARCHAR(15) UNIQUE  NOT NULL,
@@ -13,7 +12,7 @@ create TABLE users
     feedback      TEXT
 );
 
-create TABLE attempts
+CREATE TABLE IF NOT EXISTS attempts
 (
     id     SERIAL PRIMARY KEY,
     phone  VARCHAR(15)  NOT NULL,
@@ -21,16 +20,10 @@ create TABLE attempts
     date TIMESTAMP       NOT NULL
 );
 
-create TABLE answers
+CREATE TABLE IF NOT EXISTS answers
 (
     id          SERIAL PRIMARY KEY,
     word        VARCHAR(200) NOT NULL,
     date        TIMESTAMP NOT NULL,
     description TEXT
-);
-
-create TABLE russian_words
-(
-    id   SERIAL PRIMARY KEY,
-    word VARCHAR(200)
 );
