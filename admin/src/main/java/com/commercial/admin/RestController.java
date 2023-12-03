@@ -9,4 +9,3 @@ public class RestController {
         return 5;
     }
 }
-
