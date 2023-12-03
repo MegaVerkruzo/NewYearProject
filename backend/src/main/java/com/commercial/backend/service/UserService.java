@@ -4,8 +4,6 @@ import com.commercial.backend.db.UsersRepository;
 import com.commercial.backend.model.TokenException;
 import com.commercial.backend.model.User;
 import com.commercial.backend.security.PasswordEncoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +11,13 @@ import java.util.Map;
 
 import static com.commercial.backend.Common.pairToMap;
 import static com.commercial.backend.model.AuthException.CORRECT;
+import static com.commercial.backend.model.AuthException.HUGE_SIZE_FIELD;
 import static com.commercial.backend.model.AuthException.NO_USER;
+import static com.commercial.backend.model.AuthException.USER_EXISTS;
 
 @Service
 public class UserService implements IUserService {
     private final UsersRepository repository;
-
-    private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     UserService(UsersRepository usersRepository) {
         this.repository = usersRepository;
@@ -30,17 +28,23 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Pair<String, String> addNewUserAndGetTokenWithHistory(User user) {
+    public TokenException addNewUserAndGetTokenWithHistory(User user) {
         User searchUser = repository.findUserByPhone(user.getPhone());
-        if (searchUser == null) {
-            if (checkFieldOnSize(user.getPhone()) && checkFieldOnSize(user.getName()) && checkFieldOnSize(user.getSurname()) && checkFieldOnSize(user.getMiddleName()) && checkFieldOnSize(user.getEmail()) && checkFieldOnSize(user.getPlace())) {
-                repository.insert(user);
-                return Pair.of(user.getToken(), "");
-            } else {
-                return Pair.of("", "hugeSizeField");
-            }
+        if (searchUser != null) {
+            return new TokenException(null, USER_EXISTS);
+        }
+
+        if (checkFieldOnSize(user.getPhone())
+                && checkFieldOnSize(user.getName())
+                && checkFieldOnSize(user.getSurname())
+                && checkFieldOnSize(user.getMiddleName())
+                && checkFieldOnSize(user.getEmail())
+                && checkFieldOnSize(user.getPlace())
+        ) {
+            repository.insert(user);
+            return new TokenException(user.getToken(), CORRECT);
         } else {
-            return Pair.of("", "userExists");
+            return new TokenException(null, HUGE_SIZE_FIELD);
         }
     }
 

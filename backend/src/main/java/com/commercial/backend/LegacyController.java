@@ -1,13 +1,10 @@
 package com.commercial.backend;
 
-import com.commercial.backend.db.AnswersRepository;
 import com.commercial.backend.model.Answer;
-import com.commercial.backend.model.TokenException;
 import com.commercial.backend.model.User;
 import com.commercial.backend.service.AnswersService;
 import com.commercial.backend.service.IAttemptService;
 import com.commercial.backend.service.IUserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
@@ -26,40 +23,17 @@ import static com.commercial.backend.Common.pairToMap;
 
 @RestController
 @RequestMapping("api")
-public class MyController {
+public class LegacyController {
     private final IUserService userService;
     private final IAttemptService attemptService;
     private final AnswersService answersService;
-    private final AnswersRepository answersRepository;
 
-    private final Logger logger = LoggerFactory.getLogger(MyController.class);
+    private final Logger logger = LoggerFactory.getLogger(LegacyController.class);
 
-    public MyController(AnswersRepository answersRepository, IUserService userService, IAttemptService attemptService, AnswersService answersService) {
-        this.answersRepository = answersRepository;
+    public LegacyController(IUserService userService, IAttemptService attemptService, AnswersService answersService) {
         this.userService = userService;
         this.attemptService = attemptService;
         this.answersService = answersService;
-    }
-
-    @PostMapping(value = "/auth/register", consumes = "application/json", produces = "application/json")
-    public Map<String, Object> registerNewUser(@RequestBody Map<String, String> json) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        User user = new User(json.get("phone"), json.get("name"), json.get("surname"), json.get("middleName"), json.get("email"), json.get("place"), json.get("password"), false);
-
-        logger.info("Read JSON");
-        Map<String, Object> result = new HashMap<>();
-        Pair<String, String> tokenWithHistory = userService.addNewUserAndGetTokenWithHistory(user);
-        result.put("token", tokenWithHistory.getFirst());
-        result.put("exception", tokenWithHistory.getSecond());
-        return result;
-    }
-
-    @PostMapping(value = "/auth/login", consumes = "application/json", produces = "application/json")
-    public TokenException loginUser(@RequestBody Map<String, String> json) {
-        User user = new User();
-        user.loginUser(json.get("phone"));
-        logger.info("Read JSON\n" + user);
-        return userService.getTokenWithCheckingPassword(user, json.get("password"));
     }
 
     @GetMapping(value = "/check", produces = "application/json")
@@ -86,8 +60,7 @@ public class MyController {
             return pairToMap("exception", "noUser");
         }
 
-        Map<String, Object> result = attemptService.getAllInfo(user);
-        return result;
+        return attemptService.getAllInfo(user);
     }
 
 
@@ -126,8 +99,7 @@ public class MyController {
             return pairToMap("exception", "wrongSize");
         }
 
-        Map<String, Object> result = attemptService.addNewWord(user, answer, word, offsetDateTime);
-        return result;
+        return attemptService.addNewWord(user, answer, word, offsetDateTime);
     }
 
     // :APPROVED
@@ -145,11 +117,11 @@ public class MyController {
 
         String feedback = json.get("feedback");
         logger.info("Read feedback " + feedback);
-        if (feedback == null || feedback.length() == 0) {
+        if (feedback == null || feedback.isBlank()) {
             return pairToMap("exception", "noFeedback");
         }
 
-        if (user.getFeedback() != null && user.getFeedback().length() > 0) {
+        if (user.getFeedback() != null && !user.getFeedback().isBlank()) {
             return pairToMap("exception", "hadFeedback");
         }
 

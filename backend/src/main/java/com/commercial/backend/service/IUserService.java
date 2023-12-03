@@ -7,7 +7,7 @@ import org.springframework.data.util.Pair;
 import java.util.Map;
 
 public interface IUserService {
-    Pair<String, String> addNewUserAndGetTokenWithHistory(User user);
+    TokenException addNewUserAndGetTokenWithHistory(User user);
 
     TokenException getTokenWithCheckingPassword(User user, String rawPassword);
 
