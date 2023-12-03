@@ -1,7 +1,8 @@
 package com.commercial.backend.service;
 
-import com.commercial.backend.model.User;
 import com.commercial.backend.db.UsersRepository;
+import com.commercial.backend.model.TokenException;
+import com.commercial.backend.model.User;
 import com.commercial.backend.security.PasswordEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 import static com.commercial.backend.Common.pairToMap;
+import static com.commercial.backend.model.AuthException.CORRECT;
+import static com.commercial.backend.model.AuthException.NO_USER;
 
 @Service
 public class UserService implements IUserService {
@@ -42,13 +45,13 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Pair<String, String> getTokenWithCheckingPassword(User user, String rawPassword) {
+    public TokenException getTokenWithCheckingPassword(User user, String rawPassword) {
         User searchUser = repository.findUserByPhone(user.getPhone());
         if (searchUser == null || !PasswordEncoder.checkHash(rawPassword, searchUser.getPasswordHash())) {
-            return Pair.of("", "noUser");
+            return new TokenException(null, NO_USER);
         }
 
-        return Pair.of(user.getToken(), "");
+        return new TokenException(user.getToken(), CORRECT);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.commercial.backend;
 
 import com.commercial.backend.db.AnswersRepository;
 import com.commercial.backend.model.Answer;
+import com.commercial.backend.model.TokenException;
 import com.commercial.backend.model.User;
 import com.commercial.backend.service.AnswersService;
 import com.commercial.backend.service.IAttemptService;
@@ -10,11 +11,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.util.Pair;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.commercial.backend.Common.pairToMap;
 
@@ -49,15 +55,11 @@ public class MyController {
     }
 
     @PostMapping(value = "/auth/login", consumes = "application/json", produces = "application/json")
-    public Map<String, Object> loginUser(@RequestBody Map<String, String> json) {
+    public TokenException loginUser(@RequestBody Map<String, String> json) {
         User user = new User();
         user.loginUser(json.get("phone"));
         logger.info("Read JSON\n" + user);
-        Map<String, Object> result = new HashMap<>();
-        Pair<String, String> pair = userService.getTokenWithCheckingPassword(user, json.get("password"));
-        result.put("token", pair.getFirst());
-        result.put("exception", pair.getSecond());
-        return result;
+        return userService.getTokenWithCheckingPassword(user, json.get("password"));
     }
 
     @GetMapping(value = "/check", produces = "application/json")
