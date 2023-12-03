@@ -1,10 +1,7 @@
 package com.commercial.backend;
 
-import com.commercial.backend.model.Answer;
 import com.commercial.backend.model.TokenException;
 import com.commercial.backend.model.User;
-import com.commercial.backend.service.AnswersService;
-import com.commercial.backend.service.IAttemptService;
 import com.commercial.backend.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.OffsetDateTime;
 import java.util.Map;
 
 import static com.commercial.backend.Common.pairToMap;
@@ -24,15 +20,11 @@ import static com.commercial.backend.Common.pairToMap;
 @RequestMapping("api")
 public class LegacyController {
     private final IUserService userService;
-    private final IAttemptService attemptService;
-    private final AnswersService answersService;
 
     private final Logger logger = LoggerFactory.getLogger(LegacyController.class);
 
-    public LegacyController(IUserService userService, IAttemptService attemptService, AnswersService answersService) {
+    public LegacyController(IUserService userService) {
         this.userService = userService;
-        this.attemptService = attemptService;
-        this.answersService = answersService;
     }
 
     @GetMapping(value = "/check", produces = "application/json")
@@ -41,63 +33,6 @@ public class LegacyController {
         return userService.checkTokenWithException(token);
     }
 
-    // :APPROVED
-    @GetMapping(value = "/game", produces = "application/json")
-    public Map<String, Object> trying(@RequestHeader("authorization") String token) {
-        if (token == null) {
-            return pairToMap("exception", "noUser");
-        }
-
-        User user = userService.getUserByToken(token);
-        logger.info("Read user " + user);
-
-        if (user == null) {
-            return pairToMap("exception", "noUser");
-        }
-
-        return attemptService.getAllInfo(user);
-    }
-
-
-    // :APPROVED
-    @PostMapping(value = "/game/new_attempt", consumes = "application/json", produces = "application/json")
-    public Map<String, Object> newAttempt(@RequestHeader("authorization") String token, @RequestBody Map<String, String> json) {
-        if (token == null) {
-            return pairToMap("exception", "noUser");
-        }
-
-        User user = userService.getUserByToken(token);
-        logger.info("Read user " + user);
-
-        if (user == null) {
-            return pairToMap("exception", "noUser");
-        }
-        if (json == null) {
-            return pairToMap("exception", "uncorrectedData");
-        }
-
-        String word = json.get("word");
-        logger.info("Read word " + word);
-        if (word == null) {
-            return pairToMap("exception", "uncorrectedData");
-        }
-
-        OffsetDateTime offsetDateTime = OffsetDateTime.now();
-        Answer answer = answersService.findPreviousAnswer(offsetDateTime);
-        logger.info("answer: " + answer);
-
-        if (answer == null) {
-            return pairToMap("exception", "uncorrectedData");
-        }
-
-        if (answer.getWord().length() != word.length()) {
-            return pairToMap("exception", "wrongSize");
-        }
-
-        return attemptService.addNewWord(user, answer, word, offsetDateTime);
-    }
-
-    // :APPROVED
     @PostMapping(value = "/feedback", consumes = "application/json", produces = "application/json")
     public Map<String, Object> addFeedback(@RequestHeader("authorization") String token, @RequestBody Map<String, String> json) {
         if (token == null) {

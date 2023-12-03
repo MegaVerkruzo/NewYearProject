@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 import static com.commercial.backend.Common.pairToMap;
-import static com.commercial.backend.model.AuthException.CORRECT;
-import static com.commercial.backend.model.AuthException.HUGE_SIZE_FIELD;
-import static com.commercial.backend.model.AuthException.NO_USER;
-import static com.commercial.backend.model.AuthException.USER_EXISTS;
+import static com.commercial.backend.model.ApiException.hugeSizeField;
+import static com.commercial.backend.model.ApiException.noUser;
+import static com.commercial.backend.model.ApiException.userExists;
 
 @Service
 public class UserService implements IUserService {
@@ -30,7 +29,7 @@ public class UserService implements IUserService {
     public TokenException addNewUserAndGetTokenWithHistory(User user) {
         User searchUser = repository.findUserByPhone(user.getPhone());
         if (searchUser != null) {
-            return new TokenException(null, USER_EXISTS);
+            return new TokenException(null, userExists);
         }
 
         if (checkFieldOnSize(user.getPhone())
@@ -41,9 +40,9 @@ public class UserService implements IUserService {
                 && checkFieldOnSize(user.getPlace())
         ) {
             repository.insert(user);
-            return new TokenException(user.getToken(), CORRECT);
+            return new TokenException(user.getToken(), null);
         } else {
-            return new TokenException(null, HUGE_SIZE_FIELD);
+            return new TokenException(null, hugeSizeField);
         }
     }
 
@@ -51,16 +50,16 @@ public class UserService implements IUserService {
     public TokenException getTokenWithCheckingPassword(User user, String rawPassword) {
         User searchUser = repository.findUserByPhone(user.getPhone());
         if (searchUser == null || !PasswordEncoder.checkHash(rawPassword, searchUser.getPasswordHash())) {
-            return new TokenException(null, NO_USER);
+            return new TokenException(null, noUser);
         }
 
-        return new TokenException(user.getToken(), CORRECT);
+        return new TokenException(user.getToken(), null);
     }
 
     @Override
     public TokenException checkTokenWithException(String token) {
         User searchUser = repository.findUserByToken(token);
-        return searchUser == null ? new TokenException(null, NO_USER) : new TokenException(token, CORRECT);
+        return searchUser == null ? new TokenException(null, noUser) : new TokenException(token, null);
     }
 
     @Override
