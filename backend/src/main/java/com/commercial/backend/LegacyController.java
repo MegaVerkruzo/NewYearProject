@@ -1,13 +1,13 @@
 package com.commercial.backend;
 
 import com.commercial.backend.model.Answer;
+import com.commercial.backend.model.TokenException;
 import com.commercial.backend.model.User;
 import com.commercial.backend.service.AnswersService;
 import com.commercial.backend.service.IAttemptService;
 import com.commercial.backend.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.util.Pair;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.Map;
 
 import static com.commercial.backend.Common.pairToMap;
@@ -37,13 +36,9 @@ public class LegacyController {
     }
 
     @GetMapping(value = "/check", produces = "application/json")
-    public Map<String, Object> check(@RequestHeader("authorization") String token) {
+    public TokenException check(@RequestHeader("authorization") String token) {
         logger.info("Read HEADER\ntoken: " + token);
-        Map<String, Object> result = new HashMap<>();
-        Pair<String, String> pair = userService.checkTokenWithException(token);
-        result.put("token", pair.getFirst());
-        result.put("exception", pair.getSecond());
-        return result;
+        return userService.checkTokenWithException(token);
     }
 
     // :APPROVED

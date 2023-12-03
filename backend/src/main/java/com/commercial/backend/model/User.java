@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "users", schema = "public")
 @JsonIgnoreProperties
+// :TODO Think about get&setters, because lombok maybe is decision
 public class User {
 
     private static Long size = 0L;
@@ -50,6 +51,7 @@ public class User {
         this.id = size;
     }
 
+    // :TODO Make static method
     public void loginUser(String phone) {
         size++;
         this.id = size;

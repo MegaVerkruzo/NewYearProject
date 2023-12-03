@@ -4,7 +4,6 @@ import com.commercial.backend.db.UsersRepository;
 import com.commercial.backend.model.TokenException;
 import com.commercial.backend.model.User;
 import com.commercial.backend.security.PasswordEncoder;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -59,13 +58,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Pair<String, String> checkTokenWithException(String token) {
+    public TokenException checkTokenWithException(String token) {
         User searchUser = repository.findUserByToken(token);
-        if (searchUser == null) {
-            return Pair.of("", "noUser");
-        } else {
-            return Pair.of(token, "");
-        }
+        return searchUser == null ? new TokenException(null, NO_USER) : new TokenException(token, CORRECT);
     }
 
     @Override

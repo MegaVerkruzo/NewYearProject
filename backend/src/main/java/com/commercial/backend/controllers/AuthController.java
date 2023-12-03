@@ -24,9 +24,19 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
+    // :TODO make autobox RequestBody
     public TokenException registerNewUser(@RequestBody Map<String, String> json) {
-        User user = new User(json.get("phone"), json.get("name"), json.get("surname"), json.get("middleName"), json.get("email"), json.get("place"), json.get("password"), false);
-        return userService.addNewUserAndGetTokenWithHistory(user);
+        return userService.addNewUserAndGetTokenWithHistory(
+                new User(
+                        json.get("phone"),
+                        json.get("name"),
+                        json.get("surname"),
+                        json.get("middleName"),
+                        json.get("email"),
+                        json.get("place"),
+                        json.get("password"),
+                        false
+                ));
     }
 
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
