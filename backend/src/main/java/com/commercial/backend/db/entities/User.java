@@ -1,4 +1,4 @@
-package com.commercial.backend.model;
+package com.commercial.backend.db.entities;
 
 import com.commercial.backend.security.JWTUtil;
 import com.commercial.backend.security.PasswordEncoder;

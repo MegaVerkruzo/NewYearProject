@@ -1,7 +1,7 @@
 package com.commercial.backend.service;
 
 import com.commercial.backend.db.AnswersRepository;
-import com.commercial.backend.model.Answer;
+import com.commercial.backend.db.entities.Answer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

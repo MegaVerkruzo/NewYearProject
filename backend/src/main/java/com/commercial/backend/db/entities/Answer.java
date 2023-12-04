@@ -1,4 +1,4 @@
-package com.commercial.backend.model;
+package com.commercial.backend.db.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
@@ -39,44 +39,16 @@ public class Answer {
         this.description = description;
     }
 
-    public static Long getSize() {
-        return size;
-    }
-
-    public static void setSize(Long size) {
-        Answer.size = size;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getWord() {
         return word;
-    }
-
-    public void setWord(String word) {
-        this.word = word;
     }
 
     public OffsetDateTime getDate() {
         return date;
     }
 
-    public void setDate(OffsetDateTime date) {
-        this.date = date;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     @Override

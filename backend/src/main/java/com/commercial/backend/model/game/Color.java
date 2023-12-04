@@ -1,4 +1,4 @@
-package com.commercial.backend.model;
+package com.commercial.backend.model.game;
 
 // :TODO change to YELLOW, GREEN, GREY
 public enum Color {

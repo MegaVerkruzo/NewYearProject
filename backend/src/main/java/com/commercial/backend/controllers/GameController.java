@@ -1,10 +1,10 @@
 package com.commercial.backend.controllers;
 
 import com.commercial.backend.LegacyController;
-import com.commercial.backend.model.Answer;
+import com.commercial.backend.db.entities.Answer;
+import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.ApiException;
-import com.commercial.backend.model.GameState;
-import com.commercial.backend.model.User;
+import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.service.AnswersService;
 import com.commercial.backend.service.IAttemptService;
 import com.commercial.backend.service.IUserService;
