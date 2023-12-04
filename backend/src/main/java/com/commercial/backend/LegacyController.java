@@ -1,6 +1,7 @@
 package com.commercial.backend;
 
 import com.commercial.backend.model.Feedback;
+import com.commercial.backend.model.FeedbackInput;
 import com.commercial.backend.model.TokenException;
 import com.commercial.backend.model.User;
 import com.commercial.backend.service.IUserService;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 import static com.commercial.backend.model.ApiException.hadFeedback;
 import static com.commercial.backend.model.ApiException.noFeedback;
@@ -37,7 +36,10 @@ public class LegacyController {
     }
 
     @PostMapping(value = "/feedback", consumes = "application/json", produces = "application/json")
-    public Feedback addFeedback(@RequestHeader("authorization") String token, @RequestBody Map<String, String> json) {
+    public Feedback addFeedback(
+            @RequestHeader("authorization") String token,
+            @RequestBody FeedbackInput feedbackInput
+    ) {
         if (token == null) {
             return new Feedback(noUser);
         }
@@ -48,7 +50,7 @@ public class LegacyController {
             return new Feedback(noUser);
         }
 
-        String feedback = json.get("feedback");
+        String feedback = feedbackInput.feedback;
         logger.info("Read feedback " + feedback);
         if (feedback == null || feedback.isBlank()) {
             return new Feedback(noFeedback);
