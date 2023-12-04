@@ -1,5 +1,7 @@
 package com.commercial.backend;
 
+import com.commercial.backend.model.Feedback;
+import com.commercial.backend.model.FeedbackInput;
 import com.commercial.backend.model.TokenException;
 import com.commercial.backend.model.User;
 import com.commercial.backend.service.IUserService;
@@ -12,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
-import static com.commercial.backend.Common.pairToMap;
+import static com.commercial.backend.model.ApiException.hadFeedback;
+import static com.commercial.backend.model.ApiException.noFeedback;
+import static com.commercial.backend.model.ApiException.noUser;
 
 @RestController
 @RequestMapping("api")
@@ -34,25 +36,28 @@ public class LegacyController {
     }
 
     @PostMapping(value = "/feedback", consumes = "application/json", produces = "application/json")
-    public Map<String, Object> addFeedback(@RequestHeader("authorization") String token, @RequestBody Map<String, String> json) {
+    public Feedback addFeedback(
+            @RequestHeader("authorization") String token,
+            @RequestBody FeedbackInput feedbackInput
+    ) {
         if (token == null) {
-            return pairToMap("exception", "noUser");
+            return new Feedback(noUser);
         }
 
         User user = userService.getUserByToken(token);
         logger.info("Read user " + user);
         if (user == null) {
-            return pairToMap("exception", "noUser");
+            return new Feedback(noUser);
         }
 
-        String feedback = json.get("feedback");
+        String feedback = feedbackInput.feedback;
         logger.info("Read feedback " + feedback);
         if (feedback == null || feedback.isBlank()) {
-            return pairToMap("exception", "noFeedback");
+            return new Feedback(noFeedback);
         }
 
         if (user.getFeedback() != null && !user.getFeedback().isBlank()) {
-            return pairToMap("exception", "hadFeedback");
+            return new Feedback(hadFeedback);
         }
 
         return userService.addFeedback(user, feedback);
