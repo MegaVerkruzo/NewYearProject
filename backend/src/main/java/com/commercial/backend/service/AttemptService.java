@@ -2,16 +2,22 @@ package com.commercial.backend.service;
 
 import com.commercial.backend.db.AttemptsRepository;
 import com.commercial.backend.model.Answer;
+import com.commercial.backend.model.ApiException;
 import com.commercial.backend.model.Attempt;
+import com.commercial.backend.model.Color;
+import com.commercial.backend.model.GameState;
+import com.commercial.backend.model.LetterColor;
 import com.commercial.backend.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static com.commercial.backend.Common.*;
+import static com.commercial.backend.Common.getDeltaUp;
+import static com.commercial.backend.Common.getWordInUTF8;
 
 @Service
 public class AttemptService implements IAttemptService {
@@ -28,13 +34,11 @@ public class AttemptService implements IAttemptService {
         this.attemptRepository = attemptRepository;
     }
 
-    // :APPROVED
-    private List<Map<String, Object>> compare(String answer, String word) {
+    private List<LetterColor> compare(String answer, String word) {
         answer = getWordInUTF8(answer);
         word = getWordInUTF8(word);
         logger.info("comparing two strings: " + answer + " and " + word);
 
-        List<Map<String, Object>> result = new ArrayList<>();
         List<Integer> usedLettersInAnswer = new ArrayList<>(answer.length());
         List<Integer> usedLettersInWord = new ArrayList<>(word.length());
         for (int i = 0; i < word.length(); i++) {
@@ -49,20 +53,19 @@ public class AttemptService implements IAttemptService {
         logger.info("usedLettersInWord: " + usedLettersInWord);
 
         logger.info("starting to compare letters");
+        List<LetterColor> result = new ArrayList<>();
         for (int i = 0; i < word.length(); ++i) {
             logger.info("i is " + i + " comparing " + answer.charAt(i) + " and " + word.charAt(i));
-            Map<String, Object> currentLetter = new HashMap<>();
             if (usedLettersInWord.get(i) == 0) {
-                currentLetter.put("letter", word.charAt(i));
-                currentLetter.put("state", "green");
+                LetterColor currentLetter = new LetterColor(word.charAt(i), Color.green);
 
-                logger.info("Add letter " + currentLetter.get("letter") + " with state " + currentLetter.get("state"));
+                logger.info("Add letter " + currentLetter.letter() + " with state " + currentLetter.state());
 
                 result.add(currentLetter);
                 continue;
             }
 
-            String state = "grey";
+            Color state = Color.grey;
             for (int j = 0; j < answer.length(); ++j) {
                 if (usedLettersInAnswer.get(j) == 0) {
                     continue;
@@ -70,28 +73,24 @@ public class AttemptService implements IAttemptService {
 
                 if (word.charAt(i) == answer.charAt(j)) {
                     usedLettersInAnswer.set(j, 0);
-                    state = "yellow";
+                    state = Color.yellow;
                     break;
                 }
             }
 
-            currentLetter.put("letter", word.charAt(i));
-            currentLetter.put("state", state);
-            logger.info("Add letter " + currentLetter.get("letter") + " with state " + currentLetter.get("state"));
+            LetterColor currentLetter = new LetterColor(word.charAt(i), state);
+            logger.info("Add letter " + currentLetter.letter() + " with state " + currentLetter.state());
 
             result.add(currentLetter);
         }
         return result;
     }
 
-    // :APPROVED
     @Override
-    public Map<String, Object> getAllInfo(User user) {
+    public GameState getAllInfo(User user) {
         if (user == null) {
-            return pairToMap("exception", "noUser");
+            return GameState.createStateWithException(ApiException.noUser);
         }
-
-        Map<String, Object> result = new HashMap<>();
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         logger.info("current millis: " + offsetDateTime);
@@ -106,15 +105,18 @@ public class AttemptService implements IAttemptService {
         logger.info("countCorrectAnswersBefore: " + countCorrectAnswersBefore);
 
         if (answer == null) {
-            result.put("countCorrectAnswersBefore", countCorrectAnswersBefore);
-            result.put("letters", new ArrayList<>());
-            result.put("wordLength", 0);
-            result.put("currentLine", 0);
-            result.put("isEnd", true);
-            result.put("isPuttedFeedback", user.getFeedback() == null);
-            result.put("description", "");
-            result.put("exception", "");
-            return result;
+            return new GameState(
+                    new ArrayList<>(),
+                    0,
+                    0,
+                    true,
+                    user.getFeedback() == null,
+                    null,
+                    null,
+                    null,
+                    countCorrectAnswersBefore,
+                    false
+            );
         }
 
         List<Attempt> currentAttempts = new ArrayList<>();
@@ -125,73 +127,70 @@ public class AttemptService implements IAttemptService {
             }
         }
 
-        List<Map<String, Object>> attemptsInfo = new ArrayList<>();
+        List<LetterColor> attemptsInfo = new ArrayList<>();
         for (Attempt attempt : currentAttempts) {
             attemptsInfo.addAll(compare(answer.getWord(), attempt.getWord()));
         }
 
-        boolean isEnd = false;
-        if (currentAttempts.size() == 5 || answersService.countCorrectAnswers(currentAttempts) >= 1) {
-            isEnd = true;
-        }
+        boolean isEnd = currentAttempts.size() == 5 || answersService.countCorrectAnswers(currentAttempts) >= 1;
 
-        boolean isPuttedFeedback = false;
-        if (user.getFeedback() == null && isEnd && offsetDateTime.isAfter(answersService.getMaxDate())) {
-            isPuttedFeedback = true;
-        }
+        boolean isPuttedFeedback = user.getFeedback() == null && isEnd && offsetDateTime.isAfter(answersService.getMaxDate());
 
-        result.put("countCorrectAnswersBefore", countCorrectAnswersBefore);
-        result.put("letters", attemptsInfo);
-        result.put("wordLength", answer.getWord().length());
-        result.put("currentLine", currentAttempts.size());
-        result.put("isEnd", isEnd);
-        result.put("isPuttedFeedback", isPuttedFeedback);
-        result.put("description", isEnd ? answer.getDescription() : "");
-        result.put("exception", "");
-        return result;
+        return new GameState(
+                attemptsInfo,
+                answer.getWord().length(),
+                currentAttempts.size(),
+                isEnd,
+                isPuttedFeedback,
+                null,
+                isEnd ? answer.getDescription() : "",
+                null,
+                countCorrectAnswersBefore,
+                false
+        );
     }
 
-    // :APPROVED
     @Override
-    public Map<String, Object> addNewWord(User user, Answer answer, String word, OffsetDateTime offsetDateTime) {
+    public GameState addNewWord(User user, Answer answer, String word, OffsetDateTime offsetDateTime) {
         word = getWordInUTF8(word);
 
         if (!wordsService.isWordExists(word)) {
-            return pairToMap("exception", "noWordInDictionary");
+            return GameState.createStateWithException(ApiException.noWordInDictionary);
         }
-
-        Map<String, Object> result = new HashMap<>();
 
         List<Attempt> attempts = attemptRepository.findAllByPhone(user.getPhone());
         List<Attempt> currentAttempts = new ArrayList<>();
         for (Attempt attempt : attempts) {
             if (answer.getDate().isBefore(attempt.getDate())
-            && attempt.getDate().isBefore(getDeltaUp(answer.getDate()))) {
+                    && attempt.getDate().isBefore(getDeltaUp(answer.getDate()))) {
                 currentAttempts.add(attempt);
             }
         }
 
         for (Attempt attempt : currentAttempts) {
             if (attempt.getWord().equals(answer.getWord())) {
-                return pairToMap("exception", "alreadyExistCorrectAttempt");
+                return GameState.createStateWithException(ApiException.alreadyExistCorrectAttempt);
             }
         }
 
         if (currentAttempts.size() >= 5) {
-            return pairToMap("exception", "alreadyExist5Attempts");
+            return GameState.createStateWithException(ApiException.alreadyExist5Attempts);
         }
 
         attemptRepository.insert(new Attempt(user.getPhone(), word, offsetDateTime));
 
-        result.put("letters", compare(answer.getWord(), word));
-        result.put("isCorrect", answer.getWord().equals(word));
-        if (answer.getWord().equals(word) || currentAttempts.size() == 4) {
-            result.put("isPuttedFeedback", answer.getDescription().equals("5"));
-        }
-        if (answer.getWord().equals(word)) {
-            result.put("description", answer.getDescription());
-        }
-        result.put("exception", "");
-        return result;
+        return new GameState(
+                compare(answer.getWord(), word),
+                0,
+                0,
+                false,
+                (answer.getWord().equals(word) || currentAttempts.size() == 4)
+                        && answer.getDescription().equals("5"),
+                null,
+                answer.getWord().equals(word) ? answer.getDescription() : null,
+                null,
+                0,
+                answer.getWord().equals(word)
+        );
     }
 }
