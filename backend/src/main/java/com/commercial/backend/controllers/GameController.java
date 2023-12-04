@@ -2,6 +2,7 @@ package com.commercial.backend.controllers;
 
 import com.commercial.backend.LegacyController;
 import com.commercial.backend.model.Answer;
+import com.commercial.backend.model.ApiException;
 import com.commercial.backend.model.GameState;
 import com.commercial.backend.model.User;
 import com.commercial.backend.service.AnswersService;
@@ -19,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-import static com.commercial.backend.Common.pairToMap;
-
 @RestController
 @RequestMapping("api/game")
 public class GameController {
@@ -37,40 +36,41 @@ public class GameController {
 
     @GetMapping(produces = "application/json")
     public GameState trying(@RequestHeader("authorization") String token) {
+        // :TODO delete copypaste
         if (token == null) {
-            return GameState.createNoUserGameState();
+            return GameState.createStateWithException(ApiException.noUser);
         }
 
         User user = userService.getUserByToken(token);
         logger.info("Read user " + user);
 
         if (user == null) {
-            return GameState.createNoUserGameState();
+            return GameState.createStateWithException(ApiException.noUser);
         }
 
         return attemptService.getAllInfo(user);
     }
 
     @PostMapping(value = "/new_attempt", consumes = "application/json", produces = "application/json")
-    public Map<String, Object> newAttempt(@RequestHeader("authorization") String token, @RequestBody Map<String, String> json) {
+    public GameState newAttempt(@RequestHeader("authorization") String token, @RequestBody Map<String, String> json) {
         if (token == null) {
-            return pairToMap("exception", "noUser");
+            return GameState.createStateWithException(ApiException.noUser);
         }
 
         User user = userService.getUserByToken(token);
         logger.info("Read user " + user);
 
         if (user == null) {
-            return pairToMap("exception", "noUser");
+            return GameState.createStateWithException(ApiException.noUser);
         }
         if (json == null) {
-            return pairToMap("exception", "uncorrectedData");
+            return GameState.createStateWithException(ApiException.uncorrectedData);
         }
 
         String word = json.get("word");
         logger.info("Read word " + word);
         if (word == null) {
-            return pairToMap("exception", "uncorrectedData");
+            return GameState.createStateWithException(ApiException.uncorrectedData);
         }
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
@@ -78,11 +78,11 @@ public class GameController {
         logger.info("answer: " + answer);
 
         if (answer == null) {
-            return pairToMap("exception", "uncorrectedData");
+            return GameState.createStateWithException(ApiException.uncorrectedData);
         }
 
         if (answer.getWord().length() != word.length()) {
-            return pairToMap("exception", "wrongSize");
+            return GameState.createStateWithException(ApiException.wrongSize);
         }
 
         return attemptService.addNewWord(user, answer, word, offsetDateTime);

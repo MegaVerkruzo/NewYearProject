@@ -2,6 +2,7 @@ package com.commercial.backend.service;
 
 import com.commercial.backend.db.AttemptsRepository;
 import com.commercial.backend.model.Answer;
+import com.commercial.backend.model.ApiException;
 import com.commercial.backend.model.Attempt;
 import com.commercial.backend.model.Color;
 import com.commercial.backend.model.GameState;
@@ -13,13 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.commercial.backend.Common.getDeltaUp;
 import static com.commercial.backend.Common.getWordInUTF8;
-import static com.commercial.backend.Common.pairToMap;
 
 @Service
 public class AttemptService implements IAttemptService {
@@ -91,7 +89,7 @@ public class AttemptService implements IAttemptService {
     @Override
     public GameState getAllInfo(User user) {
         if (user == null) {
-            return GameState.createNoUserGameState();
+            return GameState.createStateWithException(ApiException.noUser);
         }
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
@@ -116,7 +114,8 @@ public class AttemptService implements IAttemptService {
                     null,
                     null,
                     null,
-                    countCorrectAnswersBefore
+                    countCorrectAnswersBefore,
+                    false
             );
         }
 
@@ -146,19 +145,18 @@ public class AttemptService implements IAttemptService {
                 null,
                 isEnd ? answer.getDescription() : "",
                 null,
-                countCorrectAnswersBefore
+                countCorrectAnswersBefore,
+                false
         );
     }
 
     @Override
-    public Map<String, Object> addNewWord(User user, Answer answer, String word, OffsetDateTime offsetDateTime) {
+    public GameState addNewWord(User user, Answer answer, String word, OffsetDateTime offsetDateTime) {
         word = getWordInUTF8(word);
 
         if (!wordsService.isWordExists(word)) {
-            return pairToMap("exception", "noWordInDictionary");
+            return GameState.createStateWithException(ApiException.noWordInDictionary);
         }
-
-        Map<String, Object> result = new HashMap<>();
 
         List<Attempt> attempts = attemptRepository.findAllByPhone(user.getPhone());
         List<Attempt> currentAttempts = new ArrayList<>();
@@ -171,25 +169,28 @@ public class AttemptService implements IAttemptService {
 
         for (Attempt attempt : currentAttempts) {
             if (attempt.getWord().equals(answer.getWord())) {
-                return pairToMap("exception", "alreadyExistCorrectAttempt");
+                return GameState.createStateWithException(ApiException.alreadyExistCorrectAttempt);
             }
         }
 
         if (currentAttempts.size() >= 5) {
-            return pairToMap("exception", "alreadyExist5Attempts");
+            return GameState.createStateWithException(ApiException.alreadyExist5Attempts);
         }
 
         attemptRepository.insert(new Attempt(user.getPhone(), word, offsetDateTime));
 
-        result.put("letters", compare(answer.getWord(), word));
-        result.put("isCorrect", answer.getWord().equals(word));
-        if (answer.getWord().equals(word) || currentAttempts.size() == 4) {
-            result.put("isPuttedFeedback", answer.getDescription().equals("5"));
-        }
-        if (answer.getWord().equals(word)) {
-            result.put("description", answer.getDescription());
-        }
-        result.put("exception", "");
-        return result;
+        return new GameState(
+                compare(answer.getWord(), word),
+                0,
+                0,
+                false,
+                (answer.getWord().equals(word) || currentAttempts.size() == 4)
+                        && answer.getDescription().equals("5"),
+                null,
+                answer.getWord().equals(word) ? answer.getDescription() : null,
+                null,
+                0,
+                answer.getWord().equals(word)
+        );
     }
 }
