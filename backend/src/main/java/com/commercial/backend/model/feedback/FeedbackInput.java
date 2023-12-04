@@ -1,4 +1,4 @@
-package com.commercial.backend.model;
+package com.commercial.backend.model.feedback;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

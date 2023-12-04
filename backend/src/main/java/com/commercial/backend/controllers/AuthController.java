@@ -1,8 +1,8 @@
 package com.commercial.backend.controllers;
 
 import com.commercial.backend.LegacyController;
+import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.TokenException;
-import com.commercial.backend.model.User;
 import com.commercial.backend.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

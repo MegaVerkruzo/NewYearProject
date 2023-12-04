@@ -1,13 +1,13 @@
 package com.commercial.backend.service;
 
 import com.commercial.backend.db.AttemptsRepository;
-import com.commercial.backend.model.Answer;
+import com.commercial.backend.db.entities.Answer;
+import com.commercial.backend.db.entities.Attempt;
+import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.ApiException;
-import com.commercial.backend.model.Attempt;
-import com.commercial.backend.model.Color;
-import com.commercial.backend.model.GameState;
-import com.commercial.backend.model.LetterColor;
-import com.commercial.backend.model.User;
+import com.commercial.backend.model.game.Color;
+import com.commercial.backend.model.game.GameState;
+import com.commercial.backend.model.game.LetterColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

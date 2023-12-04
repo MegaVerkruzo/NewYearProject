@@ -1,8 +1,8 @@
 package com.commercial.backend.service;
 
-import com.commercial.backend.model.Answer;
-import com.commercial.backend.model.GameState;
-import com.commercial.backend.model.User;
+import com.commercial.backend.db.entities.Answer;
+import com.commercial.backend.db.entities.User;
+import com.commercial.backend.model.game.GameState;
 
 import java.time.OffsetDateTime;
 

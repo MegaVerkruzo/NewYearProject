@@ -1,6 +1,6 @@
 package com.commercial.backend.db;
 
-import com.commercial.backend.model.User;
+import com.commercial.backend.db.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,7 +41,6 @@ public class UsersRepository {
         }
     }
 
-    // :APPROVED
     public User findUserByToken(String token) {
         List<User> result = jdbcTemplate.query("SELECT * FROM users WHERE token = ?", mapper, token);
         if (result.isEmpty()) {

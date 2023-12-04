@@ -1,4 +1,6 @@
-package com.commercial.backend.model;
+package com.commercial.backend.model.game;
+
+import com.commercial.backend.model.ApiException;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
 package com.commercial.backend.service;
 
 import com.commercial.backend.db.UsersRepository;
-import com.commercial.backend.model.Feedback;
+import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.TokenException;
-import com.commercial.backend.model.User;
+import com.commercial.backend.model.feedback.Feedback;
 import com.commercial.backend.security.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
