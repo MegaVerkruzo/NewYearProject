@@ -1,15 +1,14 @@
 package com.commercial.backend.service;
 
 import com.commercial.backend.db.UsersRepository;
+import com.commercial.backend.model.Feedback;
 import com.commercial.backend.model.TokenException;
 import com.commercial.backend.model.User;
 import com.commercial.backend.security.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
-import static com.commercial.backend.Common.pairToMap;
 import static com.commercial.backend.model.ApiException.hugeSizeField;
+import static com.commercial.backend.model.ApiException.noFeedback;
 import static com.commercial.backend.model.ApiException.noUser;
 import static com.commercial.backend.model.ApiException.userExists;
 
@@ -63,17 +62,17 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Map<String, Object> addFeedback(User user, String feedback) {
+    public Feedback addFeedback(User user, String feedback) {
         if (user == null) {
-            return pairToMap("exception", "noUser");
+            return new Feedback(noUser);
         }
 
         if (feedback == null || feedback.isEmpty()) {
-            return pairToMap("exception", "noFeedback");
+            return new Feedback(noFeedback);
         }
 
         repository.insertFeedbackByPhone(user.getPhone(), feedback);
-        return pairToMap("exception", "");
+        return null;
     }
 
     @Override

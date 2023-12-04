@@ -9,5 +9,7 @@ public enum ApiException {
     alreadyExistCorrectAttempt,
     alreadyExist5Attempts,
     wrongSize,
-    uncorrectedData
+    uncorrectedData,
+    noFeedback,
+    hadFeedback
 }
