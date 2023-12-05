@@ -1,7 +1,7 @@
 package com.commercial.backend;
 
 import com.commercial.backend.db.entities.User;
-import com.commercial.backend.model.TokenException;
+import com.commercial.backend.model.auth.TokenException;
 import com.commercial.backend.model.feedback.Feedback;
 import com.commercial.backend.model.feedback.FeedbackInput;
 import com.commercial.backend.service.IUserService;

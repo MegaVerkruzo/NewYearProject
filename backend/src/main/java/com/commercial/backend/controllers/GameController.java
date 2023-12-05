@@ -5,6 +5,7 @@ import com.commercial.backend.db.entities.Answer;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.ApiException;
 import com.commercial.backend.model.game.GameState;
+import com.commercial.backend.model.game.JsonWord;
 import com.commercial.backend.service.AnswersService;
 import com.commercial.backend.service.IAttemptService;
 import com.commercial.backend.service.IUserService;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.OffsetDateTime;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/game")
@@ -52,7 +52,8 @@ public class GameController {
     }
 
     @PostMapping(value = "/new_attempt", consumes = "application/json", produces = "application/json")
-    public GameState newAttempt(@RequestHeader("authorization") String token, @RequestBody Map<String, String> json) {
+    // :TODO find good thing for deleting unnecessary objects
+    public GameState newAttempt(@RequestHeader("authorization") String token, @RequestBody JsonWord wordBody) {
         if (token == null) {
             return GameState.createStateWithException(ApiException.noUser);
         }
@@ -63,11 +64,11 @@ public class GameController {
         if (user == null) {
             return GameState.createStateWithException(ApiException.noUser);
         }
-        if (json == null) {
+        if (wordBody == null) {
             return GameState.createStateWithException(ApiException.uncorrectedData);
         }
 
-        String word = json.get("word");
+        String word = wordBody.word;
         logger.info("Read word " + word);
         if (word == null) {
             return GameState.createStateWithException(ApiException.uncorrectedData);
