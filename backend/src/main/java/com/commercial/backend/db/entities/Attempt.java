@@ -5,6 +5,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
@@ -12,8 +15,11 @@ import java.time.OffsetDateTime;
 @Entity
 @Table(name = "attempts", schema = "public")
 @JsonIgnoreProperties
+@Data
 public class Attempt {
 
+    @Getter
+    @Setter
     private static Long size = 0L;
 
     @Id
@@ -48,25 +54,5 @@ public class Attempt {
 
     public Attempt() {
 
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        Attempt.size = size;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public OffsetDateTime getDate() {
-        return date;
-    }
-
-    public String getWord() {
-        return word;
     }
 }

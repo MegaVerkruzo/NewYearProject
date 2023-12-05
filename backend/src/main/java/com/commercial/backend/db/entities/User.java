@@ -7,14 +7,20 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "users", schema = "public")
 @JsonIgnoreProperties
+@Data
 // :TODO Think about get&setters, because lombok maybe is decision
 public class User {
-
+    @Getter
+    @Setter
     private static Long size = 0L;
+
     @Id
     @Column(name = "id")
     private Long id;
@@ -70,65 +76,5 @@ public class User {
         this.place = place;
         this.passwordHash = isThisPasswordHash ? password : PasswordEncoder.getHash(password);
         this.token = JWTUtil.generateToken(this);
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        User.size = size;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public String getFeedback() {
-        return feedback;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", phone='" + phone + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", middleName='" + middleName + '\'' +
-                ", email='" + email + '\'' +
-                ", place='" + place + '\'' +
-                ", passwordHash='" + passwordHash + '\'' +
-                ", token='" + token + '\'' +
-                ", feedback='" + feedback + '\'' +
-                '}';
     }
 }
