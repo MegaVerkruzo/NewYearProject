@@ -1,8 +1,8 @@
 package com.commercial.backend.controllers;
 
 import com.commercial.backend.db.entities.User;
-import com.commercial.backend.model.feedback.Feedback;
 import com.commercial.backend.model.feedback.FeedbackInput;
+import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.service.IUserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.commercial.backend.model.ApiException.noFeedback;
 import static com.commercial.backend.model.ApiException.noUser;
+import static com.commercial.backend.model.game.GameState.createEmptyState;
+import static com.commercial.backend.model.game.GameState.createStateWithException;
 
 @RestController
 @RequestMapping("api/feedback")
@@ -24,24 +26,24 @@ public class FeedbackController {
     private final IUserService userService;
 
     @PostMapping(value = "v2", consumes = "application/json", produces = "application/json")
-    public Feedback addFeedback(
+    public GameState addFeedback(
             @RequestHeader("authorization") String token,
             @RequestBody FeedbackInput feedbackInput
     ) {
         if (token == null) {
-            return new Feedback(noUser);
+            return createStateWithException(noUser);
         }
 
         User user = userService.getUserByToken(token);
         logger.info("Read user " + user);
         if (user == null) {
-            return new Feedback(noUser);
+            return createStateWithException(noUser);
         }
 
         String feedback = feedbackInput.feedback;
         logger.info("Read feedback " + feedback);
         if (feedback == null || feedback.isBlank()) {
-            return new Feedback(noFeedback);
+            return createStateWithException(noFeedback);
         }
 
         // :TODO change logic of feedback
@@ -49,6 +51,8 @@ public class FeedbackController {
 //            return new Feedback(hadFeedback);
 //        }
 
-        return userService.addFeedback(user, feedback);
+        // :TODO change it
+//        return userService.addFeedback(user, feedback);
+        return createEmptyState();
     }
 }

@@ -2,7 +2,6 @@ package com.commercial.backend.db.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -24,7 +23,6 @@ public class Answer {
     private static Long size = 0L;
 
     @Id
-    @GeneratedValue
     private Long id;
     private String word;
     private OffsetDateTime date;
