@@ -25,9 +25,10 @@ public class UsersRepository {
     }
 
     public void insert(User user) {
-        user.setSize(user.getSize() + 1);
-        jdbcTemplate.update("INSERT INTO users (id, phone, name, surname, middle_name, email, place, password_hash, token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                user.getSize(), user.getPhone(), user.getName(), user.getSurname(), user.getMiddleName(), user.getEmail(), user.getPlace(), user.getPasswordHash(), user.getToken());
+        // :TODO insert New User
+//        user.setSize(user.getSize() + 1);
+//        jdbcTemplate.update("INSERT INTO users (id, phone, name, surname, middle_name, email, place, password_hash, token) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+//                user.getSize(), user.getPhone(), user.getName(), user.getSurname(), user.getMiddleName(), user.getEmail(), user.getPlace(), user.getPasswordHash(), user.getToken());
 
         logger.info("Paste user with phone " + user.getPhone() + " in Database");
     }
@@ -58,7 +59,7 @@ public class UsersRepository {
 
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User(rs.getString("phone"), rs.getString("name"), rs.getString("surname"), rs.getString("middle_name"), rs.getString("email"), rs.getString("place"), rs.getString("password_hash"), true);
+            return new User(rs.getString("phone"), rs.getString("name"), rs.getString("surname"), rs.getString("middle_name"), rs.getString("email"), rs.getString("place"), rs.getString("division"));
         }
     }
 }

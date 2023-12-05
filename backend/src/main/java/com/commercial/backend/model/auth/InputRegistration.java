@@ -8,6 +8,6 @@ public class InputRegistration {
     @JsonProperty("middleName") public String middleName;
     @JsonProperty("email") public String email;
     @JsonProperty("phone") public String phone;
-    @JsonProperty("password") public String password;
     @JsonProperty("place") public String place;
+    @JsonProperty("division") public String division;
 }

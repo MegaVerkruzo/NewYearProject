@@ -1,15 +1,13 @@
 package com.commercial.backend.service;
 
 import com.commercial.backend.db.entities.User;
-import com.commercial.backend.model.auth.TokenException;
 import com.commercial.backend.model.feedback.Feedback;
+import com.commercial.backend.model.game.GameState;
 
 public interface IUserService {
-    TokenException addNewUserAndGetTokenWithHistory(User user);
+    GameState addNewUserAndGetTokenWithHistory(User user);
 
-    TokenException getTokenWithCheckingPassword(User user, String rawPassword);
-
-    TokenException checkTokenWithException(String token);
+    GameState checkTokenWithException(String authorization);
 
     Feedback addFeedback(User user, String feedback);
 

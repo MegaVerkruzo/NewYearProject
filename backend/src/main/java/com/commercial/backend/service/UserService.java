@@ -2,15 +2,16 @@ package com.commercial.backend.service;
 
 import com.commercial.backend.db.UsersRepository;
 import com.commercial.backend.db.entities.User;
-import com.commercial.backend.model.auth.TokenException;
 import com.commercial.backend.model.feedback.Feedback;
-import com.commercial.backend.security.PasswordEncoder;
+import com.commercial.backend.model.game.GameState;
 import org.springframework.stereotype.Service;
 
 import static com.commercial.backend.model.ApiException.hugeSizeField;
 import static com.commercial.backend.model.ApiException.noFeedback;
 import static com.commercial.backend.model.ApiException.noUser;
 import static com.commercial.backend.model.ApiException.userExists;
+import static com.commercial.backend.model.game.GameState.createEmptyState;
+import static com.commercial.backend.model.game.GameState.createStateWithException;
 
 @Service
 public class UserService implements IUserService {
@@ -25,10 +26,10 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public TokenException addNewUserAndGetTokenWithHistory(User user) {
+    public GameState addNewUserAndGetTokenWithHistory(User user) {
         User searchUser = repository.findUserByPhone(user.getPhone());
         if (searchUser != null) {
-            return new TokenException(null, userExists);
+            return createStateWithException(userExists);
         }
 
         if (checkFieldOnSize(user.getPhone())
@@ -39,26 +40,23 @@ public class UserService implements IUserService {
                 && checkFieldOnSize(user.getPlace())
         ) {
             repository.insert(user);
-            return new TokenException(user.getToken(), null);
+            // :TODO change it
+            return createEmptyState();
         } else {
-            return new TokenException(null, hugeSizeField);
+            return createStateWithException(hugeSizeField);
         }
     }
 
     @Override
-    public TokenException getTokenWithCheckingPassword(User user, String rawPassword) {
-        User searchUser = repository.findUserByPhone(user.getPhone());
-        if (searchUser == null || !PasswordEncoder.checkHash(rawPassword, searchUser.getPasswordHash())) {
-            return new TokenException(null, noUser);
-        }
-
-        return new TokenException(user.getToken(), null);
-    }
-
-    @Override
-    public TokenException checkTokenWithException(String token) {
+    public GameState checkTokenWithException(String authorization) {
+        String token = getToken(authorization);
         User searchUser = repository.findUserByToken(token);
-        return searchUser == null ? new TokenException(null, noUser) : new TokenException(token, null);
+        // :Change it
+        return searchUser == null ? createStateWithException(noUser) : createEmptyState();
+    }
+
+    private String getToken(String authorization) {
+        return authorization;
     }
 
     @Override
