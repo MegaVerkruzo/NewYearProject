@@ -106,6 +106,11 @@ public class AttemptService implements IAttemptService {
 
         if (answer == null) {
             return new GameState(
+                    null,
+                    null,
+                    null,
+                    0,
+                    0,
                     new ArrayList<>(),
                     0,
                     0,
@@ -137,6 +142,11 @@ public class AttemptService implements IAttemptService {
         boolean isPuttedFeedback = user.getFeedback() == null && isEnd && offsetDateTime.isAfter(answersService.getMaxDate());
 
         return new GameState(
+                null,
+                null,
+                null,
+                0,
+                0,
                 attemptsInfo,
                 answer.getWord().length(),
                 currentAttempts.size(),
@@ -180,6 +190,11 @@ public class AttemptService implements IAttemptService {
         attemptRepository.insert(new Attempt(user.getPhone(), word, offsetDateTime));
 
         return new GameState(
+                null,
+                null,
+                null,
+                0,
+                0,
                 compare(answer.getWord(), word),
                 0,
                 0,
