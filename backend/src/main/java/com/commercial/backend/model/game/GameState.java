@@ -6,7 +6,10 @@ import java.util.List;
 
 public record GameState(
         PeriodState state,
-        String text,
+        String textBeforeGame,
+        String textTask,
+        int activeGifts,
+        int lotteryTicket,
         List<LetterColor> letters,
         int wordLength,
         int currentLine,
@@ -19,10 +22,10 @@ public record GameState(
         boolean isCorrect
 ) {
     public static GameState createEmptyState() {
-        return new GameState(null, null, null, 0, 0, false, false, null, null, null, 0, false);
+        return new GameState(null, null, null, 0, 0, null, 0, 0, false, false, null, null, null, 0, false);
     }
 
     public static GameState createStateWithException(ApiException exception) {
-        return new GameState(null, null, null, 0, 0, false, false, null, null, exception, 0, false);
+        return new GameState(null, null, null, 0, 0, null, 0, 0, false, false, null, null, exception, 0, false);
     }
 }
