@@ -1,13 +1,11 @@
-package com.commercial.backend;
+package com.commercial.backend.controllers;
 
 import com.commercial.backend.db.entities.User;
-import com.commercial.backend.model.auth.TokenException;
 import com.commercial.backend.model.feedback.Feedback;
 import com.commercial.backend.model.feedback.FeedbackInput;
 import com.commercial.backend.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -19,23 +17,16 @@ import static com.commercial.backend.model.ApiException.noFeedback;
 import static com.commercial.backend.model.ApiException.noUser;
 
 @RestController
-@RequestMapping("api")
-public class LegacyController {
+@RequestMapping("api/feedback")
+public class FeedbackController {
+    private final Logger logger = LoggerFactory.getLogger(FeedbackController.class);
     private final IUserService userService;
 
-    private final Logger logger = LoggerFactory.getLogger(LegacyController.class);
-
-    public LegacyController(IUserService userService) {
+    public FeedbackController(IUserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/check", produces = "application/json")
-    public TokenException check(@RequestHeader("authorization") String token) {
-        logger.info("Read HEADER\ntoken: " + token);
-        return userService.checkTokenWithException(token);
-    }
-
-    @PostMapping(value = "/feedback", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "v2", consumes = "application/json", produces = "application/json")
     public Feedback addFeedback(
             @RequestHeader("authorization") String token,
             @RequestBody FeedbackInput feedbackInput

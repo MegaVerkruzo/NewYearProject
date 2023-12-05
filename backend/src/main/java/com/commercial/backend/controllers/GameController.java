@@ -1,6 +1,5 @@
 package com.commercial.backend.controllers;
 
-import com.commercial.backend.LegacyController;
 import com.commercial.backend.db.entities.Answer;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.ApiException;
@@ -23,7 +22,7 @@ import java.time.OffsetDateTime;
 @RestController
 @RequestMapping("api/game")
 public class GameController {
-    private final Logger logger = LoggerFactory.getLogger(LegacyController.class);
+    private final Logger logger = LoggerFactory.getLogger(GameController.class);
     private final IUserService userService;
     private final IAttemptService attemptService;
     private final AnswersService answersService;
@@ -34,7 +33,7 @@ public class GameController {
         this.answersService = answersService;
     }
 
-    @GetMapping(produces = "application/json")
+    @GetMapping(value = "v2", produces = "application/json")
     public GameState trying(@RequestHeader("authorization") String token) {
         // :TODO delete copypaste
         if (token == null) {
@@ -51,7 +50,7 @@ public class GameController {
         return attemptService.getAllInfo(user);
     }
 
-    @PostMapping(value = "/new_attempt", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "new_attempt/v2", consumes = "application/json", produces = "application/json")
     // :TODO find good thing for deleting unnecessary objects
     public GameState newAttempt(@RequestHeader("authorization") String token, @RequestBody JsonWord wordBody) {
         if (token == null) {
