@@ -2,7 +2,9 @@ package com.commercial.backend.controllers;
 
 import com.commercial.backend.LegacyController;
 import com.commercial.backend.db.entities.User;
-import com.commercial.backend.model.TokenException;
+import com.commercial.backend.model.auth.InputLogin;
+import com.commercial.backend.model.auth.InputRegistration;
+import com.commercial.backend.model.auth.TokenException;
 import com.commercial.backend.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/auth")
@@ -24,26 +24,25 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
-    // :TODO make autobox RequestBody
-    public TokenException registerNewUser(@RequestBody Map<String, String> json) {
+    public TokenException registerNewUser(@RequestBody InputRegistration registration) {
         return userService.addNewUserAndGetTokenWithHistory(
                 new User(
-                        json.get("phone"),
-                        json.get("name"),
-                        json.get("surname"),
-                        json.get("middleName"),
-                        json.get("email"),
-                        json.get("place"),
-                        json.get("password"),
+                        registration.phone,
+                        registration.name,
+                        registration.surname,
+                        registration.middleName,
+                        registration.email,
+                        registration.place,
+                        registration.password,
                         false
                 ));
     }
 
     @PostMapping(value = "/login", consumes = "application/json", produces = "application/json")
-    public TokenException loginUser(@RequestBody Map<String, String> json) {
+    public TokenException loginUser(@RequestBody InputLogin login) {
         User user = new User();
-        user.loginUser(json.get("phone"));
+        user.loginUser(login.phone);
         logger.info("Read JSON\n" + user);
-        return userService.getTokenWithCheckingPassword(user, json.get("password"));
+        return userService.getTokenWithCheckingPassword(user, login.password);
     }
 }
