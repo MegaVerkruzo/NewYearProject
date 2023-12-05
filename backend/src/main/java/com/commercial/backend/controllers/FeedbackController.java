@@ -4,6 +4,7 @@ import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.feedback.Feedback;
 import com.commercial.backend.model.feedback.FeedbackInput;
 import com.commercial.backend.service.IUserService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,19 +13,15 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.commercial.backend.model.ApiException.hadFeedback;
 import static com.commercial.backend.model.ApiException.noFeedback;
 import static com.commercial.backend.model.ApiException.noUser;
 
 @RestController
 @RequestMapping("api/feedback")
+@AllArgsConstructor
 public class FeedbackController {
     private final Logger logger = LoggerFactory.getLogger(FeedbackController.class);
     private final IUserService userService;
-
-    public FeedbackController(IUserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping(value = "v2", consumes = "application/json", produces = "application/json")
     public Feedback addFeedback(
@@ -47,9 +44,10 @@ public class FeedbackController {
             return new Feedback(noFeedback);
         }
 
-        if (user.getFeedback() != null && !user.getFeedback().isBlank()) {
-            return new Feedback(hadFeedback);
-        }
+        // :TODO change logic of feedback
+//        if (user.getFeedback() != null && !user.getFeedback().isBlank()) {
+//            return new Feedback(hadFeedback);
+//        }
 
         return userService.addFeedback(user, feedback);
     }

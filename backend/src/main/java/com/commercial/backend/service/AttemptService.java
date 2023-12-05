@@ -115,7 +115,8 @@ public class AttemptService implements IAttemptService {
                     0,
                     0,
                     true,
-                    user.getFeedback() == null,
+                    // :TODO change logic
+                    false,
                     null,
                     null,
                     null,
@@ -139,7 +140,8 @@ public class AttemptService implements IAttemptService {
 
         boolean isEnd = currentAttempts.size() == 5 || answersService.countCorrectAnswers(currentAttempts) >= 1;
 
-        boolean isPuttedFeedback = user.getFeedback() == null && isEnd && offsetDateTime.isAfter(answersService.getMaxDate());
+        // :TODO change logic
+        boolean isPuttedFeedback = false && isEnd && offsetDateTime.isAfter(answersService.getMaxDate());
 
         return new GameState(
                 null,

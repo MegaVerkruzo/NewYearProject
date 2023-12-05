@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
@@ -16,22 +17,17 @@ import java.time.OffsetDateTime;
 @Table(name = "answers", schema = "public")
 @JsonIgnoreProperties
 @Data
+@NoArgsConstructor
 public class Answer {
     @Getter
     @Setter
     private static Long size = 0L;
 
-    public Answer() {
-    }
-
     @Id
     @GeneratedValue
     private Long id;
-
     private String word;
-
     private OffsetDateTime date;
-
     private String description;
 
     public Answer(String word, Timestamp date, String description) {
