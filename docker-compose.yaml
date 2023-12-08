@@ -1,17 +1,36 @@
 version: "3"
 services:
-  Backend:
+  backend:
     image: 'scratch'
     restart: on-failure
     build:
       context: ./backend/
       dockerfile: Dockerfile.backend
+    env_file:
+      - postgres/db.env
     ports:
       - "8080:8080"
     depends_on:
-      - PostgresSQL
+      - postgresSQL
+    profiles:
+      - production
 
-  Admin:
+  backendDev:
+    image: 'scratch-thing'
+    restart: on-failure
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile.backend.dev
+    env_file:
+      - postgres/db.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresSQL
+    profiles:
+      - development
+
+  admin:
     image: 'scratch-image'
     restart: on-failure
     build:
@@ -20,9 +39,9 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - PostgresSQL
+      - postgresSQL
 
-  PostgresSQL:
+  postgresSQL:
     image: 'postgres:15'
     restart: on-failure
     ports:
