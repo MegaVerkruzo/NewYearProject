@@ -12,5 +12,3 @@ INSERT INTO demo
 VALUES (1, 'First Title'),
        (2, 'Second Title');
 --rollback DROP TABLE demo
-
-
