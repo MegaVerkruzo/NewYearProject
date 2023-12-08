@@ -28,24 +28,9 @@ npm i
 npm run start
 ```
 
-#### In folder "backend"
+#### In folder "postgres"
 
-```bash
-./gradlew build
+You need to write database info like `db.example` in `db.env`
 
-docker-compose up --build
-```
-
-Now you may check registration and login.
-
-If you want to play in game wordle. You need to fill table russian_words with russian words (I have unpublished nodejs script for this)
-And you need to fill table answers.
-
-![image with example of filled table answers](https://i.imgur.com/2bGMqlI.png)
-
-Then if you has these things, you need to know that time in answers table is UTC+0, so you need to paste this time.
-Time between answers is 1 minutes because it's time is default in Common.java  
-Always you need to have 5 answers
-And you need to reload page if you want to get new word.
-
-That's all. Have fun
+#### In main folder
+`docker-compose --build --profile production up`
