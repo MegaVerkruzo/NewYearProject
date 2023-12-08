@@ -1,6 +1,6 @@
 --liquibase formatted sql
 
---changeset GrunskiiAleksei:2
+--changeset GrunskiiAleksei:1
 --comment add users table
 CREATE TABLE IF NOT EXISTS users
 (
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users
 );
 --rollback DROP TABLE users
 
---changeset GrunskiiAleksei:3
+--changeset GrunskiiAleksei:2
 --comment add answers table
 CREATE TABLE IF NOT EXISTS answers
 (
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS answers
 );
 --rollback DROP TABLE answers
 
---changeset GrunskiiAleksei:4
+--changeset GrunskiiAleksei:3
 --comment add attempts table
 CREATE TABLE IF NOT EXISTS attempts
 (
