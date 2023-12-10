@@ -98,7 +98,7 @@ public class AttemptService implements IAttemptService {
         Answer answer = answersService.findPreviousAnswer(offsetDateTime);
         logger.info("answer is " + answer);
 
-        List<Attempt> attempts = attemptRepository.findAllByPhone(user.getPhone());
+        List<Attempt> attempts = attemptRepository.findAllByPhone(user.getId());
         logger.info("attempts size: " + attempts.size());
 
         int countCorrectAnswersBefore = answersService.countCorrectAnswers(attempts);
@@ -170,7 +170,7 @@ public class AttemptService implements IAttemptService {
             return GameState.createStateWithException(ApiException.noWordInDictionary);
         }
 
-        List<Attempt> attempts = attemptRepository.findAllByPhone(user.getPhone());
+        List<Attempt> attempts = attemptRepository.findAllByPhone(user.getId());
         List<Attempt> currentAttempts = new ArrayList<>();
         for (Attempt attempt : attempts) {
             if (answer.getDate().isBefore(attempt.getDate())
@@ -189,7 +189,7 @@ public class AttemptService implements IAttemptService {
             return GameState.createStateWithException(ApiException.alreadyExist5Attempts);
         }
 
-        attemptRepository.insert(new Attempt(user.getPhone(), word, offsetDateTime));
+        attemptRepository.insert(new Attempt(user.getId(), word, offsetDateTime));
 
         return new GameState(
                 null,
