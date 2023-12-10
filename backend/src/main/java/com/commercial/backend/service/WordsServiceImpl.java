@@ -1,6 +1,6 @@
 package com.commercial.backend.service;
 
-import com.commercial.backend.db.AnswersRepository;
+import com.commercial.backend.db.AnswerRepository;
 import com.commercial.backend.db.entities.Answer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +17,15 @@ import java.util.stream.Collectors;
 @Service
 public class WordsServiceImpl implements WordsService {
     private final Logger logger = LoggerFactory.getLogger(WordsServiceImpl.class);
+    // :TODO add method for adding word not only with constructor
     private final Set<String> words;
 
-    public WordsServiceImpl(AnswersRepository answersRepository) throws IOException {
+    public WordsServiceImpl(AnswerRepository answerRepository) throws IOException {
         logger.info("Start downloading russian words");
         this.words = getContent();
-        answersRepository.findAll().stream().map(Answer::getWord).forEach(words::add);
+        answerRepository.findAll().stream().map(Answer::getWord).forEach(words::add);
+        // :TODO delete this logging
+        answerRepository.findAll().forEach(answer -> logger.info(answer.toString()));
         logger.info("End downloading russian words");
     }
 
@@ -32,9 +35,13 @@ public class WordsServiceImpl implements WordsService {
     }
 
     private Set<String> getContent() throws IOException {
-        InputStream is = WordsServiceImpl.class.getClassLoader().getResourceAsStream("russian_utf_norm.txt");
-        return Arrays.stream(
-                new String(Objects.requireNonNull(is).readAllBytes(), StandardCharsets.UTF_8).split("\n")
-        ).collect(Collectors.toSet());
+        try (InputStream is = WordsServiceImpl.class
+                .getClassLoader()
+                .getResourceAsStream("russian_utf_norm.txt")
+        ) {
+            return Arrays.stream(
+                    new String(Objects.requireNonNull(is).readAllBytes(), StandardCharsets.UTF_8).split("\n")
+            ).collect(Collectors.toSet());
+        }
     }
 }

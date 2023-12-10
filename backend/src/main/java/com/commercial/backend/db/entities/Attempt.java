@@ -1,6 +1,7 @@
 package com.commercial.backend.db.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -24,22 +25,22 @@ public class Attempt {
 
     @Id
     private Long id;
-    private String phone;
+    @Column(name="id_user") private Long userId;
     private String word;
     private OffsetDateTime date;
 
-    public Attempt(String phone, String word, Timestamp date) {
+    public Attempt(Long userId, String word, Timestamp date) {
         size++;
         this.id = size;
-        this.phone = phone;
+        this.userId = userId;
         this.word = word;
         this.date = date.toLocalDateTime().atOffset(OffsetDateTime.now().getOffset());
     }
 
-    public Attempt(String phone, String word, OffsetDateTime date) {
+    public Attempt(Long userId, String word, OffsetDateTime date) {
         size++;
         this.id = size;
-        this.phone = phone;
+        this.userId = userId;
         this.word = word;
         this.date = date;
     }

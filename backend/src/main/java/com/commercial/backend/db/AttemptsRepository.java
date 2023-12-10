@@ -27,21 +27,21 @@ public class AttemptsRepository {
 
     public void insert(Attempt attempt) {
         attempt.setSize(attempt.getSize() + 1);
-        jdbcTemplate.update("INSERT INTO attempts (id, phone, word, date) VALUES (?, ?, ?, ?)",
-                attempt.getSize(), attempt.getPhone(), attempt.getWord(), attempt.getDate());
-        logger.info("Paste attempt with phone " + attempt.getPhone() + " and word " + attempt.getWord() + " in Database");
+        jdbcTemplate.update("INSERT INTO attempts (id, id_user, word, date) VALUES (?, ?, ?, ?)",
+                attempt.getSize(), attempt.getUserId(), attempt.getWord(), attempt.getDate());
+        logger.info("Paste attempt with phone " + attempt.getUserId() + " and word " + attempt.getWord() + " in Database");
     }
 
-    public List<Attempt> findAllByPhone(String phone) {
+    public List<Attempt> findAllByPhone(Long userId) {
         logger.info("findAllByPhone");
-        return jdbcTemplate.query("SELECT * FROM attempts WHERE phone = ? ORDER BY date", mapper, phone);
+        return jdbcTemplate.query("SELECT * FROM attempts WHERE id_user = ? ORDER BY date", mapper, userId);
     }
 
     private static class AttemptEntityMapper implements RowMapper<Attempt> {
 
         @Override
         public Attempt mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Attempt(rs.getString("phone"), rs.getString("word"), Timestamp.valueOf(rs.getTimestamp("date").toLocalDateTime()));
+            return new Attempt(rs.getLong("id_user"), rs.getString("word"), Timestamp.valueOf(rs.getTimestamp("date").toLocalDateTime()));
         }
     }
 }
