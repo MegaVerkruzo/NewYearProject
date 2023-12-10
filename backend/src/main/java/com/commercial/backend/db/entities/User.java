@@ -1,6 +1,5 @@
 package com.commercial.backend.db.entities;
 
-import com.commercial.backend.security.JWTUtil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +13,6 @@ import lombok.Setter;
 @Table(name = "users", schema = "public")
 @JsonIgnoreProperties
 @Data
-// :TODO Think about get&setters, because lombok maybe is decision
 public class User {
     @Getter
     @Setter
@@ -30,7 +28,6 @@ public class User {
     private String email;
     private String place;
     private String division;
-    private String token;
 
     public User() {
         size++;
@@ -54,7 +51,6 @@ public class User {
         this.middleName = middleName;
         this.email = email;
         this.place = place;
-        this.token = JWTUtil.generateToken(this);
         this.division = division;
     }
 }
