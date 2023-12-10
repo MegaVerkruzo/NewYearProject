@@ -1,8 +1,8 @@
 package com.commercial.backend.service;
 
 import com.commercial.backend.db.AnswersRepository;
-import com.commercial.backend.db.entities.Answer;
-import com.commercial.backend.db.entities.Attempt;
+import com.commercial.backend.model.Answer;
+import com.commercial.backend.model.Attempt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,13 +17,14 @@ import static com.commercial.backend.Common.getDeltaUp;
 @Service
 public class AnswersServiceImpl implements AnswersService {
 
-    private final AnswersRepository answersRepository;
+    private AnswersRepository answersRepository;
     private final Logger logger = LoggerFactory.getLogger(AttemptService.class);
 
     public AnswersServiceImpl(AnswersRepository answersRepository) {
         this.answersRepository = answersRepository;
     }
 
+//    :APPROVED
     @Override
     public Answer findPreviousAnswer(OffsetDateTime offsetDateTime) {
         OffsetDateTime previousDate = getDeltaDown(offsetDateTime);
@@ -37,6 +38,7 @@ public class AnswersServiceImpl implements AnswersService {
         return null;
     }
 
+//     :APPROVED
     @Override
     public int countCorrectAnswers(List<Attempt> attempts) {
         int correctAnswers = 0;

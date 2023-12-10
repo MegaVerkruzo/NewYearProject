@@ -1,21 +1,22 @@
 package com.commercial.backend.service;
 
+import com.commercial.backend.model.User;
 import com.commercial.backend.db.UsersRepository;
-import com.commercial.backend.db.entities.User;
-import com.commercial.backend.model.feedback.Feedback;
-import com.commercial.backend.model.game.GameState;
+import com.commercial.backend.security.PasswordEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
-import static com.commercial.backend.model.ApiException.hugeSizeField;
-import static com.commercial.backend.model.ApiException.noFeedback;
-import static com.commercial.backend.model.ApiException.noUser;
-import static com.commercial.backend.model.ApiException.userExists;
-import static com.commercial.backend.model.game.GameState.createEmptyState;
-import static com.commercial.backend.model.game.GameState.createStateWithException;
+import java.util.Map;
+
+import static com.commercial.backend.Common.pairToMap;
 
 @Service
 public class UserService implements IUserService {
     private final UsersRepository repository;
+
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     UserService(UsersRepository usersRepository) {
         this.repository = usersRepository;
@@ -26,51 +27,52 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public GameState addNewUserAndGetTokenWithHistory(User user) {
+    public Pair<String, String> addNewUserAndGetTokenWithHistory(User user) {
         User searchUser = repository.findUserByPhone(user.getPhone());
-        if (searchUser != null) {
-            return createStateWithException(userExists);
-        }
-
-        if (checkFieldOnSize(user.getPhone())
-                && checkFieldOnSize(user.getName())
-                && checkFieldOnSize(user.getSurname())
-                && checkFieldOnSize(user.getMiddleName())
-                && checkFieldOnSize(user.getEmail())
-                && checkFieldOnSize(user.getPlace())
-        ) {
-            repository.insert(user);
-            // :TODO change it
-            return createEmptyState();
+        if (searchUser == null) {
+            if (checkFieldOnSize(user.getPhone()) && checkFieldOnSize(user.getName()) && checkFieldOnSize(user.getSurname()) && checkFieldOnSize(user.getMiddleName()) && checkFieldOnSize(user.getEmail()) && checkFieldOnSize(user.getPlace())) {
+                repository.insert(user);
+                return Pair.of(user.getToken(), "");
+            } else {
+                return Pair.of("", "hugeSizeField");
+            }
         } else {
-            return createStateWithException(hugeSizeField);
+            return Pair.of("", "userExists");
         }
     }
 
     @Override
-    public GameState checkTokenWithException(String authorization) {
-        String token = getToken(authorization);
-        User searchUser = repository.findUserByToken(token);
-        // :Change it
-        return searchUser == null ? createStateWithException(noUser) : createEmptyState();
-    }
+    public Pair<String, String> getTokenWithCheckingPassword(User user, String rawPassword) {
+        User searchUser = repository.findUserByPhone(user.getPhone());
+        if (searchUser == null || !PasswordEncoder.checkHash(rawPassword, searchUser.getPasswordHash())) {
+            return Pair.of("", "noUser");
+        }
 
-    private String getToken(String authorization) {
-        return authorization;
+        return Pair.of(user.getToken(), "");
     }
 
     @Override
-    public Feedback addFeedback(User user, String feedback) {
+    public Pair<String, String> checkTokenWithException(String token) {
+        User searchUser = repository.findUserByToken(token);
+        if (searchUser == null) {
+            return Pair.of("", "noUser");
+        } else {
+            return Pair.of(token, "");
+        }
+    }
+
+    @Override
+    public Map<String, Object> addFeedback(User user, String feedback) {
         if (user == null) {
-            return new Feedback(noUser);
+            return pairToMap("exception", "noUser");
         }
 
         if (feedback == null || feedback.isEmpty()) {
-            return new Feedback(noFeedback);
+            return pairToMap("exception", "noFeedback");
         }
 
         repository.insertFeedbackByPhone(user.getPhone(), feedback);
-        return null;
+        return pairToMap("exception", "");
     }
 
     @Override

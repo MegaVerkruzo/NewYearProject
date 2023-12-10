@@ -1,13 +1,13 @@
 package com.commercial.backend.service;
 
-import com.commercial.backend.db.entities.Answer;
-import com.commercial.backend.db.entities.User;
-import com.commercial.backend.model.game.GameState;
+import com.commercial.backend.model.Answer;
+import com.commercial.backend.model.User;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 public interface IAttemptService {
-    GameState getAllInfo(User user);
+    Map<String, Object> getAllInfo(User user);
 
-    GameState addNewWord(User user, Answer answer, String word, OffsetDateTime currentMillis);
+    Map<String, Object> addNewWord(User user, Answer answer, String word, OffsetDateTime currentMillis);
 }

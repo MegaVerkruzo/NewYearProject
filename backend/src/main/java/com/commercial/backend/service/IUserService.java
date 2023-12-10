@@ -1,15 +1,18 @@
 package com.commercial.backend.service;
 
-import com.commercial.backend.db.entities.User;
-import com.commercial.backend.model.feedback.Feedback;
-import com.commercial.backend.model.game.GameState;
+import com.commercial.backend.model.User;
+import org.springframework.data.util.Pair;
+
+import java.util.Map;
 
 public interface IUserService {
-    GameState addNewUserAndGetTokenWithHistory(User user);
+    Pair<String, String> addNewUserAndGetTokenWithHistory(User user);
 
-    GameState checkTokenWithException(String authorization);
+    Pair<String, String> getTokenWithCheckingPassword(User user, String rawPassword);
 
-    Feedback addFeedback(User user, String feedback);
+    Pair<String, String> checkTokenWithException(String token);
+
+    Map<String, Object> addFeedback(User user, String feedback);
 
     User getUserByToken(String token);
 }

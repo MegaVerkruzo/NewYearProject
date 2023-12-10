@@ -1,8 +1,8 @@
 package com.commercial.backend.service;
 
 
-import com.commercial.backend.db.entities.Answer;
-import com.commercial.backend.db.entities.Attempt;
+import com.commercial.backend.model.Answer;
+import com.commercial.backend.model.Attempt;
 
 import java.time.OffsetDateTime;
 import java.util.List;
