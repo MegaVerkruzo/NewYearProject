@@ -2,12 +2,12 @@ package com.commercial.backend.service.interfaces;
 
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.feedback.Feedback;
-import com.commercial.backend.model.game.GameState;
+import com.commercial.backend.model.game.GameStateKlass;
 
 public interface IUserService {
-    GameState addNewUserAndGetTokenWithHistory(User user);
+    GameStateKlass addNewUserAndGetTokenWithHistory(User user);
 
-    GameState checkTokenWithException(String authorization);
+    GameStateKlass checkTokenWithException(String authorization);
 
     Feedback addFeedback(User user, String feedback);
 

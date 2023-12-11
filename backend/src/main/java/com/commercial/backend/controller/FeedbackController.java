@@ -1,9 +1,17 @@
 package com.commercial.backend.controller;
 
 import com.commercial.backend.db.entities.User;
+import com.commercial.backend.exception.no.user.NotFoundUserResponse;
 import com.commercial.backend.model.feedback.FeedbackInput;
-import com.commercial.backend.model.game.GameState;
+import com.commercial.backend.model.game.GameStateKlass;
+import com.commercial.backend.model.state.InGameState;
+import com.commercial.backend.model.state.WaitLotteryState;
+import com.commercial.backend.model.state.WaitNextGameState;
 import com.commercial.backend.service.interfaces.IUserService;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.commercial.backend.model.ApiException.noFeedback;
 import static com.commercial.backend.model.ApiException.noUser;
-import static com.commercial.backend.model.game.GameState.createEmptyState;
-import static com.commercial.backend.model.game.GameState.createStateWithException;
+import static com.commercial.backend.model.game.GameStateKlass.createEmptyState;
+import static com.commercial.backend.model.game.GameStateKlass.createStateWithException;
 
 @RestController
 @RequestMapping("api/feedback")
@@ -25,8 +33,45 @@ public class FeedbackController {
     private final Logger logger = LoggerFactory.getLogger(FeedbackController.class);
     private final IUserService userService;
 
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "State - in game",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = InGameState.class)
+                    )}),
+            @ApiResponse(
+                    responseCode = "203",
+                    description = "State - wait next game",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = WaitNextGameState.class)
+                    )}),
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "State - wait lottery",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = WaitLotteryState.class)
+                    )}),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Not valid",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = NotFoundUserResponse.class)
+                    )}),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Not authorized",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = NotFoundUserResponse.class)
+                    )})
+    })
     @PostMapping(value = "v2", consumes = "application/json", produces = "application/json")
-    public GameState addFeedback(
+    public GameStateKlass addFeedback(
             @RequestHeader("authorization") String token,
             @RequestBody FeedbackInput feedbackInput
     ) {
