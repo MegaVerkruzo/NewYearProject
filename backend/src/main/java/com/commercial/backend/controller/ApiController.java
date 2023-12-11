@@ -1,4 +1,4 @@
-package com.commercial.backend.controllers;
+package com.commercial.backend.controller;
 
 import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.service.interfaces.IUserService;

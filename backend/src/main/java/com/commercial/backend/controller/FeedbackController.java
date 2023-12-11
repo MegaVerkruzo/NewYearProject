@@ -1,4 +1,4 @@
-package com.commercial.backend.controllers;
+package com.commercial.backend.controller;
 
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.feedback.FeedbackInput;

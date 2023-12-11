@@ -1,6 +1,6 @@
-package com.commercial.backend.configs;
+package com.commercial.backend.config;
 
-import org.springframework.context.annotation.Bean;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -11,16 +11,10 @@ import java.util.Objects;
 
 @Configuration
 @PropertySource("classpath:database.properties")
+@AllArgsConstructor
 public class DBConfig {
+    private final Environment env;
 
-    // :TODO change environment thing
-    Environment env;
-
-    public DBConfig(Environment env) {
-        this.env = env;
-    }
-
-    @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
