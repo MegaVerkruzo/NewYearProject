@@ -1,6 +1,7 @@
-package com.commercial.backend.service;
+package com.commercial.backend.service.impls;
 
 import com.commercial.backend.db.ConfigRepository;
+import com.commercial.backend.service.interfaces.IDeltaService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

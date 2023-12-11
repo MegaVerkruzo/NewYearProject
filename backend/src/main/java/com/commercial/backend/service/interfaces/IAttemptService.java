@@ -1,4 +1,4 @@
-package com.commercial.backend.service;
+package com.commercial.backend.service.interfaces;
 
 import com.commercial.backend.db.entities.Answer;
 import com.commercial.backend.db.entities.User;

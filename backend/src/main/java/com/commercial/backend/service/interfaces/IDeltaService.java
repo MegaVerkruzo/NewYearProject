@@ -1,4 +1,4 @@
-package com.commercial.backend.service;
+package com.commercial.backend.service.interfaces;
 
 import java.time.OffsetDateTime;
 
