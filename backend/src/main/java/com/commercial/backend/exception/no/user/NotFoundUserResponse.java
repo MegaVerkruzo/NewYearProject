@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class NotFoundUserResponse {
-    private final String error = "noUser";
+    private final NoUser exception = NoUser.noUser;
 }

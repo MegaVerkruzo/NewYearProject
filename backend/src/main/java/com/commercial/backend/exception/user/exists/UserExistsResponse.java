@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class UserExistsResponse {
-    private final String error = "userExists";
+    private final UserExists exception = UserExists.userExists;
 }
