@@ -1,4 +1,4 @@
-package com.commercial.backend.exception.bad.request;
+package com.commercial.backend.security.exception;
 
 public class BadRequestException extends RuntimeException {
     @Override

@@ -1,4 +1,4 @@
-package com.commercial.backend.exception.user.exists;
+package com.commercial.backend.security.exception;
 
 import com.commercial.backend.db.entities.User;
 import lombok.AllArgsConstructor;

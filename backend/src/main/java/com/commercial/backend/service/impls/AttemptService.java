@@ -4,10 +4,10 @@ import com.commercial.backend.db.AttemptRepository;
 import com.commercial.backend.db.entities.Answer;
 import com.commercial.backend.db.entities.Attempt;
 import com.commercial.backend.db.entities.User;
-import com.commercial.backend.model.ApiException;
 import com.commercial.backend.model.game.Color;
 import com.commercial.backend.model.game.GameStateKlass;
 import com.commercial.backend.model.game.LetterColor;
+import com.commercial.backend.security.ApiException;
 import com.commercial.backend.service.interfaces.IAnswersService;
 import com.commercial.backend.service.interfaces.IAttemptService;
 import com.commercial.backend.service.interfaces.IWordsService;
@@ -88,7 +88,7 @@ public class AttemptService implements IAttemptService {
     @Override
     public GameStateKlass getAllInfo(User user) {
         if (user == null) {
-            return GameStateKlass.createStateWithException(ApiException.noUser);
+            return GameStateKlass.createStateWithException(ApiException.notRegistered);
         }
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();

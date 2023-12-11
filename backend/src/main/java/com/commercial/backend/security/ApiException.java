@@ -1,8 +1,8 @@
-package com.commercial.backend.model;
+package com.commercial.backend.security;
 
 // :TODO change to BIG LETTERS
 public enum ApiException {
-    noUser,
+    notRegistered,
     hugeSizeField,
     userExists,
     noWordInDictionary,
@@ -11,5 +11,7 @@ public enum ApiException {
     wrongSize,
     uncorrectedData,
     noFeedback,
-    hadFeedback
+    hadFeedback,
+    badRequest,
+    notValid
 }

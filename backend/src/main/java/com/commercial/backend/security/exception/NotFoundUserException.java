@@ -1,4 +1,4 @@
-package com.commercial.backend.exception.no.user;
+package com.commercial.backend.security.exception;
 
 public class NotFoundUserException extends RuntimeException {
     @Override

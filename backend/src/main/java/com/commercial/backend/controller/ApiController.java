@@ -1,14 +1,14 @@
 package com.commercial.backend.controller;
 
-import com.commercial.backend.exception.bad.request.BadRequestResponse;
-import com.commercial.backend.exception.no.user.NotFoundUserResponse;
 import com.commercial.backend.model.game.GameStateKlass;
-import com.commercial.backend.model.state.AfterLotteryState;
-import com.commercial.backend.model.state.BeforeGameState;
-import com.commercial.backend.model.state.InGameState;
-import com.commercial.backend.model.state.WaitFeedbackState;
-import com.commercial.backend.model.state.WaitLotteryState;
-import com.commercial.backend.model.state.WaitNextGameState;
+import com.commercial.backend.model.state.period.AfterLotteryState;
+import com.commercial.backend.model.state.period.BeforeGameState;
+import com.commercial.backend.model.state.period.InGameState;
+import com.commercial.backend.model.state.period.WaitFeedbackState;
+import com.commercial.backend.model.state.period.WaitLotteryState;
+import com.commercial.backend.model.state.period.WaitNextGameState;
+import com.commercial.backend.security.response.BadRequestResponse;
+import com.commercial.backend.security.response.NotFoundUserResponse;
 import com.commercial.backend.service.interfaces.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

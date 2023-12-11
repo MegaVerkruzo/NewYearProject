@@ -1,12 +1,13 @@
 package com.commercial.backend.controller;
 
 import com.commercial.backend.db.entities.User;
-import com.commercial.backend.exception.no.user.NotFoundUserResponse;
-import com.commercial.backend.model.feedback.FeedbackInput;
 import com.commercial.backend.model.game.GameStateKlass;
-import com.commercial.backend.model.state.InGameState;
-import com.commercial.backend.model.state.WaitLotteryState;
-import com.commercial.backend.model.state.WaitNextGameState;
+import com.commercial.backend.model.json.JsonFeedback;
+import com.commercial.backend.model.state.period.InGameState;
+import com.commercial.backend.model.state.period.WaitLotteryState;
+import com.commercial.backend.model.state.period.WaitNextGameState;
+import com.commercial.backend.security.response.NotFoundUserResponse;
+import com.commercial.backend.security.response.NotValidResponse;
 import com.commercial.backend.service.interfaces.IUserService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,10 +22,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.commercial.backend.model.ApiException.noFeedback;
-import static com.commercial.backend.model.ApiException.noUser;
 import static com.commercial.backend.model.game.GameStateKlass.createEmptyState;
 import static com.commercial.backend.model.game.GameStateKlass.createStateWithException;
+import static com.commercial.backend.security.ApiException.noFeedback;
+import static com.commercial.backend.security.ApiException.notRegistered;
 
 @RestController
 @RequestMapping("api/feedback")
@@ -60,7 +61,7 @@ public class FeedbackController {
                     description = "Not valid",
                     content = {@Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = NotFoundUserResponse.class)
+                            schema = @Schema(implementation = NotValidResponse.class)
                     )}),
             @ApiResponse(
                     responseCode = "401",
@@ -73,19 +74,19 @@ public class FeedbackController {
     @PostMapping(value = "v2", consumes = "application/json", produces = "application/json")
     public GameStateKlass addFeedback(
             @RequestHeader("authorization") String token,
-            @RequestBody FeedbackInput feedbackInput
+            @RequestBody JsonFeedback jsonFeedback
     ) {
         if (token == null) {
-            return createStateWithException(noUser);
+            return createStateWithException(notRegistered);
         }
 
         User user = userService.getUserByToken(token);
         logger.info("Read user " + user);
         if (user == null) {
-            return createStateWithException(noUser);
+            return createStateWithException(notRegistered);
         }
 
-        String feedback = feedbackInput.feedback;
+        String feedback = jsonFeedback.getFeedback();
         logger.info("Read feedback " + feedback);
         if (feedback == null || feedback.isBlank()) {
             return createStateWithException(noFeedback);
