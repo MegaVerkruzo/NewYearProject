@@ -6,7 +6,7 @@ import com.commercial.backend.db.entities.Attempt;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.ApiException;
 import com.commercial.backend.model.game.Color;
-import com.commercial.backend.model.game.GameState;
+import com.commercial.backend.model.game.GameStateKlass;
 import com.commercial.backend.model.game.LetterColor;
 import com.commercial.backend.service.interfaces.IAnswersService;
 import com.commercial.backend.service.interfaces.IAttemptService;
@@ -86,9 +86,9 @@ public class AttemptService implements IAttemptService {
     }
 
     @Override
-    public GameState getAllInfo(User user) {
+    public GameStateKlass getAllInfo(User user) {
         if (user == null) {
-            return GameState.createStateWithException(ApiException.noUser);
+            return GameStateKlass.createStateWithException(ApiException.noUser);
         }
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
@@ -104,7 +104,7 @@ public class AttemptService implements IAttemptService {
         logger.info("countCorrectAnswersBefore: " + countCorrectAnswersBefore);
 
         if (answer == null) {
-            return new GameState(
+            return new GameStateKlass(
                     null,
                     null,
                     null,
@@ -142,7 +142,7 @@ public class AttemptService implements IAttemptService {
         // :TODO change logic
         boolean isPuttedFeedback = false && isEnd && offsetDateTime.isAfter(answersService.getMaxDate());
 
-        return new GameState(
+        return new GameStateKlass(
                 null,
                 null,
                 null,
@@ -162,11 +162,11 @@ public class AttemptService implements IAttemptService {
     }
 
     @Override
-    public GameState addNewWord(User user, Answer answer, String word, OffsetDateTime offsetDateTime) {
+    public GameStateKlass addNewWord(User user, Answer answer, String word, OffsetDateTime offsetDateTime) {
         word = getWordInUTF8(word);
 
         if (!wordsService.isWordExists(word)) {
-            return GameState.createStateWithException(ApiException.noWordInDictionary);
+            return GameStateKlass.createStateWithException(ApiException.noWordInDictionary);
         }
 
         List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
@@ -180,17 +180,17 @@ public class AttemptService implements IAttemptService {
 
         for (Attempt attempt : currentAttempts) {
             if (attempt.getWord().equals(answer.getWord())) {
-                return GameState.createStateWithException(ApiException.alreadyExistCorrectAttempt);
+                return GameStateKlass.createStateWithException(ApiException.alreadyExistCorrectAttempt);
             }
         }
 
         if (currentAttempts.size() >= 5) {
-            return GameState.createStateWithException(ApiException.alreadyExist5Attempts);
+            return GameStateKlass.createStateWithException(ApiException.alreadyExist5Attempts);
         }
 
         attemptRepository.save(new Attempt(user.getId(), word, offsetDateTime));
 
-        return new GameState(
+        return new GameStateKlass(
                 null,
                 null,
                 null,
