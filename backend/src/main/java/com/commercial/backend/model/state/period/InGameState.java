@@ -15,7 +15,7 @@ public class InGameState implements State {
     @Schema(example = "inGame")
     private final GameState gameState;
     @Schema(example = "Угадай слово, какое слово стоит в обозначении радуги после \"сидит\"")
-    private final String question;
+    private final String text;
     @Schema(example = "Вы учавствуете в розыгрыше призов 2-го уровня")
     private final String activePrizes;
     @Schema(example = "Чтобы учавствовать в розыгрыше всех подарков, вам осталось ответить на 3 загадки")
@@ -27,7 +27,7 @@ public class InGameState implements State {
 
     public InGameState(List<LetterColor> letters, Integer wordLength, Integer currentLine, Integer activeGifts) {
         // :TODO Get text from config
-        this.question = "Угадай слово, какое слово стоит в обозначении радуги после \"сидит\"";
+        this.text = "Угадай слово, какое слово стоит в обозначении радуги после \"сидит\"";
         this.activePrizes = "Вы учавствует в розыгрыше таких вещей";
         this.nonActivePrizes = "Чтобы учавствовать в розыгрыше всех подарков, вам осталось ответить на 3 загадки";
         this.letters = letters;
