@@ -1,4 +1,4 @@
-package com.commercial.backend.controllers;
+package com.commercial.backend.controller;
 
 import com.commercial.backend.db.entities.Answer;
 import com.commercial.backend.db.entities.User;
