@@ -59,7 +59,7 @@ public class ApiController {
                     )}),
             @ApiResponse(
                     responseCode = "204",
-                    description = "State - wait lottery",
+                    description = "State - wait end lottery",
                     content = {@Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = WaitLotteryState.class)

@@ -6,11 +6,10 @@ import com.commercial.backend.model.json.JsonWord;
 import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.InGameState;
 import com.commercial.backend.model.state.period.WaitFeedbackState;
+import com.commercial.backend.security.exception.BadRequestException;
 import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
-import com.commercial.backend.security.exception.WrongSizeException;
-import com.commercial.backend.security.response.AlreadyExist5AttemptsResponse;
-import com.commercial.backend.security.response.AlreadyExistCorrectAttemptResponse;
+import com.commercial.backend.security.response.BadRequestResponse;
 import com.commercial.backend.security.response.NoWordInDictionaryResponse;
 import com.commercial.backend.security.response.NotRegisteredResponse;
 import com.commercial.backend.security.response.NotValidResponse;
@@ -95,17 +94,10 @@ public class GameController {
                     )}),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Already exist correct attempt",
+                    description = "Bad request",
                     content = {@Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = AlreadyExistCorrectAttemptResponse.class)
-                    )}),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Already exist 5 attempts",
-                    content = {@Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = AlreadyExist5AttemptsResponse.class)
+                            schema = @Schema(implementation = BadRequestResponse.class)
                     )}),
     })
     @PostMapping(value = "new_attempt/v2", consumes = "application/json", produces = "application/json")
@@ -140,7 +132,7 @@ public class GameController {
         }
 
         if (answer.getWord().length() != word.length()) {
-            throw new WrongSizeException();
+            throw new BadRequestException();
         }
 
         return attemptService.addNewWord(user, answer, word, offsetDateTime);

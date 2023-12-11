@@ -9,8 +9,7 @@ import com.commercial.backend.model.game.LetterColor;
 import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.BeforeGameState;
 import com.commercial.backend.model.state.period.InGameState;
-import com.commercial.backend.security.exception.AlreadyExist5AttemptsException;
-import com.commercial.backend.security.exception.AlreadyExistCorrectAttemptException;
+import com.commercial.backend.security.exception.BadRequestException;
 import com.commercial.backend.security.exception.NoWordInDictionaryException;
 import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.service.interfaces.IAnswersService;
@@ -187,12 +186,12 @@ public class AttemptService implements IAttemptService {
 
         for (Attempt attempt : currentAttempts) {
             if (attempt.getWord().equals(answer.getWord())) {
-                throw new AlreadyExistCorrectAttemptException();
+                throw new BadRequestException();
             }
         }
 
         if (currentAttempts.size() >= 5) {
-            throw new AlreadyExist5AttemptsException();
+            throw new BadRequestException();
         }
 
         attemptRepository.save(new Attempt(user.getId(), word, offsetDateTime));

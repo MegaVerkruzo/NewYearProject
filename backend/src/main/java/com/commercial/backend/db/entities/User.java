@@ -1,5 +1,6 @@
 package com.commercial.backend.db.entities;
 
+import com.commercial.backend.model.json.JsonRegistration;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,14 +26,15 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "users_generator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_generator")
     @SequenceGenerator(name = "users_generator", sequenceName = "users_seq", allocationSize = 1)
     private Long id;
     private String phone;
     private String username;
     private String name;
     private String surname;
-    @Column(name = "middle_name") private String middleName;
+    @Column(name = "middle_name")
+    private String middleName;
     private String email;
     private String place;
     private String division;
@@ -53,6 +55,16 @@ public class User {
         this.email = email;
         this.place = place;
         this.division = division;
+    }
+
+    public User(JsonRegistration json) {
+        this.phone = json.getPhone();
+        this.name = json.getName();
+        this.surname = json.getSurname();
+        this.middleName = json.getMiddleName();
+        this.email = json.getEmail();
+        this.place = json.getPlace();
+        this.division = json.getDivision();
     }
 
     @Override

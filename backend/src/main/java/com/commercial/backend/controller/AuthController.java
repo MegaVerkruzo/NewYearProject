@@ -1,12 +1,12 @@
 package com.commercial.backend.controller;
 
+import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.json.JsonRegistration;
 import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.AfterLotteryState;
 import com.commercial.backend.model.state.period.BeforeGameState;
 import com.commercial.backend.model.state.period.InGameState;
 import com.commercial.backend.model.state.period.WaitLotteryState;
-import com.commercial.backend.model.state.period.WaitNextGameState;
 import com.commercial.backend.security.response.NotValidResponse;
 import com.commercial.backend.security.response.UserExistsResponse;
 import com.commercial.backend.service.interfaces.IUserService;
@@ -42,15 +42,8 @@ public class AuthController {
                             schema = @Schema(implementation = InGameState.class)
                     )}),
             @ApiResponse(
-                    responseCode = "203",
-                    description = "State - wait next game",
-                    content = {@Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = WaitNextGameState.class)
-                    )}),
-            @ApiResponse(
                     responseCode = "204",
-                    description = "State - wait lottery",
+                    description = "State - wait end lottery",
                     content = {@Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = WaitLotteryState.class)
@@ -79,6 +72,6 @@ public class AuthController {
     })
     @PostMapping(value = "register/v2", consumes = "application/json", produces = "application/json")
     public State registerNewUser(@RequestBody JsonRegistration registration) {
-        return userService.addNewUserAndGetTokenWithHistory(registration.getUser());
+        return userService.addNewUserAndGetTokenWithHistory(new User(registration));
     }
 }
