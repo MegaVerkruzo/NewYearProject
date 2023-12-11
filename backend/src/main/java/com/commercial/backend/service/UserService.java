@@ -1,6 +1,6 @@
 package com.commercial.backend.service;
 
-import com.commercial.backend.db.UsersRepository;
+import com.commercial.backend.db.UserRepository;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.feedback.Feedback;
 import com.commercial.backend.model.game.GameState;
@@ -15,10 +15,10 @@ import static com.commercial.backend.model.game.GameState.createStateWithExcepti
 
 @Service
 public class UserService implements IUserService {
-    private final UsersRepository repository;
+    private final UserRepository repository;
 
-    UserService(UsersRepository usersRepository) {
-        this.repository = usersRepository;
+    UserService(UserRepository userRepository) {
+        this.repository = userRepository;
     }
 
     private boolean checkFieldOnSize(String str) {
@@ -39,7 +39,7 @@ public class UserService implements IUserService {
                 && checkFieldOnSize(user.getEmail())
                 && checkFieldOnSize(user.getPlace())
         ) {
-            repository.insert(user);
+            repository.save(user);
             // :TODO change it
             return createEmptyState();
         } else {
@@ -50,7 +50,8 @@ public class UserService implements IUserService {
     @Override
     public GameState checkTokenWithException(String authorization) {
         String token = getToken(authorization);
-        User searchUser = repository.findUserByToken(token);
+        // :TODO Change it
+        User searchUser = repository.findUserByPhone(token);
         // :Change it
         return searchUser == null ? createStateWithException(noUser) : createEmptyState();
     }
@@ -69,12 +70,13 @@ public class UserService implements IUserService {
             return new Feedback(noFeedback);
         }
 
-        repository.insertFeedbackByPhone(user.getPhone(), feedback);
+        repository.updateFeedbackByPhone(feedback, user.getId());
         return null;
     }
 
     @Override
+    //:TODO change it
     public User getUserByToken(String token) {
-        return repository.findUserByToken(token);
+        return repository.findUserByPhone(token);
     }
 }
