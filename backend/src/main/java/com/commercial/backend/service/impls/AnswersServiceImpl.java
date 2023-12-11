@@ -19,7 +19,7 @@ public class AnswersServiceImpl implements IAnswersService {
     private final AnswerRepository answerRepository;
     private final DeltaService deltaService;
 
-    private final Logger logger = LoggerFactory.getLogger(AttemptService.class);
+    private final Logger logger = LoggerFactory.getLogger(AnswersServiceImpl.class);
 
     @Override
     public Answer findPreviousAnswer(OffsetDateTime offsetDateTime) {
