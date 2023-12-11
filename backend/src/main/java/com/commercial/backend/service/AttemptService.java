@@ -1,6 +1,6 @@
 package com.commercial.backend.service;
 
-import com.commercial.backend.db.AttemptsRepository;
+import com.commercial.backend.db.AttemptRepository;
 import com.commercial.backend.db.entities.Answer;
 import com.commercial.backend.db.entities.Attempt;
 import com.commercial.backend.db.entities.User;
@@ -26,9 +26,9 @@ public class AttemptService implements IAttemptService {
 
     private final AnswersService answersService;
     private final WordsService wordsService;
-    private final AttemptsRepository attemptRepository;
+    private final AttemptRepository attemptRepository;
 
-    AttemptService(AnswersService answersService, WordsService wordsService, AttemptsRepository attemptRepository) {
+    AttemptService(AnswersService answersService, WordsService wordsService, AttemptRepository attemptRepository) {
         this.answersService = answersService;
         this.wordsService = wordsService;
         this.attemptRepository = attemptRepository;
@@ -98,7 +98,7 @@ public class AttemptService implements IAttemptService {
         Answer answer = answersService.findPreviousAnswer(offsetDateTime);
         logger.info("answer is " + answer);
 
-        List<Attempt> attempts = attemptRepository.findAllByPhone(user.getId());
+        List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
         logger.info("attempts size: " + attempts.size());
 
         int countCorrectAnswersBefore = answersService.countCorrectAnswers(attempts);
@@ -170,7 +170,7 @@ public class AttemptService implements IAttemptService {
             return GameState.createStateWithException(ApiException.noWordInDictionary);
         }
 
-        List<Attempt> attempts = attemptRepository.findAllByPhone(user.getId());
+        List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
         List<Attempt> currentAttempts = new ArrayList<>();
         for (Attempt attempt : attempts) {
             if (answer.getDate().isBefore(attempt.getDate())
@@ -189,7 +189,7 @@ public class AttemptService implements IAttemptService {
             return GameState.createStateWithException(ApiException.alreadyExist5Attempts);
         }
 
-        attemptRepository.insert(new Attempt(user.getId(), word, offsetDateTime));
+        attemptRepository.save(new Attempt(user.getId(), word, offsetDateTime));
 
         return new GameState(
                 null,
