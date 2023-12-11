@@ -8,6 +8,7 @@ import com.commercial.backend.model.ApiException;
 import com.commercial.backend.model.game.Color;
 import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.model.game.LetterColor;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,23 +17,18 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.commercial.backend.Common.getDeltaUp;
-import static com.commercial.backend.Common.getWordInUTF8;
+import static com.commercial.backend.service.DeltaService.getWordInUTF8;
 
 @Service
+@AllArgsConstructor
 public class AttemptService implements IAttemptService {
 
     private final Logger logger = LoggerFactory.getLogger(AttemptService.class);
 
-    private final AnswersService answersService;
-    private final WordsService wordsService;
+    private final IAnswersService answersService;
+    private final IWordsService wordsService;
     private final AttemptRepository attemptRepository;
-
-    AttemptService(AnswersService answersService, WordsService wordsService, AttemptRepository attemptRepository) {
-        this.answersService = answersService;
-        this.wordsService = wordsService;
-        this.attemptRepository = attemptRepository;
-    }
+    private final DeltaService deltaService;
 
     private List<LetterColor> compare(String answer, String word) {
         answer = getWordInUTF8(answer);
@@ -128,7 +124,7 @@ public class AttemptService implements IAttemptService {
         List<Attempt> currentAttempts = new ArrayList<>();
         for (Attempt attempt : attempts) {
             if (answer.getDate().isBefore(attempt.getDate())
-                    && attempt.getDate().isBefore(getDeltaUp(answer.getDate()))) {
+                    && attempt.getDate().isBefore(deltaService.getDeltaUp(answer.getDate()))) {
                 currentAttempts.add(attempt);
             }
         }
@@ -174,7 +170,7 @@ public class AttemptService implements IAttemptService {
         List<Attempt> currentAttempts = new ArrayList<>();
         for (Attempt attempt : attempts) {
             if (answer.getDate().isBefore(attempt.getDate())
-                    && attempt.getDate().isBefore(getDeltaUp(answer.getDate()))) {
+                    && attempt.getDate().isBefore(deltaService.getDeltaUp(answer.getDate()))) {
                 currentAttempts.add(attempt);
             }
         }

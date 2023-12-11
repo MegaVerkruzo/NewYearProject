@@ -5,9 +5,10 @@ import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.ApiException;
 import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.model.game.JsonWord;
-import com.commercial.backend.service.AnswersService;
+import com.commercial.backend.service.IAnswersService;
 import com.commercial.backend.service.IAttemptService;
 import com.commercial.backend.service.IUserService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,17 +22,12 @@ import java.time.OffsetDateTime;
 
 @RestController
 @RequestMapping("api/game")
+@AllArgsConstructor
 public class GameController {
     private final Logger logger = LoggerFactory.getLogger(GameController.class);
     private final IUserService userService;
     private final IAttemptService attemptService;
-    private final AnswersService answersService;
-
-    public GameController(IUserService userService, IAttemptService attemptService, AnswersService answersService) {
-        this.userService = userService;
-        this.attemptService = attemptService;
-        this.answersService = answersService;
-    }
+    private final IAnswersService answersService;
 
     @GetMapping(value = "v2", produces = "application/json")
     public GameState trying(@RequestHeader("authorization") String token) {

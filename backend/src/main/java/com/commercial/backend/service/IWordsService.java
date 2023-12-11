@@ -1,5 +1,5 @@
 package com.commercial.backend.service;
 
-public interface WordsService {
+public interface IWordsService {
     boolean isWordExists(String word);
 }

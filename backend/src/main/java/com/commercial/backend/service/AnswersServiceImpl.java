@@ -3,6 +3,7 @@ package com.commercial.backend.service;
 import com.commercial.backend.db.AnswerRepository;
 import com.commercial.backend.db.entities.Answer;
 import com.commercial.backend.db.entities.Attempt;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -10,23 +11,18 @@ import org.springframework.stereotype.Service;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import static com.commercial.backend.Common.getDeltaDown;
-import static com.commercial.backend.Common.getDeltaUp;
-
-
 @Service
-public class AnswersServiceImpl implements AnswersService {
+@AllArgsConstructor
+public class AnswersServiceImpl implements IAnswersService {
 
     private final AnswerRepository answerRepository;
-    private final Logger logger = LoggerFactory.getLogger(AttemptService.class);
+    private final DeltaService deltaService;
 
-    public AnswersServiceImpl(AnswerRepository answerRepository) {
-        this.answerRepository = answerRepository;
-    }
+    private final Logger logger = LoggerFactory.getLogger(AttemptService.class);
 
     @Override
     public Answer findPreviousAnswer(OffsetDateTime offsetDateTime) {
-        OffsetDateTime previousDate = getDeltaDown(offsetDateTime);
+        OffsetDateTime previousDate = deltaService.getDeltaDown(offsetDateTime);
         logger.info("previousDate: " + previousDate);
 
         for (Answer answer : answerRepository.findAll()) {
@@ -44,7 +40,7 @@ public class AnswersServiceImpl implements AnswersService {
             for (Answer answer : answerRepository.findAll()) {
                 if (answer.getWord().equals(attempt.getWord())
                         && answer.getDate().isBefore(attempt.getDate())
-                        && attempt.getDate().isBefore(getDeltaUp(answer.getDate()))) {
+                        && attempt.getDate().isBefore(deltaService.getDeltaUp(answer.getDate()))) {
                     correctAnswers++;
                 }
             }

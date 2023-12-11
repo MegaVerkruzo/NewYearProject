@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class WordsServiceImpl implements WordsService {
+public class WordsServiceImpl implements IWordsService {
     private final Logger logger = LoggerFactory.getLogger(WordsServiceImpl.class);
     // :TODO add method for adding word not only with constructor
     private final Set<String> words;

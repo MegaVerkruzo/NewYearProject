@@ -7,7 +7,7 @@ import com.commercial.backend.db.entities.Attempt;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-public interface AnswersService {
+public interface IAnswersService {
     Answer findPreviousAnswer(OffsetDateTime offsetDateTime);
 
     int countCorrectAnswers(List<Attempt> attempts);
