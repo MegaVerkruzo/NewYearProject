@@ -1,4 +1,4 @@
-package com.commercial.backend.exception.not.valid;
+package com.commercial.backend.security.exception;
 
 public class NotValidException extends RuntimeException {
     @Override

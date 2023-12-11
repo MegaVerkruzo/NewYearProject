@@ -1,6 +1,6 @@
 package com.commercial.backend.model.game;
 
-import com.commercial.backend.model.ApiException;
+import com.commercial.backend.security.ApiException;
 
 import java.util.List;
 

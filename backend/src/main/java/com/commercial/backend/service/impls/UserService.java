@@ -2,18 +2,18 @@ package com.commercial.backend.service.impls;
 
 import com.commercial.backend.db.UserRepository;
 import com.commercial.backend.db.entities.User;
-import com.commercial.backend.exception.no.user.NotFoundUserException;
-import com.commercial.backend.exception.user.exists.UserExistsException;
 import com.commercial.backend.model.feedback.Feedback;
 import com.commercial.backend.model.game.GameStateKlass;
+import com.commercial.backend.security.exception.NotFoundUserException;
+import com.commercial.backend.security.exception.UserExistsException;
 import com.commercial.backend.service.interfaces.IUserService;
 import org.springframework.stereotype.Service;
 
-import static com.commercial.backend.model.ApiException.hugeSizeField;
-import static com.commercial.backend.model.ApiException.noFeedback;
-import static com.commercial.backend.model.ApiException.noUser;
 import static com.commercial.backend.model.game.GameStateKlass.createEmptyState;
 import static com.commercial.backend.model.game.GameStateKlass.createStateWithException;
+import static com.commercial.backend.security.ApiException.hugeSizeField;
+import static com.commercial.backend.security.ApiException.noFeedback;
+import static com.commercial.backend.security.ApiException.notRegistered;
 
 @Service
 public class UserService implements IUserService {
@@ -61,7 +61,7 @@ public class UserService implements IUserService {
     @Override
     public Feedback addFeedback(User user, String feedback) {
         if (user == null) {
-            return new Feedback(noUser);
+            return new Feedback(notRegistered);
         }
 
         if (feedback == null || feedback.isEmpty()) {

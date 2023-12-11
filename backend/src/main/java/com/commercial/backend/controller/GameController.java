@@ -2,12 +2,16 @@ package com.commercial.backend.controller;
 
 import com.commercial.backend.db.entities.Answer;
 import com.commercial.backend.db.entities.User;
-import com.commercial.backend.exception.no.user.NotFoundUserResponse;
-import com.commercial.backend.model.ApiException;
 import com.commercial.backend.model.game.GameStateKlass;
-import com.commercial.backend.model.game.JsonWord;
-import com.commercial.backend.model.state.InGameState;
-import com.commercial.backend.model.state.WaitFeedbackState;
+import com.commercial.backend.model.json.JsonWord;
+import com.commercial.backend.model.state.period.InGameState;
+import com.commercial.backend.model.state.period.WaitFeedbackState;
+import com.commercial.backend.security.ApiException;
+import com.commercial.backend.security.response.AlreadyExist5AttemptsResponse;
+import com.commercial.backend.security.response.AlreadyExistCorrectAttemptResponse;
+import com.commercial.backend.security.response.NoWordInDictionaryResponse;
+import com.commercial.backend.security.response.NotFoundUserResponse;
+import com.commercial.backend.security.response.NotValidResponse;
 import com.commercial.backend.service.interfaces.IAnswersService;
 import com.commercial.backend.service.interfaces.IAttemptService;
 import com.commercial.backend.service.interfaces.IUserService;
@@ -71,7 +75,7 @@ public class GameController {
                     description = "Not valid",
                     content = {@Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = NotFoundUserResponse.class)
+                            schema = @Schema(implementation = NotValidResponse.class)
                     )}),
             @ApiResponse(
                     responseCode = "401",
@@ -79,26 +83,47 @@ public class GameController {
                     content = {@Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = NotFoundUserResponse.class)
-                    )})
+                    )}),
+            @ApiResponse(
+                    responseCode = "402",
+                    description = "No word in dictionary",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = NoWordInDictionaryResponse.class)
+                    )}),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Already exist correct attempt",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = AlreadyExistCorrectAttemptResponse.class)
+                    )}),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Already exist 5 attempts",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = AlreadyExist5AttemptsResponse.class)
+                    )}),
     })
     @PostMapping(value = "new_attempt/v2", consumes = "application/json", produces = "application/json")
     // :TODO find good thing for deleting unnecessary objects
-    public GameStateKlass newAttempt(@RequestHeader("authorization") String token, @RequestBody JsonWord wordBody) {
+    public GameStateKlass newAttempt(@RequestHeader("authorization") String token, @RequestBody JsonWord jsonWordBody) {
         if (token == null) {
-            return GameStateKlass.createStateWithException(ApiException.noUser);
+            return GameStateKlass.createStateWithException(ApiException.notRegistered);
         }
 
         User user = userService.getUserByToken(token);
         logger.info("Read user " + user);
 
         if (user == null) {
-            return GameStateKlass.createStateWithException(ApiException.noUser);
+            return GameStateKlass.createStateWithException(ApiException.notRegistered);
         }
-        if (wordBody == null) {
+        if (jsonWordBody == null) {
             return GameStateKlass.createStateWithException(ApiException.uncorrectedData);
         }
 
-        String word = wordBody.word;
+        String word = jsonWordBody.getWord();
         logger.info("Read word " + word);
         if (word == null) {
             return GameStateKlass.createStateWithException(ApiException.uncorrectedData);

@@ -1,15 +1,15 @@
 package com.commercial.backend.controller;
 
 import com.commercial.backend.db.entities.User;
-import com.commercial.backend.exception.no.user.NotFoundUserResponse;
-import com.commercial.backend.exception.user.exists.UserExistsResponse;
-import com.commercial.backend.model.auth.InputRegistration;
 import com.commercial.backend.model.game.GameStateKlass;
-import com.commercial.backend.model.state.AfterLotteryState;
-import com.commercial.backend.model.state.BeforeGameState;
-import com.commercial.backend.model.state.InGameState;
-import com.commercial.backend.model.state.WaitLotteryState;
-import com.commercial.backend.model.state.WaitNextGameState;
+import com.commercial.backend.model.json.JsonRegistration;
+import com.commercial.backend.model.state.period.AfterLotteryState;
+import com.commercial.backend.model.state.period.BeforeGameState;
+import com.commercial.backend.model.state.period.InGameState;
+import com.commercial.backend.model.state.period.WaitLotteryState;
+import com.commercial.backend.model.state.period.WaitNextGameState;
+import com.commercial.backend.security.response.NotValidResponse;
+import com.commercial.backend.security.response.UserExistsResponse;
 import com.commercial.backend.service.interfaces.IUserService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -68,7 +68,7 @@ public class AuthController {
                     description = "Not valid",
                     content = {@Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = NotFoundUserResponse.class)
+                            schema = @Schema(implementation = NotValidResponse.class)
                     )}),
             @ApiResponse(
                     responseCode = "401",
@@ -79,16 +79,16 @@ public class AuthController {
                     )})
     })
     @PostMapping(value = "register/v2", consumes = "application/json", produces = "application/json")
-    public GameStateKlass registerNewUser(@RequestBody InputRegistration registration) {
+    public GameStateKlass registerNewUser(@RequestBody JsonRegistration registration) {
         return userService.addNewUserAndGetTokenWithHistory(
                 new User(
-                        registration.phone,
-                        registration.name,
-                        registration.surname,
-                        registration.middleName,
-                        registration.email,
-                        registration.place,
-                        registration.division
+                        registration.getPhone(),
+                        registration.getName(),
+                        registration.getSurname(),
+                        registration.getMiddleName(),
+                        registration.getEmail(),
+                        registration.getPlace(),
+                        registration.getDivision()
                 ));
     }
 }
