@@ -1,7 +1,7 @@
 package com.commercial.backend.controllers;
 
 import com.commercial.backend.model.game.GameState;
-import com.commercial.backend.service.IUserService;
+import com.commercial.backend.service.interfaces.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;

@@ -3,7 +3,7 @@ package com.commercial.backend.controllers;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.auth.InputRegistration;
 import com.commercial.backend.model.game.GameState;
-import com.commercial.backend.service.IUserService;
+import com.commercial.backend.service.interfaces.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

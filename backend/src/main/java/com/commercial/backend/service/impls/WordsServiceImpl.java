@@ -1,7 +1,8 @@
-package com.commercial.backend.service;
+package com.commercial.backend.service.impls;
 
 import com.commercial.backend.db.AnswerRepository;
 import com.commercial.backend.db.entities.Answer;
+import com.commercial.backend.service.interfaces.IWordsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class WordsServiceImpl implements WordsService {
+public class WordsServiceImpl implements IWordsService {
     private final Logger logger = LoggerFactory.getLogger(WordsServiceImpl.class);
     // :TODO add method for adding word not only with constructor
     private final Set<String> words;

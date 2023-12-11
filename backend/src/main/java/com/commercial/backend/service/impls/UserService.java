@@ -1,9 +1,10 @@
-package com.commercial.backend.service;
+package com.commercial.backend.service.impls;
 
 import com.commercial.backend.db.UserRepository;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.feedback.Feedback;
 import com.commercial.backend.model.game.GameState;
+import com.commercial.backend.service.interfaces.IUserService;
 import org.springframework.stereotype.Service;
 
 import static com.commercial.backend.model.ApiException.hugeSizeField;
