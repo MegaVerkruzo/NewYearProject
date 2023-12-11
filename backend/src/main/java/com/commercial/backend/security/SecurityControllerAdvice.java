@@ -4,16 +4,18 @@ import com.commercial.backend.security.exception.AlreadyExist5AttemptsException;
 import com.commercial.backend.security.exception.AlreadyExistCorrectAttemptException;
 import com.commercial.backend.security.exception.BadRequestException;
 import com.commercial.backend.security.exception.NoWordInDictionaryException;
-import com.commercial.backend.security.exception.NotFoundUserException;
+import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
 import com.commercial.backend.security.exception.UserExistsException;
+import com.commercial.backend.security.exception.WrongSizeException;
 import com.commercial.backend.security.response.AlreadyExist5AttemptsResponse;
 import com.commercial.backend.security.response.AlreadyExistCorrectAttemptResponse;
 import com.commercial.backend.security.response.BadRequestResponse;
 import com.commercial.backend.security.response.NoWordInDictionaryResponse;
-import com.commercial.backend.security.response.NotFoundUserResponse;
+import com.commercial.backend.security.response.NotRegisteredResponse;
 import com.commercial.backend.security.response.NotValidResponse;
 import com.commercial.backend.security.response.UserExistsResponse;
+import com.commercial.backend.security.response.WrongSizeResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -41,10 +43,10 @@ public class SecurityControllerAdvice {
         return new BadRequestResponse();
     }
 
-    @ExceptionHandler(NotFoundUserException.class)
+    @ExceptionHandler(NotRegisteredException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public NotFoundUserResponse handleNotFoundUserException(NotFoundUserException ignored) {
-        return new NotFoundUserResponse();
+    public NotRegisteredResponse handleNotFoundUserException(NotRegisteredException ignored) {
+        return new NotRegisteredResponse();
     }
 
     @ExceptionHandler(NotValidException.class)
@@ -63,5 +65,11 @@ public class SecurityControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public UserExistsResponse handleUserExistsException(UserExistsException ignored) {
         return new UserExistsResponse();
+    }
+
+    @ExceptionHandler(WrongSizeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public WrongSizeResponse handleUserExistsException(WrongSizeException ignored) {
+        return new WrongSizeResponse();
     }
 }

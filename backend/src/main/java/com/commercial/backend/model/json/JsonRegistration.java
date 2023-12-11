@@ -1,5 +1,6 @@
 package com.commercial.backend.model.json;
 
+import com.commercial.backend.db.entities.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -19,4 +20,16 @@ public class JsonRegistration {
     private String place;
     @JsonProperty("division")
     private String division;
+
+    public User getUser() {
+        return new User(
+                phone,
+                name,
+                surname,
+                middleName,
+                email,
+                place,
+                division
+        );
+    }
 }

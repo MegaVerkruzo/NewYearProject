@@ -5,9 +5,14 @@ import com.commercial.backend.db.entities.Answer;
 import com.commercial.backend.db.entities.Attempt;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.game.Color;
-import com.commercial.backend.model.game.GameStateKlass;
 import com.commercial.backend.model.game.LetterColor;
-import com.commercial.backend.security.ApiException;
+import com.commercial.backend.model.state.State;
+import com.commercial.backend.model.state.period.BeforeGameState;
+import com.commercial.backend.model.state.period.InGameState;
+import com.commercial.backend.security.exception.AlreadyExist5AttemptsException;
+import com.commercial.backend.security.exception.AlreadyExistCorrectAttemptException;
+import com.commercial.backend.security.exception.NoWordInDictionaryException;
+import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.service.interfaces.IAnswersService;
 import com.commercial.backend.service.interfaces.IAttemptService;
 import com.commercial.backend.service.interfaces.IWordsService;
@@ -86,9 +91,9 @@ public class AttemptService implements IAttemptService {
     }
 
     @Override
-    public GameStateKlass getAllInfo(User user) {
+    public State getAllInfo(User user) {
         if (user == null) {
-            return GameStateKlass.createStateWithException(ApiException.notRegistered);
+            throw new NotRegisteredException();
         }
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
@@ -104,24 +109,25 @@ public class AttemptService implements IAttemptService {
         logger.info("countCorrectAnswersBefore: " + countCorrectAnswersBefore);
 
         if (answer == null) {
-            return new GameStateKlass(
-                    null,
-                    null,
-                    null,
-                    0,
-                    0,
-                    new ArrayList<>(),
-                    0,
-                    0,
-                    true,
-                    // :TODO change logic
-                    false,
-                    null,
-                    null,
-                    null,
-                    countCorrectAnswersBefore,
-                    false
-            );
+            return new BeforeGameState();
+//            return new GameStateKlass(
+//                    null,
+//                    null,
+//                    null,
+//                    0,
+//                    0,
+//                    new ArrayList<>(),
+//                    0,
+//                    0,
+//                    true,
+//                    // :TODO change logic
+//                    false,
+//                    null,
+//                    null,
+//                    null,
+//                    countCorrectAnswersBefore,
+//                    false
+//            );
         }
 
         List<Attempt> currentAttempts = new ArrayList<>();
@@ -142,31 +148,32 @@ public class AttemptService implements IAttemptService {
         // :TODO change logic
         boolean isPuttedFeedback = false && isEnd && offsetDateTime.isAfter(answersService.getMaxDate());
 
-        return new GameStateKlass(
-                null,
-                null,
-                null,
-                0,
-                0,
-                attemptsInfo,
-                answer.getWord().length(),
-                currentAttempts.size(),
-                isEnd,
-                isPuttedFeedback,
-                null,
-                isEnd ? answer.getDescription() : "",
-                null,
-                countCorrectAnswersBefore,
-                false
-        );
+        return new BeforeGameState();
+//        return new GameStateKlass(
+//                null,
+//                null,
+//                null,
+//                0,
+//                0,
+//                attemptsInfo,
+//                answer.getWord().length(),
+//                currentAttempts.size(),
+//                isEnd,
+//                isPuttedFeedback,
+//                null,
+//                isEnd ? answer.getDescription() : "",
+//                null,
+//                countCorrectAnswersBefore,
+//                false
+//        );
     }
 
     @Override
-    public GameStateKlass addNewWord(User user, Answer answer, String word, OffsetDateTime offsetDateTime) {
+    public State addNewWord(User user, Answer answer, String word, OffsetDateTime offsetDateTime) {
         word = getWordInUTF8(word);
 
         if (!wordsService.isWordExists(word)) {
-            return GameStateKlass.createStateWithException(ApiException.noWordInDictionary);
+            throw new NoWordInDictionaryException();
         }
 
         List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
@@ -180,33 +187,39 @@ public class AttemptService implements IAttemptService {
 
         for (Attempt attempt : currentAttempts) {
             if (attempt.getWord().equals(answer.getWord())) {
-                return GameStateKlass.createStateWithException(ApiException.alreadyExistCorrectAttempt);
+                throw new AlreadyExistCorrectAttemptException();
             }
         }
 
         if (currentAttempts.size() >= 5) {
-            return GameStateKlass.createStateWithException(ApiException.alreadyExist5Attempts);
+            throw new AlreadyExist5AttemptsException();
         }
 
         attemptRepository.save(new Attempt(user.getId(), word, offsetDateTime));
 
-        return new GameStateKlass(
-                null,
-                null,
-                null,
-                0,
-                0,
+        return new InGameState(
                 compare(answer.getWord(), word),
                 0,
                 0,
-                false,
-                (answer.getWord().equals(word) || currentAttempts.size() == 4)
-                        && answer.getDescription().equals("5"),
-                null,
-                answer.getWord().equals(word) ? answer.getDescription() : null,
-                null,
-                0,
-                answer.getWord().equals(word)
+                0
         );
+//        return new GameStateKlass(
+//                null,
+//                null,
+//                null,
+//                0,
+//                0,
+//                compare(answer.getWord(), word),
+//                0,
+//                0,
+//                false,
+//                (answer.getWord().equals(word) || currentAttempts.size() == 4)
+//                        && answer.getDescription().equals("5"),
+//                null,
+//                answer.getWord().equals(word) ? answer.getDescription() : null,
+//                null,
+//                0,
+//                answer.getWord().equals(word)
+//        );
     }
 }

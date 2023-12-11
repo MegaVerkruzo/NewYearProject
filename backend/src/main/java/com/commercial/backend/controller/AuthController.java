@@ -1,8 +1,7 @@
 package com.commercial.backend.controller;
 
-import com.commercial.backend.db.entities.User;
-import com.commercial.backend.model.game.GameStateKlass;
 import com.commercial.backend.model.json.JsonRegistration;
+import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.AfterLotteryState;
 import com.commercial.backend.model.state.period.BeforeGameState;
 import com.commercial.backend.model.state.period.InGameState;
@@ -79,16 +78,7 @@ public class AuthController {
                     )})
     })
     @PostMapping(value = "register/v2", consumes = "application/json", produces = "application/json")
-    public GameStateKlass registerNewUser(@RequestBody JsonRegistration registration) {
-        return userService.addNewUserAndGetTokenWithHistory(
-                new User(
-                        registration.getPhone(),
-                        registration.getName(),
-                        registration.getSurname(),
-                        registration.getMiddleName(),
-                        registration.getEmail(),
-                        registration.getPlace(),
-                        registration.getDivision()
-                ));
+    public State registerNewUser(@RequestBody JsonRegistration registration) {
+        return userService.addNewUserAndGetTokenWithHistory(registration.getUser());
     }
 }
