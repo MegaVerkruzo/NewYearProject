@@ -13,10 +13,16 @@ public class WaitNextGameState implements State {
     private final GameState gameState;
     @Schema(example = "Молодец - ты хорошо потрудился! Жди следующей игры")
     private final String text;
+    @Schema(example = "Вы учавствуете в розыгрыше призов 2-го уровня")
+    private final String activePrizes;
+    @Schema(example = "Чтобы учавствовать в розыгрыше всех подарков, вам осталось ответить на 3 загадки")
+    private final String nonActivePrizes;
     private final Integer activeGifts;
 
     public WaitNextGameState(Integer activeGifts) {
         // :TODO think about text
+        this.activePrizes = "Вы учавствует в розыгрыше таких вещей";
+        this.nonActivePrizes = "Чтобы учавствовать в розыгрыше всех подарков, вам осталось ответить на 3 загадки";
         this.text = "Молодец - ты хорошо потрудился! Жди следующей игры";
         this.gameState = waitNextGame;
         this.activeGifts = activeGifts;

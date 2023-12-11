@@ -16,6 +16,10 @@ public class WaitFeedbackState implements State {
     private final GameState gameState;
     @Schema(example = "Угадай слово, какое слово стоит в обозначении радуги после \"сидит\"")
     private final String text;
+    @Schema(example = "Вы учавствуете в розыгрыше призов 2-го уровня")
+    private final String activePrizes;
+    @Schema(example = "Чтобы учавствовать в розыгрыше всех подарков, вам осталось ответить на 3 загадки")
+    private final String nonActivePrizes;
     @Schema(example = "Укажите отзыв!")
     private final String feedbackQuestion;
     private final List<LetterColor> letters;
@@ -26,6 +30,8 @@ public class WaitFeedbackState implements State {
 
     public WaitFeedbackState(List<LetterColor> letters, String description, Integer wordLength, Integer activeGifts) {
         // :TODO think about text
+        this.activePrizes = "Вы учавствует в розыгрыше таких вещей";
+        this.nonActivePrizes = "Чтобы учавствовать в розыгрыше всех подарков, вам осталось ответить на 3 загадки";
         this.text = "Угадай слово, какое слово стоит в обозначении радуги после \"сидит\"";
         this.feedbackQuestion = "Укажите отзыв!";
         this.gameState = waitFeedback;
