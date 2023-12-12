@@ -87,7 +87,7 @@ public class ApiController {
                     )})
     })
     @GetMapping(value = "getState/v2", produces = "application/json")
-    public State newGetState(@RequestHeader("authorization") String authorization) {
-        return userService.checkTokenWithException(authorization);
+    public State newGetState(@RequestHeader("authorization") String token) {
+        return userService.getState(token);
     }
 }

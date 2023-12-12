@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -71,7 +72,10 @@ public class AuthController {
                     )})
     })
     @PostMapping(value = "register/v2", consumes = "application/json", produces = "application/json")
-    public State registerNewUser(@RequestBody JsonRegistration registration) {
-        return userService.addNewUserAndGetTokenWithHistory(new User(registration));
+    public State registerNewUser(
+            @RequestHeader("authorization") String token,
+            @RequestBody JsonRegistration registration
+    ) {
+        return userService.registerNewUser(new User(token, registration));
     }
 }

@@ -1,13 +1,13 @@
 package com.commercial.backend.db.entities;
 
 import com.commercial.backend.model.json.JsonRegistration;
+import com.commercial.backend.security.exception.NotRegisteredException;
+import com.commercial.backend.security.exception.NotValidException;
+import com.commercial.backend.service.interfaces.IUserService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +26,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_generator")
-    @SequenceGenerator(name = "users_generator", sequenceName = "users_seq", allocationSize = 1)
     private Long id;
     private String phone;
     private String username;
@@ -40,6 +38,7 @@ public class User {
     private String division;
 
     public User(
+            Long id,
             String phone,
             String name,
             String surname,
@@ -48,6 +47,7 @@ public class User {
             String place,
             String division
     ) {
+        this.id = id;
         this.phone = phone;
         this.name = name;
         this.surname = surname;
@@ -57,7 +57,9 @@ public class User {
         this.division = division;
     }
 
-    public User(JsonRegistration json) {
+    //
+    public User(String token, JsonRegistration json) throws NotRegisteredException, NotValidException {
+        this.id = IUserService.parseId(token);
         this.phone = json.getPhone();
         this.name = json.getName();
         this.surname = json.getSurname();
