@@ -12,6 +12,7 @@ import com.commercial.backend.model.state.period.InGameState;
 import com.commercial.backend.security.exception.BadRequestException;
 import com.commercial.backend.security.exception.NoWordInDictionaryException;
 import com.commercial.backend.security.exception.NotRegisteredException;
+import com.commercial.backend.security.exception.NotValidException;
 import com.commercial.backend.service.interfaces.IAnswersService;
 import com.commercial.backend.service.interfaces.IAttemptService;
 import com.commercial.backend.service.interfaces.IWordsService;
@@ -168,7 +169,15 @@ public class AttemptService implements IAttemptService {
     }
 
     @Override
-    public State addNewWord(User user, Answer answer, String word, OffsetDateTime offsetDateTime) {
+    public State addNewWord(
+            User user,
+            Answer answer,
+            String word,
+            OffsetDateTime offsetDateTime
+    ) throws NotValidException {
+        if (word == null) {
+            throw new NotValidException();
+        }
         word = getWordInUTF8(word);
 
         if (!wordsService.isWordExists(word)) {

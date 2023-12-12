@@ -9,26 +9,24 @@ import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
 import com.commercial.backend.security.exception.UserExistsException;
 import com.commercial.backend.service.interfaces.IUserService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import static com.commercial.backend.security.ApiException.noFeedback;
 import static com.commercial.backend.security.ApiException.notRegistered;
 
 @Service
+@AllArgsConstructor
 public class UserService implements IUserService {
-    private final UserRepository repository;
-
-    UserService(UserRepository userRepository) {
-        this.repository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     private boolean checkFieldOnSize(String str) {
         return str.length() < 250;
     }
 
     @Override
-    public State addNewUserAndGetTokenWithHistory(User user) {
-        repository.findUserByPhone(user.getPhone()).ifPresent(UserExistsException::new);
+    public State registerNewUser(User user) {
+        userRepository.findUserById(user.getId()).ifPresent(UserExistsException::new);
 
         if (checkFieldOnSize(user.getPhone())
                 && checkFieldOnSize(user.getName())
@@ -37,7 +35,7 @@ public class UserService implements IUserService {
                 && checkFieldOnSize(user.getEmail())
                 && checkFieldOnSize(user.getPlace())
         ) {
-            repository.save(user);
+            userRepository.save(user);
             // :TODO change it
             return new BeforeGameState();
         } else {
@@ -46,15 +44,12 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public State checkTokenWithException(String authorization) {
-        String token = getToken(authorization);
-        repository.findUserByPhone(token).orElseThrow(NotRegisteredException::new);
-        // :TODO Change it
+    public State getState(String authorization) throws NotRegisteredException {
+        userRepository
+                .findUserById(IUserService.parseId(authorization))
+                .orElseThrow(NotRegisteredException::new);
+        // :TODO ad-hoc
         return new BeforeGameState();
-    }
-
-    private String getToken(String authorization) {
-        return authorization;
     }
 
     @Override
@@ -67,12 +62,12 @@ public class UserService implements IUserService {
             return new Feedback(noFeedback);
         }
 
-        repository.updateFeedbackByPhone(feedback, user.getId());
+        userRepository.updateFeedbackByPhone(feedback, user.getId());
         return null;
     }
 
     @Override
-    public User getUserByToken(String token) {
-        return repository.findUserByPhone(token).orElseThrow(NotRegisteredException::new);
+    public User getUserByToken(String token) throws NotRegisteredException, NotValidException {
+        return userRepository.findUserById(IUserService.parseId(token)).orElseThrow(NotRegisteredException::new);
     }
 }

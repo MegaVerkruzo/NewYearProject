@@ -7,7 +7,6 @@ import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.InGameState;
 import com.commercial.backend.model.state.period.WaitFeedbackState;
 import com.commercial.backend.security.exception.BadRequestException;
-import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
 import com.commercial.backend.security.response.BadRequestResponse;
 import com.commercial.backend.security.response.NoWordInDictionaryResponse;
@@ -102,26 +101,12 @@ public class GameController {
     })
     @PostMapping(value = "new_attempt/v2", consumes = "application/json", produces = "application/json")
     // :TODO find good thing for deleting unnecessary objects
-    public State newAttempt(@RequestHeader("authorization") String token, @RequestBody JsonWord jsonWordBody) {
-        if (token == null) {
-            throw new NotRegisteredException();
-        }
-
+    public State newAttempt(@RequestHeader("authorization") String token, @RequestBody JsonWord jsonWord) {
         User user = userService.getUserByToken(token);
-        logger.info("Read user " + user);
-
-        if (user == null) {
-            throw new NotRegisteredException();
-        }
-        if (jsonWordBody == null) {
+        if (jsonWord == null) {
             throw new NotValidException();
         }
-
-        String word = jsonWordBody.getWord();
-        logger.info("Read word " + word);
-        if (word == null) {
-            throw new NotValidException();
-        }
+        String word = jsonWord.getWord();
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         Answer answer = answersService.findPreviousAnswer(offsetDateTime);

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findUserByPhone(String phone);
+    Optional<User> findUserById(Long id);
 
     @Modifying
     @Query(value = "UPDATE users SET feedback = :feedback WHERE id = :id", nativeQuery = true)
