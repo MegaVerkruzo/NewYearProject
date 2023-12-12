@@ -7,7 +7,7 @@ import lombok.Getter;
 import static com.commercial.backend.security.ApiException.notRegistered;
 
 @Getter
-public class NotFoundUserResponse {
+public class NotRegisteredResponse {
     @Schema(example = "notRegistered")
     private final ApiException exception = notRegistered;
 }

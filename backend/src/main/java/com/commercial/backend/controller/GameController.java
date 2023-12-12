@@ -2,15 +2,16 @@ package com.commercial.backend.controller;
 
 import com.commercial.backend.db.entities.Answer;
 import com.commercial.backend.db.entities.User;
-import com.commercial.backend.model.game.GameStateKlass;
 import com.commercial.backend.model.json.JsonWord;
+import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.InGameState;
 import com.commercial.backend.model.state.period.WaitFeedbackState;
-import com.commercial.backend.security.ApiException;
-import com.commercial.backend.security.response.AlreadyExist5AttemptsResponse;
-import com.commercial.backend.security.response.AlreadyExistCorrectAttemptResponse;
+import com.commercial.backend.security.exception.BadRequestException;
+import com.commercial.backend.security.exception.NotRegisteredException;
+import com.commercial.backend.security.exception.NotValidException;
+import com.commercial.backend.security.response.BadRequestResponse;
 import com.commercial.backend.security.response.NoWordInDictionaryResponse;
-import com.commercial.backend.security.response.NotFoundUserResponse;
+import com.commercial.backend.security.response.NotRegisteredResponse;
 import com.commercial.backend.security.response.NotValidResponse;
 import com.commercial.backend.service.interfaces.IAnswersService;
 import com.commercial.backend.service.interfaces.IAttemptService;
@@ -82,7 +83,7 @@ public class GameController {
                     description = "Not authorized",
                     content = {@Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = NotFoundUserResponse.class)
+                            schema = @Schema(implementation = NotRegisteredResponse.class)
                     )}),
             @ApiResponse(
                     responseCode = "402",
@@ -93,40 +94,33 @@ public class GameController {
                     )}),
             @ApiResponse(
                     responseCode = "403",
-                    description = "Already exist correct attempt",
+                    description = "Bad request",
                     content = {@Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = AlreadyExistCorrectAttemptResponse.class)
-                    )}),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Already exist 5 attempts",
-                    content = {@Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = AlreadyExist5AttemptsResponse.class)
+                            schema = @Schema(implementation = BadRequestResponse.class)
                     )}),
     })
     @PostMapping(value = "new_attempt/v2", consumes = "application/json", produces = "application/json")
     // :TODO find good thing for deleting unnecessary objects
-    public GameStateKlass newAttempt(@RequestHeader("authorization") String token, @RequestBody JsonWord jsonWordBody) {
+    public State newAttempt(@RequestHeader("authorization") String token, @RequestBody JsonWord jsonWordBody) {
         if (token == null) {
-            return GameStateKlass.createStateWithException(ApiException.notRegistered);
+            throw new NotRegisteredException();
         }
 
         User user = userService.getUserByToken(token);
         logger.info("Read user " + user);
 
         if (user == null) {
-            return GameStateKlass.createStateWithException(ApiException.notRegistered);
+            throw new NotRegisteredException();
         }
         if (jsonWordBody == null) {
-            return GameStateKlass.createStateWithException(ApiException.uncorrectedData);
+            throw new NotValidException();
         }
 
         String word = jsonWordBody.getWord();
         logger.info("Read word " + word);
         if (word == null) {
-            return GameStateKlass.createStateWithException(ApiException.uncorrectedData);
+            throw new NotValidException();
         }
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
@@ -134,11 +128,11 @@ public class GameController {
         logger.info("answer: " + answer);
 
         if (answer == null) {
-            return GameStateKlass.createStateWithException(ApiException.uncorrectedData);
+            throw new NotValidException();
         }
 
         if (answer.getWord().length() != word.length()) {
-            return GameStateKlass.createStateWithException(ApiException.wrongSize);
+            throw new BadRequestException();
         }
 
         return attemptService.addNewWord(user, answer, word, offsetDateTime);

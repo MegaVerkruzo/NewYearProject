@@ -1,6 +1,6 @@
 package com.commercial.backend.controller;
 
-import com.commercial.backend.model.game.GameStateKlass;
+import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.AfterLotteryState;
 import com.commercial.backend.model.state.period.BeforeGameState;
 import com.commercial.backend.model.state.period.InGameState;
@@ -8,7 +8,7 @@ import com.commercial.backend.model.state.period.WaitFeedbackState;
 import com.commercial.backend.model.state.period.WaitLotteryState;
 import com.commercial.backend.model.state.period.WaitNextGameState;
 import com.commercial.backend.security.response.BadRequestResponse;
-import com.commercial.backend.security.response.NotFoundUserResponse;
+import com.commercial.backend.security.response.NotRegisteredResponse;
 import com.commercial.backend.service.interfaces.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -59,7 +59,7 @@ public class ApiController {
                     )}),
             @ApiResponse(
                     responseCode = "204",
-                    description = "State - wait lottery",
+                    description = "State - wait end lottery",
                     content = {@Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = WaitLotteryState.class)
@@ -83,11 +83,11 @@ public class ApiController {
                     description = "Not authorized",
                     content = {@Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = NotFoundUserResponse.class)
+                            schema = @Schema(implementation = NotRegisteredResponse.class)
                     )})
     })
     @GetMapping(value = "getState/v2", produces = "application/json")
-    public GameStateKlass newGetState(@RequestHeader("authorization") String authorization) {
+    public State newGetState(@RequestHeader("authorization") String authorization) {
         return userService.checkTokenWithException(authorization);
     }
 }
