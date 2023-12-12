@@ -1,8 +1,8 @@
 package com.commercial.backend.service.impls;
 
 import com.commercial.backend.db.AnswerRepository;
-import com.commercial.backend.db.entities.Answer;
 import com.commercial.backend.db.entities.Attempt;
+import com.commercial.backend.db.entities.Task;
 import com.commercial.backend.service.interfaces.IAnswersService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -22,13 +22,13 @@ public class AnswersServiceImpl implements IAnswersService {
     private final Logger logger = LoggerFactory.getLogger(AnswersServiceImpl.class);
 
     @Override
-    public Answer findPreviousAnswer(OffsetDateTime offsetDateTime) {
+    public Task findPreviousAnswer(OffsetDateTime offsetDateTime) {
         OffsetDateTime previousDate = deltaService.getDeltaDown(offsetDateTime);
         logger.info("previousDate: " + previousDate);
 
-        for (Answer answer : answerRepository.findAll()) {
-            if (answer.getDate().isAfter(previousDate)) {
-                return answer;
+        for (Task task : answerRepository.findAll()) {
+            if (task.getDate().isAfter(previousDate)) {
+                return task;
             }
         }
         return null;
@@ -38,10 +38,10 @@ public class AnswersServiceImpl implements IAnswersService {
     public int countCorrectAnswers(List<Attempt> attempts) {
         int correctAnswers = 0;
         for (Attempt attempt : attempts) {
-            for (Answer answer : answerRepository.findAll()) {
-                if (answer.getWord().equals(attempt.getWord())
-                        && answer.getDate().isBefore(attempt.getDate())
-                        && attempt.getDate().isBefore(deltaService.getDeltaUp(answer.getDate()))) {
+            for (Task task : answerRepository.findAll()) {
+                if (task.getWord().equals(attempt.getWord())
+                        && task.getDate().isBefore(attempt.getDate())
+                        && attempt.getDate().isBefore(deltaService.getDeltaUp(task.getDate()))) {
                     correctAnswers++;
                 }
             }
@@ -52,9 +52,9 @@ public class AnswersServiceImpl implements IAnswersService {
     @Override
     public OffsetDateTime getMaxDate() {
         OffsetDateTime maxDate = OffsetDateTime.MIN;
-        for (Answer answer : answerRepository.findAll()) {
-            if (answer.getDate().isAfter(maxDate)) {
-                maxDate = answer.getDate();
+        for (Task task : answerRepository.findAll()) {
+            if (task.getDate().isAfter(maxDate)) {
+                maxDate = task.getDate();
             }
         }
         return maxDate;

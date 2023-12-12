@@ -1,6 +1,6 @@
 package com.commercial.backend.controller;
 
-import com.commercial.backend.db.entities.Answer;
+import com.commercial.backend.db.entities.Task;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.json.JsonWord;
 import com.commercial.backend.model.state.State;
@@ -109,17 +109,17 @@ public class GameController {
         String word = jsonWord.getWord();
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
-        Answer answer = answersService.findPreviousAnswer(offsetDateTime);
-        logger.info("answer: " + answer);
+        Task task = answersService.findPreviousAnswer(offsetDateTime);
+        logger.info("answer: " + task);
 
-        if (answer == null) {
+        if (task == null) {
             throw new NotValidException();
         }
 
-        if (answer.getWord().length() != word.length()) {
+        if (task.getWord().length() != word.length()) {
             throw new BadRequestException();
         }
 
-        return attemptService.addNewWord(user, answer, word, offsetDateTime);
+        return attemptService.addNewWord(user, task, word, offsetDateTime);
     }
 }

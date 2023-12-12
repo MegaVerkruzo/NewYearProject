@@ -1,8 +1,8 @@
 package com.commercial.backend.service.impls;
 
 import com.commercial.backend.db.AttemptRepository;
-import com.commercial.backend.db.entities.Answer;
 import com.commercial.backend.db.entities.Attempt;
+import com.commercial.backend.db.entities.Task;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.game.Color;
 import com.commercial.backend.model.game.LetterColor;
@@ -99,8 +99,8 @@ public class AttemptService implements IAttemptService {
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         logger.info("current millis: " + offsetDateTime);
 
-        Answer answer = answersService.findPreviousAnswer(offsetDateTime);
-        logger.info("answer is " + answer);
+        Task task = answersService.findPreviousAnswer(offsetDateTime);
+        logger.info("answer is " + task);
 
         List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
         logger.info("attempts size: " + attempts.size());
@@ -108,7 +108,7 @@ public class AttemptService implements IAttemptService {
         int countCorrectAnswersBefore = answersService.countCorrectAnswers(attempts);
         logger.info("countCorrectAnswersBefore: " + countCorrectAnswersBefore);
 
-        if (answer == null) {
+        if (task == null) {
             return new BeforeGameState();
 //            return new GameStateKlass(
 //                    null,
@@ -132,15 +132,15 @@ public class AttemptService implements IAttemptService {
 
         List<Attempt> currentAttempts = new ArrayList<>();
         for (Attempt attempt : attempts) {
-            if (answer.getDate().isBefore(attempt.getDate())
-                    && attempt.getDate().isBefore(deltaService.getDeltaUp(answer.getDate()))) {
+            if (task.getDate().isBefore(attempt.getDate())
+                    && attempt.getDate().isBefore(deltaService.getDeltaUp(task.getDate()))) {
                 currentAttempts.add(attempt);
             }
         }
 
         List<LetterColor> attemptsInfo = new ArrayList<>();
         for (Attempt attempt : currentAttempts) {
-            attemptsInfo.addAll(compare(answer.getWord(), attempt.getWord()));
+            attemptsInfo.addAll(compare(task.getWord(), attempt.getWord()));
         }
 
         boolean isEnd = currentAttempts.size() == 5 || answersService.countCorrectAnswers(currentAttempts) >= 1;
@@ -171,7 +171,7 @@ public class AttemptService implements IAttemptService {
     @Override
     public State addNewWord(
             User user,
-            Answer answer,
+            Task task,
             String word,
             OffsetDateTime offsetDateTime
     ) throws NotValidException {
@@ -187,14 +187,14 @@ public class AttemptService implements IAttemptService {
         List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
         List<Attempt> currentAttempts = new ArrayList<>();
         for (Attempt attempt : attempts) {
-            if (answer.getDate().isBefore(attempt.getDate())
-                    && attempt.getDate().isBefore(deltaService.getDeltaUp(answer.getDate()))) {
+            if (task.getDate().isBefore(attempt.getDate())
+                    && attempt.getDate().isBefore(deltaService.getDeltaUp(task.getDate()))) {
                 currentAttempts.add(attempt);
             }
         }
 
         for (Attempt attempt : currentAttempts) {
-            if (attempt.getWord().equals(answer.getWord())) {
+            if (attempt.getWord().equals(task.getWord())) {
                 throw new BadRequestException();
             }
         }
@@ -206,7 +206,7 @@ public class AttemptService implements IAttemptService {
         attemptRepository.save(new Attempt(user.getId(), word, offsetDateTime));
 
         return new InGameState(
-                compare(answer.getWord(), word),
+                compare(task.getWord(), word),
                 0,
                 0,
                 0

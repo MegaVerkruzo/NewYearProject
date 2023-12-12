@@ -1,7 +1,7 @@
 package com.commercial.backend.service.impls;
 
 import com.commercial.backend.db.AnswerRepository;
-import com.commercial.backend.db.entities.Answer;
+import com.commercial.backend.db.entities.Task;
 import com.commercial.backend.service.interfaces.IWordsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public class WordsServiceImpl implements IWordsService {
     public WordsServiceImpl(AnswerRepository answerRepository) throws IOException {
         logger.info("Start downloading russian words");
         this.words = getContent();
-        answerRepository.findAll().stream().map(Answer::getWord).forEach(words::add);
+        answerRepository.findAll().stream().map(Task::getWord).forEach(words::add);
         // :TODO delete this logging
         answerRepository.findAll().forEach(answer -> logger.info(answer.toString()));
         logger.info("End downloading russian words");
