@@ -1,13 +1,13 @@
-FROM node as builder
+FROM node:18-alpine as builder
 WORKDIR /app
 COPY ./package.json ./
-RUN npm i
+COPY ./yarn.lock ./
+RUN yarn
 COPY . .
-ENV REACT_APP_SERVER_NAME='http://localhost:5000/api'
-ENV REACT_APP_SERVER_NAME_PUBLIC='http://localhost:5000'
-RUN npm run build
+RUN yarn build
 
-FROM nginx
-EXPOSE 80
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/build /usr/share/nginx/html
+FROM nginx:latest
+COPY ./nginx/main.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+CMD ["nginx", "-g", "daemon off;"]
