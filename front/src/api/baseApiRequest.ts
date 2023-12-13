@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_URL } from '../config/config'
-import { getTgParams } from '../utils/gettgParams'
+import { getTgParams } from '../utils/getTgParams'
 
 interface BaseApiRequestOptions {
   url: string
