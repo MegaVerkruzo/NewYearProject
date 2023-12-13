@@ -1,13 +1,14 @@
 import giftTop from '../../assets/images/gift_top.png'
 import giftBottom from '../../assets/images/gift_bottom.png'
-import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Spinner from '../../assets/svgs/Spinner'
 import { fieldsData } from './registerData'
 import { Input } from '../../components/Input/Input'
-import { Fields, FieldsNames } from '../../types/register'
+import { RegisterFields, FieldsNames } from '../../types/register'
+import { baseApiRequest } from '../../api/baseApiRequest'
+import { useRegister } from '../../api/register'
 
-const initialFields: Fields = {
+const initialFields: RegisterFields = {
   name: '',
   surname: '',
   middleName: '',
@@ -18,10 +19,17 @@ const initialFields: Fields = {
 }
 
 export const Register = () => {
-  const [fields, setFields] = useState<Fields>(initialFields)
+  const [fields, setFields] = useState<RegisterFields>(initialFields)
   const [isAgreePolicy, setIsAgreePolicy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const { mutate: register } = useRegister()
+
+  // useEffect(() => {
+  //   baseApiRequest({ url: '/getState' })
+  //     .then((data) => console.log(data))
+  //     .catch((e) => console.log(e))
+  // }, [])
 
   const onSignUp = () => {
     setError(null)
@@ -52,6 +60,7 @@ export const Register = () => {
       return
     }
 
+    register(fields)
     console.log(fields)
   }
   const onChangeInput = (field: FieldsNames, value: string) => {

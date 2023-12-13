@@ -2,3 +2,5 @@ node_modules
 .dockerignore
 dist
 Dockerfile
+nginx
+etc-letsencrypt

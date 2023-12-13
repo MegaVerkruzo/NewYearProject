@@ -26,64 +26,41 @@ export const Header = () => {
     <header className="header">
       <div className="container">
         <div className="header__row">
-          {window.innerWidth > 1140 ? (
-            <div className="header__top">
-              <div className="header__left">
+          <div className="header__top">
+            <div className="header__left">
+              <div className="header__sound">
+                <button className="sound__btn" onClick={toggleIsSound}>
+                  {isSound ? <Sound /> : <NoSound />}
+                </button>
+              </div>
+            </div>
+            <div>
+              <img src={TimerSnow} alt="Снежок" className="timer__snow" />
+            </div>
+            <div className="header__right">
+              <div
+                className={cn('header__burger', {
+                  'menu-open': isMenuOpen,
+                })}
+                onClick={onMenuOpen}
+              >
+                <span />
+              </div>
+              <nav
+                className={cn('menu__nav', { 'menu-open': isMenuOpen })}
+                onClick={onMenuOpen}
+              >
                 <div className="header__logo">
                   <Logo />
                 </div>
-              </div>
-              <div className="header__right">
-                <div className="header__burger" onClick={onMenuOpen} />
                 <div className="header__help">
                   <a href="https://t.me/blago2023" target="_blank">
                     Снегурочка на связи
                   </a>
                 </div>
-                <div className="header__sound">
-                  <button className="sound__btn" onClick={toggleIsSound}>
-                    {isSound ? <Sound /> : <NoSound />}
-                  </button>
-                </div>
-              </div>
+              </nav>
             </div>
-          ) : (
-            <div className="header__top">
-              <div className="header__left">
-                <div className="header__sound">
-                  <button className="sound__btn" onClick={toggleIsSound}>
-                    {isSound ? <Sound /> : <NoSound />}
-                  </button>
-                </div>
-              </div>
-              <div>
-                <img src={TimerSnow} alt="Снежок" className="timer__snow" />
-              </div>
-              <div className="header__right">
-                <div
-                  className={cn('header__burger', {
-                    'menu-open': isMenuOpen,
-                  })}
-                  onClick={onMenuOpen}
-                >
-                  <span />
-                </div>
-                <nav
-                  className={cn('menu__nav', { 'menu-open': isMenuOpen })}
-                  onClick={onMenuOpen}
-                >
-                  <div className="header__logo">
-                    <Logo />
-                  </div>
-                  <div className="header__help">
-                    <a href="https://t.me/blago2023" target="_blank">
-                      Снегурочка на связи
-                    </a>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
         <div className="header__row">
           <div className="header__timer">
