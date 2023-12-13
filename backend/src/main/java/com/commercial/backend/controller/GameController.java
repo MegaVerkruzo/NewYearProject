@@ -12,9 +12,9 @@ import com.commercial.backend.security.response.BadRequestResponse;
 import com.commercial.backend.security.response.NoWordInDictionaryResponse;
 import com.commercial.backend.security.response.NotRegisteredResponse;
 import com.commercial.backend.security.response.NotValidResponse;
-import com.commercial.backend.service.interfaces.IAnswersService;
-import com.commercial.backend.service.interfaces.IAttemptService;
-import com.commercial.backend.service.interfaces.IUserService;
+import com.commercial.backend.service.AnswersService;
+import com.commercial.backend.service.AttemptService;
+import com.commercial.backend.service.UserService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -35,9 +35,9 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class GameController {
     private final Logger logger = LoggerFactory.getLogger(GameController.class);
-    private final IUserService userService;
-    private final IAttemptService attemptService;
-    private final IAnswersService answersService;
+    private final UserService userService;
+    private final AttemptService attemptService;
+    private final AnswersService answersService;
 
     //    @GetMapping(value = "v2", produces = "application/json")
 //    public GameStateKlass trying(@RequestHeader("authorization") String token) {

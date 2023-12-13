@@ -1,8 +1,7 @@
-package com.commercial.backend.service.impls;
+package com.commercial.backend.service;
 
-import com.commercial.backend.db.AnswerRepository;
+import com.commercial.backend.db.TaskRepository;
 import com.commercial.backend.db.entities.Task;
-import com.commercial.backend.service.interfaces.IWordsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,27 +15,26 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class WordsServiceImpl implements IWordsService {
-    private final Logger logger = LoggerFactory.getLogger(WordsServiceImpl.class);
+public class WordsService {
+    private final Logger logger = LoggerFactory.getLogger(WordsService.class);
     // :TODO add method for adding word not only with constructor
     private final Set<String> words;
 
-    public WordsServiceImpl(AnswerRepository answerRepository) throws IOException {
+    public WordsService(TaskRepository taskRepository) throws IOException {
         logger.info("Start downloading russian words");
         this.words = getContent();
-        answerRepository.findAll().stream().map(Task::getWord).forEach(words::add);
+        taskRepository.findAll().stream().map(Task::getWord).forEach(words::add);
         // :TODO delete this logging
-        answerRepository.findAll().forEach(answer -> logger.info(answer.toString()));
+        taskRepository.findAll().forEach(answer -> logger.info(answer.toString()));
         logger.info("End downloading russian words");
     }
 
-    @Override
     public boolean isWordExists(String word) {
         return words.contains(word);
     }
 
     private Set<String> getContent() throws IOException {
-        try (InputStream is = WordsServiceImpl.class
+        try (InputStream is = WordsService.class
                 .getClassLoader()
                 .getResourceAsStream("russian_utf_norm.txt")
         ) {

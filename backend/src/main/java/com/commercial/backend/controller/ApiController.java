@@ -9,7 +9,7 @@ import com.commercial.backend.model.state.period.WaitLotteryState;
 import com.commercial.backend.model.state.period.WaitNextGameState;
 import com.commercial.backend.security.response.BadRequestResponse;
 import com.commercial.backend.security.response.NotRegisteredResponse;
-import com.commercial.backend.service.interfaces.IUserService;
+import com.commercial.backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api")
 @AllArgsConstructor
 public class ApiController {
-    private final IUserService userService;
+    private final UserService userService;
 
     @Operation(summary = "Getting state")
     @ApiResponses(value = {

@@ -3,6 +3,7 @@ package com.commercial.backend.db.entities;
 import com.commercial.backend.model.json.JsonRegistration;
 import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
+import com.commercial.backend.service.UserService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,8 +16,6 @@ import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
-
-import static com.commercial.backend.service.impls.UserService.parseId;
 
 @Entity
 @Table(name = "users", schema = "public")
@@ -60,7 +59,7 @@ public class User {
 
     //
     public User(String token, JsonRegistration json) throws NotRegisteredException, NotValidException {
-        this.id = parseId(token);
+        this.id = UserService.parseId(token);
         this.phone = json.getPhone();
         this.name = json.getName();
         this.surname = json.getSurname();

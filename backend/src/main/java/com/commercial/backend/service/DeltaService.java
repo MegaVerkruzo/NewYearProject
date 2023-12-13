@@ -1,7 +1,6 @@
-package com.commercial.backend.service.impls;
+package com.commercial.backend.service;
 
 import com.commercial.backend.db.ConfigRepository;
-import com.commercial.backend.service.interfaces.IDeltaService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +9,7 @@ import java.time.OffsetDateTime;
 
 @Service
 @AllArgsConstructor
-public class DeltaService implements IDeltaService {
+public class DeltaService {
     private final ConfigRepository configRepository;
 
     public OffsetDateTime getDeltaUp(OffsetDateTime offsetDateTime) {

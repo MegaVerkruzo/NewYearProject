@@ -1,4 +1,4 @@
-package com.commercial.backend.service.impls;
+package com.commercial.backend.service;
 
 import com.commercial.backend.db.AttemptRepository;
 import com.commercial.backend.db.entities.Attempt;
@@ -13,9 +13,6 @@ import com.commercial.backend.security.exception.BadRequestException;
 import com.commercial.backend.security.exception.NoWordInDictionaryException;
 import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
-import com.commercial.backend.service.interfaces.IAnswersService;
-import com.commercial.backend.service.interfaces.IAttemptService;
-import com.commercial.backend.service.interfaces.IWordsService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,22 +22,20 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.commercial.backend.service.impls.DeltaService.getWordInUTF8;
-
 @Service
 @AllArgsConstructor
-public class AttemptService implements IAttemptService {
+public class AttemptService {
 
     private final Logger logger = LoggerFactory.getLogger(AttemptService.class);
 
-    private final IAnswersService answersService;
-    private final IWordsService wordsService;
+    private final AnswersService answersService;
+    private final WordsService wordsService;
     private final AttemptRepository attemptRepository;
     private final DeltaService deltaService;
 
     private List<LetterColor> compare(String answer, String word) {
-        answer = getWordInUTF8(answer);
-        word = getWordInUTF8(word);
+        answer = DeltaService.getWordInUTF8(answer);
+        word = DeltaService.getWordInUTF8(word);
         logger.info("comparing two strings: " + answer + " and " + word);
 
         List<Integer> usedLettersInAnswer = new ArrayList<>(answer.length());
@@ -90,7 +85,6 @@ public class AttemptService implements IAttemptService {
         return result;
     }
 
-    @Override
     public State getAllInfo(User user) {
         if (user == null) {
             throw new NotRegisteredException();
@@ -168,7 +162,6 @@ public class AttemptService implements IAttemptService {
 //        );
     }
 
-    @Override
     public State addNewWord(
             User user,
             Task task,
@@ -178,7 +171,7 @@ public class AttemptService implements IAttemptService {
         if (word == null) {
             throw new NotValidException();
         }
-        word = getWordInUTF8(word);
+        word = DeltaService.getWordInUTF8(word);
 
         if (!wordsService.isWordExists(word)) {
             throw new NoWordInDictionaryException();

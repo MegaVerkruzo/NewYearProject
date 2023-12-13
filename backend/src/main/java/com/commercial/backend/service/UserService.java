@@ -1,4 +1,4 @@
-package com.commercial.backend.service.impls;
+package com.commercial.backend.service;
 
 import com.commercial.backend.db.UserRepository;
 import com.commercial.backend.db.entities.User;
@@ -9,7 +9,6 @@ import com.commercial.backend.model.state.period.BeforeGameState;
 import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
 import com.commercial.backend.security.exception.UserExistsException;
-import com.commercial.backend.service.interfaces.IUserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -23,14 +22,13 @@ import static com.commercial.backend.security.ApiException.notRegistered;
 
 @Service
 @AllArgsConstructor
-public class UserService implements IUserService {
+public class UserService {
     private final UserRepository userRepository;
 
     private boolean checkFieldOnSize(String str) {
         return str.length() < 250;
     }
 
-    @Override
     public State registerNewUser(User user) {
         userRepository.findUserById(user.getId()).ifPresent(UserExistsException::new);
 
@@ -49,16 +47,14 @@ public class UserService implements IUserService {
         }
     }
 
-    @Override
     public State getState(String authorization) throws NotRegisteredException {
         userRepository
-                .findUserById(parseId(authorization))
+                .findUserById(UserService.parseId(authorization))
                 .orElseThrow(NotRegisteredException::new);
         // :TODO ad-hoc
         return new BeforeGameState();
     }
 
-    @Override
     public Feedback addFeedback(User user, String feedback) {
         if (user == null) {
             return new Feedback(notRegistered);
@@ -72,7 +68,6 @@ public class UserService implements IUserService {
         return null;
     }
 
-    @Override
     public User getUserByToken(String token) throws NotRegisteredException, NotValidException {
         return userRepository.findUserById(parseId(token)).orElseThrow(NotRegisteredException::new);
     }
@@ -81,6 +76,7 @@ public class UserService implements IUserService {
         if (token == null) {
             throw new NotValidException();
         }
+        // :TODO add exception handling
         String userJson = URLDecoder.decode(token, StandardCharsets.UTF_8).split("&")[1].split("=")[1];
         ObjectMapper mapper = new ObjectMapper();
         Long result;

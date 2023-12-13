@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface AnswerRepository extends CrudRepository<Task, Long> {
+public interface TaskRepository extends CrudRepository<Task, Long> {
     @Override
     @NonNull
     List<Task> findAll();
