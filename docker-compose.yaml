@@ -62,8 +62,8 @@ services:
     environment:
       - VITE_API_URL=https://blago2024.ru/api
     volumes:
-      - ./nginx:/etc/nginx/conf.d:rw
-      - ./etc-letsencrypt:/etc/letsencrypt
+      - ./front/nginx:/etc/nginx/conf.d:rw
+      - ./front/etc-letsencrypt:/etc/letsencrypt
     depends_on:
       - backend
     restart: unless-stopped
