@@ -360,36 +360,11 @@ h3 {
   text-shadow: 3px 0 0 var(--color-dark-green);
 }
 
-.main-page__top {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  justify-items: center;
-  gap: 0 30px;
-  margin-bottom: 30px;
-}
-.main-page__top.align-center {
-  align-items: center;
-}
-.main-page__top.game {
-  grid-template-areas: 'col1 col3' 'col2 col3';
-  grid-template-columns: 50% 50%;
-  grid-template-rows: min-content 1fr;
-}
-.main-page__top.game .col1 {
-  grid-area: col1;
-}
-.main-page__top.game .col2 {
-  grid-area: col2;
-}
-.main-page__top.game .col3 {
-  grid-area: col3;
-}
-
 .main-page__column {
   transition: all 0.6s ease-out;
 }
 .main-page__column img {
-  max-width: 600px;
+  max-width: calc(100vw - 50px);
   max-height: 80vh;
 }
 .main-page__column img.game-tree {
@@ -399,32 +374,43 @@ h3 {
   margin-bottom: 40px;
   text-shadow: 3px 0 0 var(--color-green);
 }
+
+.message-wrapper {
+  position: relative;
+  margin-bottom: 30px;
+}
+
 .message {
-  margin-bottom: 40px;
+  min-height: 63px;
   background: white;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
-  padding: 30px 50px;
   font-size: 1.2rem;
   box-shadow: 5px 5px 0 #ededed;
   position: relative;
+  padding: 12px 15px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+
 .message span {
   font-size: 1.2rem;
   position: relative;
-  z-index: 2;
-  color: black;
+  z-index: 1;
+  color: var(--color-green);
 }
 .message span a {
   color: var(--color-dark-green);
   white-space: nowrap;
 }
-.message svg {
+.message-svg {
   position: absolute;
-  bottom: -21px;
-  left: 3px;
-  z-index: 1;
+  bottom: -18px;
+  left: 0px;
+  z-index: 2;
 }
 
 .main-page__btn {
@@ -935,9 +921,7 @@ h3 {
   .main-page .main-page__top .main-page__column .main-page__title {
     margin-bottom: 20px;
   }
-  .main-page .main-page__top .main-page__column .message {
-    margin-bottom: 30px;
-    padding: 20px 30px;
+  .message {
   }
   .main-page .main-page__top .main-page__column .main-page__btn {
     padding: 20px 35px;
@@ -1045,9 +1029,7 @@ h3 {
     gap: 0 20px;
   }
 
-  .main-page .main-page__top .main-page__column .message {
-    padding: 14px 30px;
-    margin-bottom: 50px;
+  .message {
   }
 
   .example__cell {
@@ -1210,8 +1192,7 @@ h3 {
     min-width: min(69vw, 69vh);
   }
 
-  .main-page .main-page__top .main-page__column .message {
-    margin-bottom: 20px;
+  .message {
   }
 
   .main-page__column {

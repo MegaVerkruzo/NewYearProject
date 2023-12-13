@@ -1,4 +1,4 @@
-export type Fields = {
+export type RegisterFields = {
   name: string
   surname: string
   middleName: string
@@ -8,4 +8,4 @@ export type Fields = {
   division: string
 }
 
-export type FieldsNames = keyof Fields
+export type FieldsNames = keyof RegisterFields

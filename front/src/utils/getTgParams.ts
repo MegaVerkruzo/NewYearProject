@@ -1,4 +1,5 @@
+import { TOKEN } from '../config/config'
+
 export const getTgParams = (): string => {
-  console.log(123)
-  return ''
+  return TOKEN
 }

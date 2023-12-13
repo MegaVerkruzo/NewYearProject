@@ -1,7 +1,7 @@
 version: "3"
 services:
   backend:
-    image: 'scratch'
+    image: "scratch"
     restart: on-failure
     build:
       context: ./backend/
@@ -16,7 +16,7 @@ services:
       - production
 
   backendDev:
-    image: 'scratch-thing'
+    image: "scratch-thing"
     restart: on-failure
     build:
       context: ./backend/
@@ -31,7 +31,7 @@ services:
       - development
 
   admin:
-    image: 'scratch-image'
+    image: "scratch-image"
     restart: on-failure
     build:
       context: ./admin/
@@ -42,7 +42,7 @@ services:
       - postgresSQL
 
   postgresSQL:
-    image: 'postgres:15'
+    image: "postgres:15"
     restart: on-failure
     ports:
       - "5432:5432"
@@ -50,3 +50,20 @@ services:
       - postgres/db.env
     volumes:
       - ./postgres/postgres-data:/var/lib/postgresql/data
+
+  reverse_proxy:
+    build:
+      context: ./front
+      dockerfile: ./front/Dockerfile
+    container_name: reverse_proxy
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - VITE_API_URL=https://blago2024.ru/api
+    volumes:
+      - ./nginx:/etc/nginx/conf.d:rw
+      - ./etc-letsencrypt:/etc/letsencrypt
+    depends_on:
+      - backend
+    restart: unless-stopped
