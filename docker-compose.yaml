@@ -53,8 +53,8 @@ services:
 
   reverse_proxy:
     build:
-      context: ./front
-      dockerfile: ./front/Dockerfile
+      context: ./front/
+      dockerfile: Dockerfile
     container_name: reverse_proxy
     ports:
       - 80:80
