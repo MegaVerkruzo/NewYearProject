@@ -59,6 +59,8 @@ services:
     ports:
       - 80:80
       - 443:443
+    environment:
+      - VITE_API_URL=https://blago2024.ru/api
     volumes:
       - ./nginx:/etc/nginx/conf.d:rw
       - ./etc-letsencrypt:/etc/letsencrypt
