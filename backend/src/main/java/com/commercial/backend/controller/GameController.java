@@ -1,6 +1,6 @@
 package com.commercial.backend.controller;
 
-import com.commercial.backend.db.entities.Answer;
+import com.commercial.backend.db.entities.Task;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.json.JsonWord;
 import com.commercial.backend.model.state.State;
@@ -12,9 +12,9 @@ import com.commercial.backend.security.response.BadRequestResponse;
 import com.commercial.backend.security.response.NoWordInDictionaryResponse;
 import com.commercial.backend.security.response.NotRegisteredResponse;
 import com.commercial.backend.security.response.NotValidResponse;
-import com.commercial.backend.service.interfaces.IAnswersService;
-import com.commercial.backend.service.interfaces.IAttemptService;
-import com.commercial.backend.service.interfaces.IUserService;
+import com.commercial.backend.service.AttemptService;
+import com.commercial.backend.service.TaskService;
+import com.commercial.backend.service.UserService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -35,9 +35,9 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class GameController {
     private final Logger logger = LoggerFactory.getLogger(GameController.class);
-    private final IUserService userService;
-    private final IAttemptService attemptService;
-    private final IAnswersService answersService;
+    private final UserService userService;
+    private final AttemptService attemptService;
+    private final TaskService taskService;
 
     //    @GetMapping(value = "v2", produces = "application/json")
 //    public GameStateKlass trying(@RequestHeader("authorization") String token) {
@@ -109,17 +109,19 @@ public class GameController {
         String word = jsonWord.getWord();
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
-        Answer answer = answersService.findPreviousAnswer(offsetDateTime);
-        logger.info("answer: " + answer);
 
-        if (answer == null) {
+        // :TODO thing about this part of code
+        Task task = taskService.findPreviousAnswer(offsetDateTime);
+        logger.info("answer: " + task);
+
+        if (task == null) {
             throw new NotValidException();
         }
 
-        if (answer.getWord().length() != word.length()) {
+        if (task.getWord().length() != word.length()) {
             throw new BadRequestException();
         }
 
-        return attemptService.addNewWord(user, answer, word, offsetDateTime);
+        return attemptService.addNewWord(user, task, word, offsetDateTime);
     }
 }

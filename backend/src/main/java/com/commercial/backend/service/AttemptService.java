@@ -1,8 +1,8 @@
-package com.commercial.backend.service.impls;
+package com.commercial.backend.service;
 
 import com.commercial.backend.db.AttemptRepository;
-import com.commercial.backend.db.entities.Answer;
 import com.commercial.backend.db.entities.Attempt;
+import com.commercial.backend.db.entities.Task;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.game.Color;
 import com.commercial.backend.model.game.LetterColor;
@@ -13,9 +13,6 @@ import com.commercial.backend.security.exception.BadRequestException;
 import com.commercial.backend.security.exception.NoWordInDictionaryException;
 import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
-import com.commercial.backend.service.interfaces.IAnswersService;
-import com.commercial.backend.service.interfaces.IAttemptService;
-import com.commercial.backend.service.interfaces.IWordsService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,16 +22,16 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.commercial.backend.service.impls.DeltaService.getWordInUTF8;
+import static com.commercial.backend.service.CommonLibrary.getWordInUTF8;
 
 @Service
 @AllArgsConstructor
-public class AttemptService implements IAttemptService {
+public class AttemptService {
 
     private final Logger logger = LoggerFactory.getLogger(AttemptService.class);
 
-    private final IAnswersService answersService;
-    private final IWordsService wordsService;
+    private final TaskService taskService;
+    private final WordService wordService;
     private final AttemptRepository attemptRepository;
     private final DeltaService deltaService;
 
@@ -90,7 +87,6 @@ public class AttemptService implements IAttemptService {
         return result;
     }
 
-    @Override
     public State getAllInfo(User user) {
         if (user == null) {
             throw new NotRegisteredException();
@@ -99,16 +95,16 @@ public class AttemptService implements IAttemptService {
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         logger.info("current millis: " + offsetDateTime);
 
-        Answer answer = answersService.findPreviousAnswer(offsetDateTime);
-        logger.info("answer is " + answer);
+        Task task = taskService.findPreviousAnswer(offsetDateTime);
+        logger.info("answer is " + task);
 
         List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
         logger.info("attempts size: " + attempts.size());
 
-        int countCorrectAnswersBefore = answersService.countCorrectAnswers(attempts);
+        int countCorrectAnswersBefore = taskService.countCorrectAnswers(attempts);
         logger.info("countCorrectAnswersBefore: " + countCorrectAnswersBefore);
 
-        if (answer == null) {
+        if (task == null) {
             return new BeforeGameState();
 //            return new GameStateKlass(
 //                    null,
@@ -132,21 +128,21 @@ public class AttemptService implements IAttemptService {
 
         List<Attempt> currentAttempts = new ArrayList<>();
         for (Attempt attempt : attempts) {
-            if (answer.getDate().isBefore(attempt.getDate())
-                    && attempt.getDate().isBefore(deltaService.getDeltaUp(answer.getDate()))) {
+            if (task.getDate().isBefore(attempt.getDate())
+                    && attempt.getDate().isBefore(deltaService.getDeltaUp(task.getDate()))) {
                 currentAttempts.add(attempt);
             }
         }
 
         List<LetterColor> attemptsInfo = new ArrayList<>();
         for (Attempt attempt : currentAttempts) {
-            attemptsInfo.addAll(compare(answer.getWord(), attempt.getWord()));
+            attemptsInfo.addAll(compare(task.getWord(), attempt.getWord()));
         }
 
-        boolean isEnd = currentAttempts.size() == 5 || answersService.countCorrectAnswers(currentAttempts) >= 1;
+        boolean isEnd = currentAttempts.size() == 5 || taskService.countCorrectAnswers(currentAttempts) >= 1;
 
         // :TODO change logic
-        boolean isPuttedFeedback = false && isEnd && offsetDateTime.isAfter(answersService.getMaxDate());
+        boolean isPuttedFeedback = false && isEnd && offsetDateTime.isAfter(taskService.getMaxDate());
 
         return new BeforeGameState();
 //        return new GameStateKlass(
@@ -168,10 +164,9 @@ public class AttemptService implements IAttemptService {
 //        );
     }
 
-    @Override
     public State addNewWord(
             User user,
-            Answer answer,
+            Task task,
             String word,
             OffsetDateTime offsetDateTime
     ) throws NotValidException {
@@ -180,21 +175,21 @@ public class AttemptService implements IAttemptService {
         }
         word = getWordInUTF8(word);
 
-        if (!wordsService.isWordExists(word)) {
+        if (!wordService.isWordExists(word)) {
             throw new NoWordInDictionaryException();
         }
 
         List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
         List<Attempt> currentAttempts = new ArrayList<>();
         for (Attempt attempt : attempts) {
-            if (answer.getDate().isBefore(attempt.getDate())
-                    && attempt.getDate().isBefore(deltaService.getDeltaUp(answer.getDate()))) {
+            if (task.getDate().isBefore(attempt.getDate())
+                    && attempt.getDate().isBefore(deltaService.getDeltaUp(task.getDate()))) {
                 currentAttempts.add(attempt);
             }
         }
 
         for (Attempt attempt : currentAttempts) {
-            if (attempt.getWord().equals(answer.getWord())) {
+            if (attempt.getWord().equals(task.getWord())) {
                 throw new BadRequestException();
             }
         }
@@ -206,7 +201,7 @@ public class AttemptService implements IAttemptService {
         attemptRepository.save(new Attempt(user.getId(), word, offsetDateTime));
 
         return new InGameState(
-                compare(answer.getWord(), word),
+                compare(task.getWord(), word),
                 0,
                 0,
                 0

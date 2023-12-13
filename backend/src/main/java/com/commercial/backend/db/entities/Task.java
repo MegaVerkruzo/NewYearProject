@@ -14,36 +14,36 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "attempt", schema = "public")
+@Table(name = "task", schema = "public")
 @JsonIgnoreProperties
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Attempt {
+public class Task {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "attempts_generator")
-    @SequenceGenerator(name = "attempts_generator", sequenceName = "attempts_seq", allocationSize = 1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "task_generator")
+    @SequenceGenerator(name = "task_generator", sequenceName = "task_seq", allocationSize = 1)
     private Long id;
-    @Column(name="id_user") private Long userId;
+    @Column(name="active_prizes")
+    private String activePrizes;
+    @Column(name="non_active_prizes")
+    private String nonActivePrizes;
     private String word;
     private OffsetDateTime date;
+    private String description;
 
-    // :TODO delete in unnecessary
-//    public Attempt(Long userId, String word, Timestamp date) {
-//        this.userId = userId;
-//        this.word = word;
-//        this.date = date.toLocalDateTime().atOffset(OffsetDateTime.now().getOffset());
-//    }
-
-    public Attempt(Long userId, String word, OffsetDateTime date) {
-        this.userId = userId;
+    public Task(String word, String activePrizes, String nonActivePrizes, Timestamp date, String description) {
         this.word = word;
-        this.date = date;
+        this.activePrizes = activePrizes;
+        this.nonActivePrizes = nonActivePrizes;
+        this.date = date.toLocalDateTime().atOffset(OffsetDateTime.now().getOffset());
+        this.description = description;
     }
 
     @Override
@@ -53,8 +53,8 @@ public class Attempt {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Attempt attempt = (Attempt) o;
-        return getId() != null && Objects.equals(getId(), attempt.getId());
+        Task task = (Task) o;
+        return getId() != null && Objects.equals(getId(), task.getId());
     }
 
     @Override

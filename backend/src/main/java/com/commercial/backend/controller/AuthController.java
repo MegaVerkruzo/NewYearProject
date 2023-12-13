@@ -9,7 +9,7 @@ import com.commercial.backend.model.state.period.InGameState;
 import com.commercial.backend.model.state.period.WaitLotteryState;
 import com.commercial.backend.security.response.NotValidResponse;
 import com.commercial.backend.security.response.UserExistsResponse;
-import com.commercial.backend.service.interfaces.IUserService;
+import com.commercial.backend.service.UserService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/auth")
 @AllArgsConstructor
 public class AuthController {
-    private final IUserService userService;
+    private final UserService userService;
 
     @ApiResponses(value = {
             @ApiResponse(

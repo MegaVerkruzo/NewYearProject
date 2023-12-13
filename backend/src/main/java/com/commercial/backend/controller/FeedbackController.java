@@ -11,7 +11,7 @@ import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
 import com.commercial.backend.security.response.NotRegisteredResponse;
 import com.commercial.backend.security.response.NotValidResponse;
-import com.commercial.backend.service.interfaces.IUserService;
+import com.commercial.backend.service.UserService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class FeedbackController {
     private final Logger logger = LoggerFactory.getLogger(FeedbackController.class);
-    private final IUserService userService;
+    private final UserService userService;
 
     @ApiResponses(value = {
             @ApiResponse(

@@ -19,7 +19,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "configs", schema = "public")
+@Table(name = "config", schema = "public")
 public class ConfigField {
     @Id
     @Column(name = "id_name")
