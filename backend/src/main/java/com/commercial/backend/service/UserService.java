@@ -3,22 +3,17 @@ package com.commercial.backend.service;
 import com.commercial.backend.db.UserRepository;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.feedback.Feedback;
-import com.commercial.backend.model.json.JsonUser;
 import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.BeforeGameState;
 import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
 import com.commercial.backend.security.exception.UserExistsException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-
 import static com.commercial.backend.security.ApiException.noFeedback;
 import static com.commercial.backend.security.ApiException.notRegistered;
+import static com.commercial.backend.service.CommonLibrary.parseId;
 
 @Service
 @AllArgsConstructor
@@ -49,7 +44,7 @@ public class UserService {
 
     public State getState(String authorization) throws NotRegisteredException {
         userRepository
-                .findUserById(UserService.parseId(authorization))
+                .findUserById(parseId(authorization))
                 .orElseThrow(NotRegisteredException::new);
         // :TODO ad-hoc
         return new BeforeGameState();
@@ -70,21 +65,5 @@ public class UserService {
 
     public User getUserByToken(String token) throws NotRegisteredException, NotValidException {
         return userRepository.findUserById(parseId(token)).orElseThrow(NotRegisteredException::new);
-    }
-
-    public static Long parseId(String token) throws NotRegisteredException, NotValidException {
-        if (token == null) {
-            throw new NotValidException();
-        }
-        // :TODO add exception handling
-        String userJson = URLDecoder.decode(token, StandardCharsets.UTF_8).split("&")[1].split("=")[1];
-        ObjectMapper mapper = new ObjectMapper();
-        Long result;
-        try {
-            result = mapper.readValue(userJson, JsonUser.class).getId();
-        } catch (JsonProcessingException e) {
-             throw new NotValidException();
-        }
-        return result;
     }
 }

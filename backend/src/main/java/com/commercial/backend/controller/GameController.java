@@ -109,6 +109,8 @@ public class GameController {
         String word = jsonWord.getWord();
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
+
+        // :TODO thing about this part of code
         Task task = taskService.findPreviousAnswer(offsetDateTime);
         logger.info("answer: " + task);
 

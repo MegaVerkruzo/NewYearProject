@@ -22,6 +22,8 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.commercial.backend.service.CommonLibrary.getWordInUTF8;
+
 @Service
 @AllArgsConstructor
 public class AttemptService {
@@ -34,8 +36,8 @@ public class AttemptService {
     private final DeltaService deltaService;
 
     private List<LetterColor> compare(String answer, String word) {
-        answer = DeltaService.getWordInUTF8(answer);
-        word = DeltaService.getWordInUTF8(word);
+        answer = getWordInUTF8(answer);
+        word = getWordInUTF8(word);
         logger.info("comparing two strings: " + answer + " and " + word);
 
         List<Integer> usedLettersInAnswer = new ArrayList<>(answer.length());
@@ -171,7 +173,7 @@ public class AttemptService {
         if (word == null) {
             throw new NotValidException();
         }
-        word = DeltaService.getWordInUTF8(word);
+        word = getWordInUTF8(word);
 
         if (!wordService.isWordExists(word)) {
             throw new NoWordInDictionaryException();
