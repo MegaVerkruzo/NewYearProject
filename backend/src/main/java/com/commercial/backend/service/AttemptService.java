@@ -28,8 +28,8 @@ public class AttemptService {
 
     private final Logger logger = LoggerFactory.getLogger(AttemptService.class);
 
-    private final AnswersService answersService;
-    private final WordsService wordsService;
+    private final TaskService taskService;
+    private final WordService wordService;
     private final AttemptRepository attemptRepository;
     private final DeltaService deltaService;
 
@@ -93,13 +93,13 @@ public class AttemptService {
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         logger.info("current millis: " + offsetDateTime);
 
-        Task task = answersService.findPreviousAnswer(offsetDateTime);
+        Task task = taskService.findPreviousAnswer(offsetDateTime);
         logger.info("answer is " + task);
 
         List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
         logger.info("attempts size: " + attempts.size());
 
-        int countCorrectAnswersBefore = answersService.countCorrectAnswers(attempts);
+        int countCorrectAnswersBefore = taskService.countCorrectAnswers(attempts);
         logger.info("countCorrectAnswersBefore: " + countCorrectAnswersBefore);
 
         if (task == null) {
@@ -137,10 +137,10 @@ public class AttemptService {
             attemptsInfo.addAll(compare(task.getWord(), attempt.getWord()));
         }
 
-        boolean isEnd = currentAttempts.size() == 5 || answersService.countCorrectAnswers(currentAttempts) >= 1;
+        boolean isEnd = currentAttempts.size() == 5 || taskService.countCorrectAnswers(currentAttempts) >= 1;
 
         // :TODO change logic
-        boolean isPuttedFeedback = false && isEnd && offsetDateTime.isAfter(answersService.getMaxDate());
+        boolean isPuttedFeedback = false && isEnd && offsetDateTime.isAfter(taskService.getMaxDate());
 
         return new BeforeGameState();
 //        return new GameStateKlass(
@@ -173,7 +173,7 @@ public class AttemptService {
         }
         word = DeltaService.getWordInUTF8(word);
 
-        if (!wordsService.isWordExists(word)) {
+        if (!wordService.isWordExists(word)) {
             throw new NoWordInDictionaryException();
         }
 

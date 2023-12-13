@@ -12,8 +12,8 @@ import com.commercial.backend.security.response.BadRequestResponse;
 import com.commercial.backend.security.response.NoWordInDictionaryResponse;
 import com.commercial.backend.security.response.NotRegisteredResponse;
 import com.commercial.backend.security.response.NotValidResponse;
-import com.commercial.backend.service.AnswersService;
 import com.commercial.backend.service.AttemptService;
+import com.commercial.backend.service.TaskService;
 import com.commercial.backend.service.UserService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,7 +37,7 @@ public class GameController {
     private final Logger logger = LoggerFactory.getLogger(GameController.class);
     private final UserService userService;
     private final AttemptService attemptService;
-    private final AnswersService answersService;
+    private final TaskService taskService;
 
     //    @GetMapping(value = "v2", produces = "application/json")
 //    public GameStateKlass trying(@RequestHeader("authorization") String token) {
@@ -109,7 +109,7 @@ public class GameController {
         String word = jsonWord.getWord();
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
-        Task task = answersService.findPreviousAnswer(offsetDateTime);
+        Task task = taskService.findPreviousAnswer(offsetDateTime);
         logger.info("answer: " + task);
 
         if (task == null) {

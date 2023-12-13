@@ -15,12 +15,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class WordsService {
-    private final Logger logger = LoggerFactory.getLogger(WordsService.class);
+public class WordService {
+    private final Logger logger = LoggerFactory.getLogger(WordService.class);
     // :TODO add method for adding word not only with constructor
     private final Set<String> words;
 
-    public WordsService(TaskRepository taskRepository) throws IOException {
+    public WordService(TaskRepository taskRepository) throws IOException {
         logger.info("Start downloading russian words");
         this.words = getContent();
         taskRepository.findAll().stream().map(Task::getWord).forEach(words::add);
@@ -34,7 +34,7 @@ public class WordsService {
     }
 
     private Set<String> getContent() throws IOException {
-        try (InputStream is = WordsService.class
+        try (InputStream is = WordService.class
                 .getClassLoader()
                 .getResourceAsStream("russian_utf_norm.txt")
         ) {

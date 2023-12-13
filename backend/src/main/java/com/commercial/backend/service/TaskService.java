@@ -13,11 +13,11 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class AnswersService {
+public class TaskService {
     private final TaskRepository taskRepository;
     private final DeltaService deltaService;
 
-    private final Logger logger = LoggerFactory.getLogger(AnswersService.class);
+    private final Logger logger = LoggerFactory.getLogger(TaskService.class);
 
     public Task findPreviousAnswer(OffsetDateTime offsetDateTime) {
         OffsetDateTime previousDate = deltaService.getDeltaDown(offsetDateTime);
