@@ -26,3 +26,9 @@ INSERT INTO config (id_name) VALUES ('tasks_count');
 --rollback ALTER TABLE config RENAME TO configs;
 --rollback DELETE FROM config WHERE id_name = 'date_start_game';
 --rollback DELETE FROM config WHERE id_name = 'tasks_count';
+
+--changeset GrunskiiAleksei:23
+--comment rename attempts table
+ALTER TABLE attempts
+    RENAME TO attempt;
+--rollback ALTER TABLE attempt RENAME TO attempts;

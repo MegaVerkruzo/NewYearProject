@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "attempts", schema = "public")
+@Table(name = "attempt", schema = "public")
 @JsonIgnoreProperties
 @Getter
 @Setter
