@@ -24,16 +24,12 @@ export const baseApiRequest = async <T>({
   }
 
   const apiUrl = `${API_URL}${url}`
-  try {
-    const response = await axios({
-      method,
-      url: apiUrl,
-      data,
-      headers,
-    })
+  const response = await axios({
+    method,
+    url: apiUrl,
+    data,
+    headers,
+  })
 
-    return response.data
-  } catch (error) {
-    throw new Error(`Request failed: ${error}`)
-  }
+  return response.data
 }

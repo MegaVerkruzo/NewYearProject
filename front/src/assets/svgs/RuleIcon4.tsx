@@ -26,7 +26,7 @@ const RuleIcon4 = () => {
         height="6.79116"
         rx="1.55"
         stroke="#FBD566"
-        stroke-width="1.86"
+        strokeWidth="1.86"
       />
       <rect
         x="22.5218"
@@ -35,7 +35,7 @@ const RuleIcon4 = () => {
         height="16.5237"
         rx="1.55"
         stroke="#FBD566"
-        stroke-width="1.86"
+        strokeWidth="1.86"
       />
       <mask id="path-6-inside-1_245_1012" fill="white">
         <rect
@@ -53,25 +53,25 @@ const RuleIcon4 = () => {
         height="25.593"
         rx="1.24"
         stroke="#FBD566"
-        stroke-width="3.72"
+        strokeWidth="3.72"
         mask="url(#path-6-inside-1_245_1012)"
       />
       <path
         d="M27.2054 22.9009C27.2054 21.3811 28.4375 20.149 29.9573 20.149H30.2405C31.9168 20.149 33.2756 21.5079 33.2756 23.1841V26.2192H30.5237C28.6911 26.2192 27.2054 24.7336 27.2054 22.9009Z"
         stroke="#FBD566"
-        stroke-width="1.86"
+        strokeWidth="1.86"
       />
       <path
         d="M40.488 22.9009C40.488 21.3811 39.2559 20.149 37.7361 20.149H37.4529C35.7766 20.149 34.4177 21.5079 34.4177 23.1841V26.2192H37.1696C39.0023 26.2192 40.488 24.7336 40.488 22.9009Z"
         stroke="#FBD566"
-        stroke-width="1.86"
+        strokeWidth="1.86"
       />
       <circle
         cx="34.0003"
         cy="33.0801"
         r="31.8267"
         stroke="#FBD566"
-        stroke-width="2.48"
+        strokeWidth="2.48"
       />
     </svg>
   )

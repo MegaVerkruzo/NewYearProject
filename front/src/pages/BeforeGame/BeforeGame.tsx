@@ -1,5 +1,5 @@
-import MessageAngle from '../../assets/svgs/MessageAngleIcon'
 import Tree from '../../assets/images/Tree/Tree6.png'
+import Sanki from '../../assets/images/Sanki.png'
 import { Message } from '../../components/Message.tsx/Message'
 import { Rules } from '../../components/Rules/Rules'
 import HowToPlay from '../../components/HowToPlay/HowToPlay'
@@ -8,22 +8,22 @@ import { useNavigate } from 'react-router'
 
 export const BeforeGame = () => {
   const navigate = useNavigate()
-  useEffect(() => {
-    navigate('/register')
-  }, [navigate])
+  useEffect(() => {}, [navigate])
 
   return (
-    <div className="main-page__top align-center">
+    <div className="main-page__top">
       <div className="main-page__row">
-        <div className="main-page__title">
-          <h1>Игра «Наряди ёлку»</h1>
+        <div className="main-image__container">
+          <div className="main-page__title">
+            <h1>Наряди свою ёлочку Благополучия</h1>
+          </div>
+
+          <img src={Tree} alt="Ёлочка" />
+          <img src={Sanki} alt="Санки" className="sanki" />
         </div>
       </div>
       <div className="main-page__row">
-        <img src={Tree} alt="Ёлочка" />
-      </div>
-      <div className="main-page__row">
-        <Message text="Первая игра начнётся 19 декабря в 9:00!" />
+        <Message text="Первая игра начнётся 18 декабря в 9:00!" />
       </div>
 
       <div className="main-page__row">

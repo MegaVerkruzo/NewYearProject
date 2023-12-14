@@ -21,12 +21,12 @@ export const Footer = () => {
             </div>
             <div className="footer__column">
               <div className="footer__text text__light">
-                ©2022 «Благополучие»
+                ©2023 «Благополучие»
               </div>
               <div className="footer__text text__light">Все права защищены</div>
               <div className="footer__text">
                 <a
-                  href="https://app.simplenote.com/p/XV73L9"
+                  href="https://questmaniacs.ru/blago_policy.htm"
                   target="_blank"
                   className="underline"
                 >
@@ -36,14 +36,17 @@ export const Footer = () => {
             </div>
             <div className="footer__column">
               <div className="footer__text">
-                <a href="https://app.simplenote.com/p/0RWqgQ" target="_blank">
+                <a
+                  href="https://telegra.ph/Novogodnyaya-viktorina-Naryadi-svoyu-yolochku-12-12"
+                  target="_blank"
+                >
                   Правила игры
                 </a>
               </div>
             </div>
             <div className="footer__column">
               <div className="footer__text">
-                <a href="https://t.me/blago2023" target="_blank">
+                <a href="https://t.me/snegurochkablago" target="_blank">
                   Снегурочка на связи
                 </a>
               </div>
@@ -73,14 +76,14 @@ export const Footer = () => {
             <div className="footer__row">
               <div className="footer__column">
                 <div className="footer__text text__light">
-                  ©2022 «Благополучие»
+                  ©2023 «Благополучие»
                 </div>
                 <div className="footer__text text__light">
                   Все права защищены
                 </div>
                 <div className="footer__text">
                   <a
-                    href="https://app.simplenote.com/p/XV73L9"
+                    href="https://questmaniacs.ru/blago_policy.htm"
                     target="_blank"
                     className="underline"
                   >
@@ -96,7 +99,7 @@ export const Footer = () => {
                   <div className="footer__header">Меню</div>
                   <div className="footer__text">
                     <a
-                      href="https://app.simplenote.com/p/0RWqgQ"
+                      href="https://telegra.ph/Novogodnyaya-viktorina-Naryadi-svoyu-yolochku-12-12"
                       target="_blank"
                     >
                       Правила игры
@@ -107,7 +110,7 @@ export const Footer = () => {
                 <div className="footer__column">
                   <div className="footer__header">Техподдержка</div>
                   <div className="footer__text">
-                    <a href="https://t.me/blago2023" target="_blank">
+                    <a href="https://t.me/snegurochkablago" target="_blank">
                       Снегурочка на связи
                     </a>
                   </div>

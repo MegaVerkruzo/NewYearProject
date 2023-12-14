@@ -7,6 +7,7 @@ COPY . .
 RUN yarn build
 
 FROM nginx:latest
+
 COPY ./nginx/main.conf /etc/nginx/conf.d/default.conf
 COPY ./etc-letsencrypt/archive/blago2024.ru/fullchain.pem1 /etc/letsencrypt/archive/blago2024.ru/fullchain.pem1
 COPY ./etc-letsencrypt/archive/blago2024.ru/cert.pem1 /etc/letsencrypt/archive/blago2024.ru/cert.pem1

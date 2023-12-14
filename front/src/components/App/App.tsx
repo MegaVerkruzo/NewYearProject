@@ -1,9 +1,9 @@
 import { FC } from 'react'
 import { Header } from '../Header/Header'
 import { Footer } from '../Footer/Footer'
-import { Outlet } from 'react-router-dom'
 import { QueryClient } from '@tanstack/query-core'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { Main } from '../Main/Main'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,15 +18,7 @@ export const App: FC = () => {
     <QueryClientProvider client={queryClient}>
       <div className="wrapper">
         <Header />
-        <main className="main">
-          <div className="main__content">
-            <div className="main-page">
-              <div className="container">
-                <Outlet />
-              </div>
-            </div>
-          </div>
-        </main>
+        <Main />
         <Footer />
       </div>
     </QueryClientProvider>

@@ -16,7 +16,7 @@ const RuleIcon3 = () => {
         cy="33.84"
         r="31.8267"
         stroke="#FBD566"
-        stroke-width="2.48"
+        strokeWidth="2.48"
       />
     </svg>
   )

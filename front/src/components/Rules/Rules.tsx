@@ -16,7 +16,7 @@ export const Rules = () => {
           </div>
           <div className="rule__title">Найдите загадку</div>
           <div className="rule__text">
-            Каждый день в Telegram-канале будет ждать новая загадка
+            Каждый день в Telegram-канале будут ждать новая загадка
           </div>
         </div>
         <div className="rules__item">
@@ -43,7 +43,7 @@ export const Rules = () => {
           </div>
           <div className="rule__title">Получите призы</div>
           <div className="rule__text">
-            За полностью наряженную ёлку Дед Мороз принесёт вам подарок!
+            Больше слов — больше шансов выиграть!
           </div>
         </div>
       </div>

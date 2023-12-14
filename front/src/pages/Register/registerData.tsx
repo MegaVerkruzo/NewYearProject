@@ -31,7 +31,7 @@ export const fieldsData = [
     id: 5,
     field: 'email',
     label: 'Ваш личный Email',
-    placeholder: 'Введите email',
+    placeholder: 'example@gmail.com',
     type: 'email',
   },
   {
@@ -45,7 +45,7 @@ export const fieldsData = [
     id: 7,
     field: 'division',
     label: 'Ваш блок или дивизион',
-    placeholder: 'Укажите наш блок или дивизион',
+    placeholder: 'Укажите ваш блок или дивизион',
     type: 'text',
   },
 ] as const
