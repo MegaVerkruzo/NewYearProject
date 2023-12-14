@@ -1,5 +1,4 @@
-import Tree from '../../assets/images/Tree/Tree6.png'
-import Sanki from '../../assets/images/Sanki.png'
+import TreeSanki from '../../assets/images/Tree/TreeSanki.png'
 import { Message } from '../../components/Message.tsx/Message'
 import { Rules } from '../../components/Rules/Rules'
 import HowToPlay from '../../components/HowToPlay/HowToPlay'
@@ -18,8 +17,7 @@ export const BeforeGame = () => {
             <h1>Наряди свою ёлочку Благополучия</h1>
           </div>
 
-          <img src={Tree} alt="Ёлочка" />
-          <img src={Sanki} alt="Санки" className="sanki" />
+          <img src={TreeSanki} alt="Ёлочка" />
         </div>
       </div>
       <div className="main-page__row">

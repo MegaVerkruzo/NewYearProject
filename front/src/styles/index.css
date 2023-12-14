@@ -423,17 +423,10 @@ h1 {
 .main-image__container {
   position: relative;
   max-width: calc(100vw - 100px);
-  margin-bottom: -120px;
 }
 
 .main-image__container img {
   width: 100%;
-}
-
-.main-image__container .sanki {
-  position: relative;
-  bottom: 120px;
-  left: 30px;
 }
 
 .rules__container {
