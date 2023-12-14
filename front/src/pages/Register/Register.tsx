@@ -98,7 +98,7 @@ export const Register = () => {
                 <label htmlFor="checkbox2">
                   Я подтверждаю свое согласие <br />
                   <a
-                    href="https://app.simplenote.com/p/XV73L9"
+                    href="https://questmaniacs.ru/blago_policy.htm"
                     target="_blank"
                     className="underline"
                   >
