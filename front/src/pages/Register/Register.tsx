@@ -5,7 +5,6 @@ import Spinner from '../../assets/svgs/Spinner'
 import { fieldsData } from './registerData'
 import { Input } from '../../components/Input/Input'
 import { RegisterFields, FieldsNames } from '../../types/register'
-import { baseApiRequest } from '../../api/baseApiRequest'
 import { useRegister } from '../../api/register'
 import { useNavigate } from 'react-router-dom'
 
@@ -25,13 +24,8 @@ export const Register = () => {
   const [isAgreePolicy, setIsAgreePolicy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const { mutate: register } = useRegister({ navigate, setError })
 
-  // useEffect(() => {
-  //   baseApiRequest({ url: '/getState' })
-  //     .then((data) => console.log(data))
-  //     .catch((e) => console.log(e))
-  // }, [])
+  const { mutate: register } = useRegister({ navigate, setError })
 
   const onSignUp = () => {
     setError(null)
