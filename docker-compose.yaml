@@ -53,7 +53,7 @@ services:
 
   reverse_proxy:
     build:
-      context: ./front/
+      context: ./front
       dockerfile: Dockerfile
     container_name: reverse_proxy
     ports:
@@ -62,8 +62,7 @@ services:
     environment:
       - VITE_API_URL=https://blago2024.ru/api
     volumes:
-      - ./front/nginx:/etc/nginx/conf.d:rw
-      - ./front/etc-letsencrypt:/etc/letsencrypt
+      - ./etc-letsencrypt:/etc/letsencrypt
     depends_on:
       - backend
     restart: unless-stopped
