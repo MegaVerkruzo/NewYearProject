@@ -43,7 +43,7 @@ export const Rules = () => {
           </div>
           <div className="rule__title">Получите призы</div>
           <div className="rule__text">
-            За полностью наряженную ёлку Дед Мороз принесёт вам подарок!
+            Больше слов — больше шансов выиграть!
           </div>
         </div>
       </div>

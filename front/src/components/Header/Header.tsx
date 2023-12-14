@@ -34,9 +34,9 @@ export const Header = () => {
                 </button>
               </div>
             </div>
-            <div>
+            {/* <div>
               <img src={TimerSnow} alt="Снежок" className="timer__snow" />
-            </div>
+            </div> */}
             <div className="header__right">
               <div
                 className={cn('header__burger', {
@@ -62,7 +62,8 @@ export const Header = () => {
             </div>
           </div>
         </div>
-        <div className="header__row">
+
+        {/* <div className="header__row">
           <div className="header__timer">
             <img src={TimerBg} alt="Timer Background" className="timer_bg" />
             <div className="timer__title">
@@ -74,6 +75,7 @@ export const Header = () => {
             <Timer />
           </div>
         </div>
+         */}
       </div>
     </header>
   )

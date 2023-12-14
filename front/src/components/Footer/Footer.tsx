@@ -26,7 +26,7 @@ export const Footer = () => {
               <div className="footer__text text__light">Все права защищены</div>
               <div className="footer__text">
                 <a
-                  href="https://app.simplenote.com/p/XV73L9"
+                  href="https://questmaniacs.ru/blago_policy.htm"
                   target="_blank"
                   className="underline"
                 >
@@ -83,7 +83,7 @@ export const Footer = () => {
                 </div>
                 <div className="footer__text">
                   <a
-                    href="https://app.simplenote.com/p/XV73L9"
+                    href="https://questmaniacs.ru/blago_policy.htm"
                     target="_blank"
                     className="underline"
                   >

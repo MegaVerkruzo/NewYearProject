@@ -7,6 +7,7 @@ import { Input } from '../../components/Input/Input'
 import { RegisterFields, FieldsNames } from '../../types/register'
 import { baseApiRequest } from '../../api/baseApiRequest'
 import { useRegister } from '../../api/register'
+import { useNavigate } from 'react-router-dom'
 
 const initialFields: RegisterFields = {
   name: '',
@@ -19,11 +20,12 @@ const initialFields: RegisterFields = {
 }
 
 export const Register = () => {
+  const navigate = useNavigate()
   const [fields, setFields] = useState<RegisterFields>(initialFields)
   const [isAgreePolicy, setIsAgreePolicy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const { mutate: register } = useRegister()
+  const { mutate: register } = useRegister({ navigate, setError })
 
   // useEffect(() => {
   //   baseApiRequest({ url: '/getState' })

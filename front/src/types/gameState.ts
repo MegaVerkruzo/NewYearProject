@@ -5,3 +5,8 @@ export type GameState =
   | 'waitNextGame'
   | 'waitEndLottery'
   | 'afterLottery'
+
+export type BeforeGameState = {
+  getState: 'beforeGame'
+  text: string
+}

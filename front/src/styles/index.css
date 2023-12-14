@@ -43,10 +43,6 @@ button {
   background: transparent;
 }
 
-h1 {
-  font-size: 2rem;
-}
-
 h2 {
   font-size: 1.56rem;
 }
@@ -56,7 +52,7 @@ h3 {
 }
 
 .wrapper {
-  min-height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: var(--color-red);
@@ -175,7 +171,6 @@ h3 {
 /* Main */
 .main {
   flex: 1 1 auto;
-  padding: 50px 0 25px;
 }
 
 /* Registration */
@@ -354,33 +349,20 @@ h3 {
 }
 
 /* MAIN PAGE */
-.main-page h1 {
+h1 {
   font-size: 2rem;
-  margin-bottom: 40px;
+  text-align: center;
+  margin-bottom: 15px;
   text-shadow: 3px 0 0 var(--color-dark-green);
-}
-
-.main-page__column {
-  transition: all 0.6s ease-out;
-}
-.main-page__column img {
-  max-width: calc(100vw - 50px);
-  max-height: 80vh;
-}
-.main-page__column img.game-tree {
-  max-height: 95vh;
-}
-.main-page__column .main-page__title {
-  margin-bottom: 40px;
-  text-shadow: 3px 0 0 var(--color-green);
 }
 
 .message-wrapper {
   position: relative;
-  margin-bottom: 30px;
+  width: 100%;
 }
 
 .message {
+  text-align: center;
   min-height: 63px;
   background: white;
   border-top-left-radius: 15px;
@@ -414,11 +396,11 @@ h3 {
 }
 
 .main-page__btn {
+  display: block;
   background: var(--color-green);
   padding: 20px 35px;
   border-radius: 50px;
   box-shadow: 5px 5px var(--color-dark-green);
-  margin-bottom: 15px;
   transition: all 0.3s ease-out;
   cursor: pointer;
   white-space: nowrap;
@@ -427,13 +409,31 @@ h3 {
   background: var(--color-dark-green);
 }
 
-.main-page__rules {
-  margin-bottom: 30px;
+.main-page__row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
 }
 
-.rules__title {
-  text-shadow: 3px 0 0 var(--color-dark-green);
-  margin-bottom: 40px;
+.main-page__row:last-child {
+  margin: 0;
+}
+
+.main-image__container {
+  position: relative;
+  max-width: calc(100vw - 100px);
+  margin-bottom: -120px;
+}
+
+.main-image__container img {
+  width: 100%;
+}
+
+.main-image__container .sanki {
+  position: relative;
+  bottom: 120px;
+  left: 30px;
 }
 
 .rules__container {
@@ -446,31 +446,28 @@ h3 {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.rules__item {
   background: var(--color-green);
   border-radius: 10%;
   filter: drop-shadow(10px 10px 52px rgba(24, 24, 24, 0.17));
-  padding: 30px 30px;
+  padding: 30px 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.rules__item .rule__icon {
+.rule__icon {
   margin-bottom: 30px;
 }
-.rules__item .rule__icon svg {
+.rule__icon svg {
   width: 100px;
   height: 100px;
 }
-.rules__item .rule__title {
+.rule__title {
   font-size: 1.3rem;
   font-weight: 700;
-  margin-bottom: 30px;
+  margin-bottom: 12px;
   text-align: center;
 }
-.rules__item .rule__text {
+.rule__text {
   text-align: center;
 }
 
@@ -554,7 +551,7 @@ h3 {
 /* HOW TO PLAY */
 .how2play__main {
   background: white;
-  box-shadow: 10px 10px 0 #ededed;
+  box-shadow: 5px 5px 0 #ededed;
   border-radius: 38px;
   padding: 30px 50px;
   margin-bottom: 30px;
@@ -912,36 +909,13 @@ h3 {
     line-height: 0;
   }
 
-  .main-page h1 {
-    font-size: 2rem;
-  }
-  .main-page .main-page__top {
-    margin-bottom: 30px;
-  }
-  .main-page .main-page__top .main-page__column .main-page__title {
+  .main-page__title {
     margin-bottom: 20px;
+    text-align: center;
   }
-  .message {
-  }
-  .main-page .main-page__top .main-page__column .main-page__btn {
-    padding: 20px 35px;
-    margin-bottom: 15px;
-  }
-  .main-page .main-page__rules .rules__title {
-    margin-bottom: 20px;
-  }
-  .main-page .main-page__rules .rules__container {
+
+  .rules__container {
     gap: 0 40px;
-  }
-  .main-page .main-page__rules .rules__item {
-    padding: 20px 20px;
-  }
-  .main-page .main-page__rules .rules__item .rule__icon {
-    margin-bottom: 30px;
-  }
-  .main-page .main-page__rules .rules__item .rule__icon svg {
-    width: 80px;
-    height: 80px;
   }
 
   .menu__nav {
@@ -1001,21 +975,6 @@ h3 {
   }
 }
 @media screen and (max-width: 1055px) {
-  .main-page__top.game {
-    grid-template-areas: 'col1' 'col3' 'col2';
-    grid-template-columns: 100%;
-    grid-template-rows: min-content 1fr min-content;
-  }
-  .main-page__top.game .col1 {
-    grid-area: col1;
-  }
-  .main-page__top.game .col2 {
-    grid-area: col2;
-  }
-  .main-page__top.game .col3 {
-    grid-area: col3;
-  }
-
   .game-field__wrapper {
     min-width: min(53vw, 53vh);
   }
@@ -1025,7 +984,7 @@ h3 {
   }
 }
 @media screen and (max-width: 950px) {
-  .main-page .main-page__rules .rules__container {
+  .rules__container {
     gap: 0 20px;
   }
 
@@ -1040,32 +999,6 @@ h3 {
   }
 }
 @media screen and (max-width: 840px) {
-  .main-page .main-page__rules .rules__item {
-    padding: 10px 15px;
-    border-radius: 15px;
-  }
-  .main-page .main-page__rules .rules__item .rule__icon {
-    margin-bottom: 15px;
-  }
-  .main-page .main-page__rules .rules__item .rule__icon svg {
-    width: 65px;
-    height: 65px;
-  }
-  .main-page .main-page__rules .rules__item .rule__title {
-    margin-bottom: 15px;
-    font-size: 1.1rem;
-  }
-  .main-page .main-page__rules .rules__item .rule__text {
-    font-size: 0.9rem;
-  }
-
-  .main-page h1,
-  .rules__title {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
-
   .footer__row svg {
     max-width: 200px;
   }
@@ -1087,13 +1020,6 @@ h3 {
 
   .header {
     padding: 0;
-  }
-
-  .header__top {
-    display: grid;
-    grid-template-columns: min-content 1fr min-content;
-    align-items: start;
-    gap: 0 15px;
   }
 
   .header__row:nth-child(2) {
@@ -1158,7 +1084,7 @@ h3 {
     grid-template-columns: 1fr 1fr;
   }
 
-  .main-page .main-page__rules .rules__container {
+  .rules__container {
     grid-template-columns: repeat(2, minmax(min-content, 1fr));
     gap: 20px 20px;
   }
@@ -1170,8 +1096,8 @@ h3 {
   .main-page__top {
     display: flex;
     flex-direction: column;
-    margin-bottom: 100px;
   }
+
   .main-page__top.game {
     display: grid;
     grid-template-areas: 'col1' 'col3' 'col2';
@@ -1202,10 +1128,6 @@ h3 {
   }
   .main-page__column a {
     margin: 0 auto;
-  }
-
-  .main-page__title h1 {
-    text-align: center;
   }
 
   .menu__nav {
@@ -1300,10 +1222,6 @@ h3 {
   }
 }
 @media screen and (max-width: 440px) {
-  h1 {
-    font-size: 1.5rem;
-  }
-
   .timer_bg {
     max-width: 330px;
   }
@@ -1321,10 +1239,6 @@ h3 {
   }
 }
 @media screen and (max-width: 408px) {
-  h1 {
-    font-size: 1.3rem;
-  }
-
   .header__sound .sound__btn {
     padding: 5px;
     line-height: 0;
@@ -1346,10 +1260,6 @@ h3 {
   }
 }
 @media screen and (max-width: 368px) {
-  h1 {
-    font-size: 1.5rem;
-  }
-
   .reg-form {
     padding: 20px;
   }
