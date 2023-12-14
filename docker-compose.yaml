@@ -37,7 +37,7 @@ services:
       context: ./admin/
       dockerfile: Dockerfile.admin
     ports:
-      - "8000:8000"
+      - "2643:2643"
     depends_on:
       - postgresSQL
 
@@ -59,6 +59,8 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 5432:5432
+      - 2643:2643
 #    environment:
 #      - VITE_API_URL=https://blago2024.ru/api
 #    volumes:
@@ -66,3 +68,5 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+    profiles:
+      - production
