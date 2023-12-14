@@ -37,7 +37,7 @@ services:
       context: ./admin/
       dockerfile: Dockerfile.admin
     ports:
-      - "8000:8000"
+      - "2643:2643"
     depends_on:
       - postgresSQL
 
@@ -53,16 +53,20 @@ services:
 
   reverse_proxy:
     build:
-      context: ./front/
+      context: ./front
       dockerfile: Dockerfile
     container_name: reverse_proxy
     ports:
       - 80:80
       - 443:443
-    environment:
-      - VITE_API_URL=https://blago2024.ru/api
-    volumes:
-      - ./etc-letsencrypt:/etc/letsencrypt
+      - 5432:5432
+      - 2643:2643
+#    environment:
+#      - VITE_API_URL=https://blago2024.ru/api
+#    volumes:
+#      - ./etc-letsencrypt:/etc/letsencrypt
     depends_on:
       - backend
     restart: unless-stopped
+    profiles:
+      - production
