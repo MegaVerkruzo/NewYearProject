@@ -12,8 +12,6 @@ CREATE TABLE IF NOT EXISTS users
     email       VARCHAR(255)                                     NOT NULL,
     place       VARCHAR(255)                                     NOT NULL,
     token       VARCHAR(255)                                     NOT NULL UNIQUE,
-    division    VARCHAR,
-    username    VARCHAR
 );
 --rollback DROP TABLE users
 
