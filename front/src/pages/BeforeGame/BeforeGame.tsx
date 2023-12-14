@@ -23,12 +23,12 @@ export const BeforeGame = () => {
         </div>
       </div>
       <div className="main-page__row">
-        <Message text="Первая игра начнётся 18 декабря в 9:00!" />
+        <Message text="Новогодняя викторина начнется 18 декабря в 10.00" />
       </div>
 
       <div className="main-page__row">
         <a
-          href="https://app.simplenote.com/p/0RWqgQ"
+          href="https://telegra.ph/Novogodnyaya-viktorina-Naryadi-svoyu-yolochku-12-12"
           target="_blank"
           className="main-page__btn"
         >
