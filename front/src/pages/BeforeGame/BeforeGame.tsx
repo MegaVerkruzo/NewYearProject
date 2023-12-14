@@ -1,4 +1,3 @@
-import MessageAngle from '../../assets/svgs/MessageAngleIcon'
 import Tree from '../../assets/images/Tree/Tree6.png'
 import { Message } from '../../components/Message.tsx/Message'
 import { Rules } from '../../components/Rules/Rules'
@@ -8,9 +7,7 @@ import { useNavigate } from 'react-router'
 
 export const BeforeGame = () => {
   const navigate = useNavigate()
-  useEffect(() => {
-    navigate('/register')
-  }, [navigate])
+  useEffect(() => {}, [navigate])
 
   return (
     <div className="main-page__top align-center">

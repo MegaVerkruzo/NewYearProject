@@ -54,7 +54,7 @@ export const Header = () => {
                   <Logo />
                 </div>
                 <div className="header__help">
-                  <a href="https://t.me/blago2023" target="_blank">
+                  <a href="https://t.me/snegurochkablago" target="_blank">
                     Снегурочка на связи
                   </a>
                 </div>
