@@ -61,8 +61,8 @@ services:
       - 443:443
     environment:
       - VITE_API_URL=https://blago2024.ru/api
-    volumes:
-      - ./etc-letsencrypt:/etc/letsencrypt
+#    volumes:
+#      - ./etc-letsencrypt:/etc/letsencrypt
     depends_on:
       - backend
     restart: unless-stopped
