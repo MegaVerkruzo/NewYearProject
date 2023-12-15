@@ -1,27 +1,21 @@
-import TreeSanki from '../../assets/images/Tree/TreeSanki.png'
 import { Message } from '../../components/Message.tsx/Message'
 import { Rules } from '../../components/Rules/Rules'
 import HowToPlay from '../../components/HowToPlay/HowToPlay'
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router'
+import { useLocation } from 'react-router-dom'
+import { BeforeGameState } from '../../types/gameState'
+import { Tree } from '../../components/Tree/Tree'
 
 export const BeforeGame = () => {
-  const navigate = useNavigate()
-  useEffect(() => {}, [navigate])
+  const location = useLocation() as { state: BeforeGameState }
+  const { text } = location.state
 
   return (
-    <div className="main-page__top">
+    <div className="main-wrapper">
       <div className="main-page__row">
-        <div className="main-image__container">
-          <div className="main-page__title">
-            <h1>Наряди свою ёлочку Благополучия</h1>
-          </div>
-
-          <img src={TreeSanki} alt="Ёлочка" />
-        </div>
+        <Tree />
       </div>
       <div className="main-page__row">
-        <Message text="Новогодняя викторина начнется 18 декабря в 10.00" />
+        <Message text={text} />
       </div>
 
       <div className="main-page__row">

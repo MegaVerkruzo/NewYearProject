@@ -20,7 +20,6 @@ export const Input = ({
   label,
   placeholder,
   onChangeInput,
-  icon,
 }: InputProps) => {
   return (
     <div className="reg-form__input">
@@ -31,12 +30,9 @@ export const Input = ({
             mask={PhoneMask}
             value={value}
             onAccept={(_value, { unmaskedValue }) => {
-              onChangeInput(
-                'phone',
-                unmaskedValue.slice(1, unmaskedValue.length),
-              )
+              onChangeInput(field, unmaskedValue.slice(1, unmaskedValue.length))
             }}
-            placeholder="Введите номер телефона"
+            placeholder={placeholder}
           />
         ) : (
           <input

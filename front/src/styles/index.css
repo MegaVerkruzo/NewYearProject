@@ -9,6 +9,8 @@
 html,
 body {
   height: 100%;
+  font-size: 16px;
+  color: white;
 }
 
 *,
@@ -19,8 +21,6 @@ body {
   margin: 0;
   padding: 0;
   outline: none;
-  font-size: 16px;
-  color: white;
   font-family: 'Ubuntu', sans-serif;
 }
 
@@ -41,6 +41,7 @@ button {
   cursor: pointer;
   border: none;
   background: transparent;
+  color: inherit;
 }
 
 h2 {
@@ -178,18 +179,6 @@ h3 {
   background: url('../assets/images/Snow1.png');
 }
 
-.main-page__login {
-  background: url('../assets/images/pngwing.png') no-repeat center center;
-}
-
-.main__wrapper {
-  max-width: 560px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .bottom__gift {
   position: relative;
   left: 55px;
@@ -243,9 +232,6 @@ h3 {
   position: absolute;
   left: 0;
   opacity: 0;
-}
-.reg-form .reg-form__input input[type='checkbox']:checked {
-  background: var(--color-reds);
 }
 .reg-form .reg-form__input .checkbox label:before {
   content: '';
@@ -320,14 +306,23 @@ h3 {
   text-align: center;
 }
 
-.main-page__feedback {
-  background: url('../../img/pngwing.png') no-repeat center center;
+.feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .feedback-form {
+  width: 100%;
   background: var(--color-green);
   box-shadow: 10px 10px 52px rgba(24, 24, 24, 0.18);
 }
+
+.feedback-form .reg-form {
+  padding: 50px 50px;
+}
+
 .feedback-form .reg-form__title h1 {
   font-size: 1.9rem;
 }
@@ -341,11 +336,13 @@ h3 {
   display: block;
 }
 .feedback-form .feedback-form__btn {
-  background: #b80622;
+  background: var(--color-red);
   padding: 15px 60px;
+  margin: 0;
+  box-shadow: none;
 }
 .feedback-form .feedback-form__btn:hover {
-  background: #9d0b22;
+  background: #b80622;
 }
 
 /* MAIN PAGE */
@@ -362,7 +359,6 @@ h1 {
 }
 
 .message {
-  text-align: center;
   min-height: 63px;
   background: white;
   border-top-left-radius: 15px;
@@ -465,6 +461,15 @@ h1 {
 }
 
 /* GAME FIELD */
+.game {
+  width: 100%;
+  transition: all 0.6s ease-out;
+}
+
+.game.open {
+  margin-bottom: 50vh;
+}
+
 .game-field {
   display: flex;
   flex-direction: column;
@@ -473,14 +478,13 @@ h1 {
 
 .game-field__wrapper {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
   gap: 15px 15px;
   min-width: 470px;
   margin-bottom: 30px;
 }
-.game-field__wrapper.col8 {
-  grid-template-columns: repeat(8, 1fr);
+
+.game-field__attempts {
+  margin-bottom: 15px;
 }
 
 .game-field__cell {
@@ -508,7 +512,7 @@ h1 {
   display: block;
   padding-top: 100%;
 }
-.game-field__cell.gray {
+.game-field__cell.grey {
   background: #d2d2d2;
 }
 .game-field__cell.green {
@@ -518,27 +522,10 @@ h1 {
   background: #fde190;
 }
 
-/* MEANING */
-.meaning__text {
-  margin-bottom: 40px;
-  background: white;
-  border-radius: 39px;
-  padding: 30px 50px;
-  font-size: 1.2rem;
-  box-shadow: 5px 5px 0 #ededed;
-  position: relative;
-}
-.meaning__text div {
-  font-size: 1.2rem;
-  position: relative;
-  z-index: 2;
-  color: black;
-}
-.meaning__text svg {
-  position: absolute;
-  bottom: -21px;
-  left: 3px;
-  z-index: 1;
+.game-field__interface {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* HOW TO PLAY */
@@ -622,7 +609,7 @@ h1 {
   display: block;
   padding-top: 100%;
 }
-.example__cell.gray {
+.example__cell.grey {
   background: #d2d2d2;
 }
 .example__cell.green {
@@ -630,6 +617,35 @@ h1 {
 }
 .example__cell.yellow {
   background: #fde190;
+}
+
+/* Lottery Ticket */
+.ticket {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ticket__image {
+  max-width: calc(100% - 50px);
+  position: relative;
+}
+
+.ticket__image img {
+  width: 100%;
+}
+
+.ticket__number {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 170px;
+  font-weight: bold;
+}
+
+.ticket__text {
+  text-align: center;
 }
 
 /* Footer */
@@ -677,6 +693,24 @@ h1 {
 }
 
 /* KEYBOARD */
+.keyboard-wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* top: 0; */
+  z-index: 50;
+}
+
+.keyboard-wrapper.open {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 50;
+}
+
 .keyboard {
   position: fixed;
   padding: 5px 5px 10px 5px;
@@ -688,7 +722,6 @@ h1 {
   grid-template-rows: repeat(3, 1fr);
   grid-template-columns: repeat(24, 1fr);
   background: var(--color-green);
-  z-index: 50;
   transition: all 0.3s ease-out;
   transform: translateY(100%);
 }
@@ -777,10 +810,6 @@ h1 {
 
 /* MEDIA */
 @media screen and (max-width: 1440px) {
-  * {
-    font-size: 14px;
-  }
-
   .top__gift img {
     width: 600px;
   }
@@ -980,10 +1009,6 @@ h1 {
   .rules__container {
     gap: 0 20px;
   }
-
-  .message {
-  }
-
   .example__cell {
     max-width: 50px;
   }
@@ -998,11 +1023,6 @@ h1 {
 
   .keyboard {
     display: grid;
-  }
-
-  .main-page__column.col2.keyboard-open {
-    margin-bottom: 50vh;
-    transition: all 0.6s ease-out;
   }
 }
 /* MOBILE */
@@ -1086,41 +1106,8 @@ h1 {
     max-width: 300px;
   }
 
-  .main-page__top {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .main-page__top.game {
-    display: grid;
-    grid-template-areas: 'col1' 'col3' 'col2';
-    grid-template-columns: 100%;
-    grid-template-rows: min-content 1fr min-content;
-  }
-  .main-page__top.game .col1 {
-    grid-area: col1;
-  }
-  .main-page__top.game .col2 {
-    grid-area: col2;
-  }
-  .main-page__top.game .col3 {
-    grid-area: col3;
-  }
-
   .game-field__wrapper {
     min-width: min(69vw, 69vh);
-  }
-
-  .message {
-  }
-
-  .main-page__column {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .main-page__column a {
-    margin: 0 auto;
   }
 
   .menu__nav {
@@ -1182,10 +1169,6 @@ h1 {
     max-width: 400px;
   }
 
-  .meaning__text {
-    padding: 15px 35px;
-  }
-
   .game-field__wrapper {
     min-width: min(85vw, 95vh);
   }
@@ -1208,10 +1191,6 @@ h1 {
   }
   .bottom__gift img {
     width: 450px;
-  }
-
-  .meaning__text span {
-    font-size: 1rem;
   }
 }
 @media screen and (max-width: 440px) {

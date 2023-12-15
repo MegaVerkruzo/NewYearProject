@@ -16,6 +16,34 @@ export const Main = () => {
       if (err.response?.data.exception === ApiErrorString.NotRegistered) {
         navigate('/register')
       }
+      return
+    }
+
+    if (data) {
+      console.log('Main components data ', data)
+      switch (data.gameState) {
+        case 'beforeGame':
+          navigate('/beforeGame', { state: data })
+          return
+        case 'inGame':
+          navigate('/inGame', { state: data })
+          return
+        case 'waitFeedback':
+          navigate('/waitFeedback', { state: data })
+          return
+        case 'waitNextGame':
+          navigate('/waitNextGame', { state: data })
+          return
+        case 'waitEndLottery':
+          navigate('/waitEndLottery', { state: data })
+          return
+        case 'afterLottery':
+          navigate('/afterLottery', { state: data })
+          return
+        default:
+          console.log('default')
+          return
+      }
     }
   }, [data, isError, isLoading])
 
