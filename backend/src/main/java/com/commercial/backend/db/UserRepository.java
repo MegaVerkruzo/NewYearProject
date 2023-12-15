@@ -13,4 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query(value = "UPDATE users SET feedback = :feedback WHERE id = :id", nativeQuery = true)
     void updateFeedbackByPhone(String feedback, Long id);
+
+    @Modifying
+    @Query(value = "UPDATE users SET active_gifts = :active_gifts WHERE id = :id", nativeQuery = true)
+    void updateActiveGifts(Long active_gifts, Long id);
 }

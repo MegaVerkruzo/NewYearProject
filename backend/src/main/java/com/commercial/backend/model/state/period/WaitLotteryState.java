@@ -2,6 +2,7 @@ package com.commercial.backend.model.state.period;
 
 import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.model.state.State;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 

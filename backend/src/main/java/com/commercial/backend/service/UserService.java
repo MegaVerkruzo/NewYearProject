@@ -9,6 +9,8 @@ import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
 import com.commercial.backend.security.exception.UserExistsException;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import static com.commercial.backend.security.ApiException.noFeedback;
@@ -18,6 +20,8 @@ import static com.commercial.backend.service.CommonService.parseId;
 @Service
 @AllArgsConstructor
 public class UserService {
+    private final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     private final UserRepository userRepository;
     private final AttemptService attemptService;
 
@@ -28,6 +32,9 @@ public class UserService {
     public State registerNewUser(User user) {
         userRepository.findUserById(user.getId()).ifPresent(UserExistsException::new);
 
+        logger.info("user.getId(): " + user.getId());
+        logger.info("user.getId(): " + user.getId());
+
         if (checkFieldOnSize(user.getPhone())
                 && checkFieldOnSize(user.getName())
                 && checkFieldOnSize(user.getSurname())
@@ -36,8 +43,8 @@ public class UserService {
                 && checkFieldOnSize(user.getPlace())
         ) {
             userRepository.save(user);
-            // :TODO change it
-            return new BeforeGameState();
+
+            return attemptService.getState(user);
         } else {
             throw new NotValidException();
         }
@@ -48,7 +55,7 @@ public class UserService {
                 .findUserById(parseId(authorization))
                 .orElseThrow(NotRegisteredException::new);
 
-        return attemptService.getAllInfo(user);
+        return attemptService.getState(user);
     }
 
     public Feedback addFeedback(User user, String feedback) {

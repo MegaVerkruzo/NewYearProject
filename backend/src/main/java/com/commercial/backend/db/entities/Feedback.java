@@ -1,6 +1,6 @@
 package com.commercial.backend.db.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,38 +8,39 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "task", schema = "public")
-@JsonIgnoreProperties
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
-public class Task {
+@NoArgsConstructor
+@Table(name = "feedback", schema = "public")
+public class Feedback {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "task_generator")
-    @SequenceGenerator(name = "task_generator", sequenceName = "task_seq", allocationSize = 1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "feedback_generator")
+    @SequenceGenerator(name = "feedback_generator", sequenceName = "feedback_seq", allocationSize = 1)
     private Long id;
-    @Column(name="active_prizes")
-    private String activePrizes;
-    @Column(name="non_active_prizes")
-    private String nonActivePrizes;
-    private String word;
+    @Column(name = "user_id")
+    private Long userId;
+    @Column(name = "task_id")
+    private Long taskId;
+    @Column(name = "response")
+    private String response;
 
-    public Task(String word, String activePrizes, String nonActivePrizes) {
-        this.word = word;
-        this.activePrizes = activePrizes;
-        this.nonActivePrizes = nonActivePrizes;
+    public Feedback(Long userId, Long taskId) {
+        this.userId = userId;
+        this.taskId = taskId;
     }
 
     @Override
@@ -49,8 +50,8 @@ public class Task {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Task task = (Task) o;
-        return getId() != null && Objects.equals(getId(), task.getId());
+        Feedback feedback = (Feedback) o;
+        return getId() != null && Objects.equals(getId(), feedback.getId());
     }
 
     @Override

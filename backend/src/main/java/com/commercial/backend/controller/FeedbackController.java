@@ -97,6 +97,6 @@ public class FeedbackController {
 
         // :TODO change it
 //        return userService.addFeedback(user, feedback);
-        return new WaitFeedbackState(null, null, null, null);
+        return new WaitFeedbackState(null, null, null);
     }
 }

@@ -6,7 +6,10 @@ import com.commercial.backend.security.exception.NotValidException;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,31 +42,12 @@ public class User {
     private String place;
     private String division;
     @Column(name = "active_gifts")
-    private Integer activeGifts;
+    private int activeGifts;
+    @Column(name = "ticket_number")
+    private int ticketNumber;
 
-    public User(
-            Long id,
-            String phone,
-            String name,
-            String surname,
-            String middleName,
-            String email,
-            String place,
-            String division,
-            int activeGifts
-    ) {
-        this.id = id;
-        this.phone = phone;
-        this.name = name;
-        this.surname = surname;
-        this.middleName = middleName;
-        this.email = email;
-        this.place = place;
-        this.division = division;
-        this.activeGifts = activeGifts;
-    }
+    private static int randomNumber = 100;
 
-    //
     public User(String token, JsonRegistration json) throws NotRegisteredException, NotValidException {
         this.id = parseId(token);
         this.username = parseUsername(token);
@@ -75,6 +59,7 @@ public class User {
         this.place = json.getPlace();
         this.division = json.getDivision();
         this.activeGifts = 0;
+        this.ticketNumber = randomNumber++;
     }
 
     @Override

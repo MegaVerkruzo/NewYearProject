@@ -26,10 +26,10 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class Attempt {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "attempts_generator")
-    @SequenceGenerator(name = "attempts_generator", sequenceName = "attempts_seq", allocationSize = 1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "attempt_generator")
+    @SequenceGenerator(name = "attempt_generator", sequenceName = "attempt_seq", allocationSize = 1)
     private Long id;
-    @Column(name="id_user") private Long userId;
+    @Column(name="user_id") private Long userId;
     private String word;
     private OffsetDateTime date;
 

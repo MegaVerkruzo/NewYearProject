@@ -25,6 +25,10 @@ public class CommonService {
         return getTaskStartTime(configService.getStartDate(), configService.getDelta(), task);
     }
 
+    public OffsetDateTime getTasksEndTime() {
+        return getTaskEndTime(configService.getStartDate(), configService.getDelta(), configService.getTasksCount());
+    }
+
     public Boolean isAttemptInTask(Task task, Attempt attempt) {
         return getTaskStartTime(task).isBefore(attempt.getDate()) && attempt.getDate().isBefore(
                 getTaskStartTime(task).plusMinutes(configService.getDelta())
@@ -33,6 +37,10 @@ public class CommonService {
 
     public static OffsetDateTime getTaskStartTime(OffsetDateTime startDate, Long delta, Task task) {
         return startDate.plusMinutes(delta * (task.getId() - 1));
+    }
+
+    public static OffsetDateTime getTaskEndTime(OffsetDateTime startDate, Long delta, Long taskId) {
+        return startDate.plusMinutes(delta * taskId);
     }
 
     public static Long parseId(String token) throws NotRegisteredException, NotValidException {

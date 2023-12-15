@@ -22,8 +22,7 @@ import java.util.Objects;
 @Table(name = "config", schema = "public")
 public class ConfigField {
     @Id
-    @Column(name = "id_name")
-    private String nameId;
+    private String id;
     @Column(name = "str_property")
     private String stringProperty;
     @Column(name = "date_property")
@@ -41,7 +40,7 @@ public class ConfigField {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         ConfigField that = (ConfigField) o;
-        return getNameId() != null && Objects.equals(getNameId(), that.getNameId());
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
