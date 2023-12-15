@@ -2,6 +2,8 @@ package com.commercial.backend.model.state.period;
 
 import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.model.state.State;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -21,6 +23,7 @@ public class WaitLotteryState implements State {
     private final String nonActivePrizes;
     private final Integer activeGifts;
     private final Integer ticketNumber;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private final OffsetDateTime lotteryTime;
 
     public WaitLotteryState(Integer activeGifts, Integer ticketNumber, OffsetDateTime startLotteryTime) {

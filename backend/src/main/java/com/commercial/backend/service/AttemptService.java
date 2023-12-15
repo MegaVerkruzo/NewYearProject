@@ -1,7 +1,10 @@
 package com.commercial.backend.service;
 
 import com.commercial.backend.db.AttemptRepository;
+import com.commercial.backend.db.FeedbackRepository;
+import com.commercial.backend.db.UserRepository;
 import com.commercial.backend.db.entities.Attempt;
+import com.commercial.backend.db.entities.Feedback;
 import com.commercial.backend.db.entities.Task;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.game.Color;
@@ -10,6 +13,9 @@ import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.AfterLotteryState;
 import com.commercial.backend.model.state.period.BeforeGameState;
 import com.commercial.backend.model.state.period.InGameState;
+import com.commercial.backend.model.state.period.WaitFeedbackState;
+import com.commercial.backend.model.state.period.WaitLotteryState;
+import com.commercial.backend.model.state.period.WaitNextGameState;
 import com.commercial.backend.security.exception.BadRequestException;
 import com.commercial.backend.security.exception.NoWordInDictionaryException;
 import com.commercial.backend.security.exception.NotRegisteredException;
@@ -22,6 +28,8 @@ import org.springframework.stereotype.Service;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static com.commercial.backend.service.CommonService.getWordInUTF8;
 
@@ -36,6 +44,8 @@ public class AttemptService {
     private final AttemptRepository attemptRepository;
     private final CommonService commonService;
     private final ConfigService configService;
+    private final FeedbackRepository feedbackRepository;
+    private final UserRepository userRepository;
 
     private List<LetterColor> compare(String answer, String word) {
         answer = getWordInUTF8(answer);
@@ -89,7 +99,7 @@ public class AttemptService {
         return result;
     }
 
-    public State getAllInfo(User user) {
+    public State getState(User user) {
         if (user == null) {
             throw new NotRegisteredException();
         }
@@ -97,81 +107,72 @@ public class AttemptService {
         OffsetDateTime now = OffsetDateTime.now();
         logger.info("current millis: " + now);
 
+        // After lottery
         if (configService.isFinishLottery()) {
             return new AfterLotteryState(user.getActiveGifts());
         }
 
+        // Before game
         if (now.isBefore(configService.getStartDate())) {
             return new BeforeGameState();
         }
 
-        // :TODO Logic with feedback field
+        Optional<Task> optionalTask = taskService.findPreviousAnswer(now);
+        if (optionalTask.isEmpty()) {
+            return new WaitLotteryState(
+                    user.getActiveGifts(),
+                    user.getTicketNumber(),
+                    configService.getLotteryDate()
+            );
+        }
 
-        Task task = taskService.findPreviousAnswer(now);
+        Task task = optionalTask.get();
         logger.info("answer is " + task);
 
-        if (task == null) {
-            return new BeforeGameState();
-//            return new GameStateKlass(
-//                    null,
-//                    null,
-//                    null,
-//                    0,
-//                    0,
-//                    new ArrayList<>(),
-//                    0,
-//                    0,
-//                    true,
-//                    // :TODO change logic
-//                    false,
-//                    null,
-//                    null,
-//                    null,
-//                    countCorrectAnswersBefore,
-//                    false
-//            );
-        }
-        List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
-        logger.info("attempts size: " + attempts.size());
+        List<Attempt> currentAttempts = attemptsInTask(user, task);
+        List<LetterColor> letters = getLetters(currentAttempts, task);
+        boolean isExistWord = isExistWord(currentAttempts, task.getWord());
 
-        int countCorrectAnswersBefore = taskService.countCorrectAnswers(attempts);
-        logger.info("countCorrectAnswersBefore: " + countCorrectAnswersBefore);
+        // waitFeedback
+        // Logic with feedback field. See addNewWord where set response = null
+        Optional<Feedback> feedback = feedbackRepository
+                .findFeedbackByUserId(user.getId())
+                .stream()
+                .filter(fb -> fb.getResponse() == null)
+                .findAny();
 
-        List<Attempt> currentAttempts = new ArrayList<>();
-        for (Attempt attempt : attempts) {
-            if (commonService.isAttemptInTask(task, attempt)) {
-                currentAttempts.add(attempt);
-            }
+        if (feedback.isPresent() && (!Objects.equals(feedback.get().getTaskId(), task.getId())
+                || currentAttempts.size() >= configService.getTasksCount()
+                || isExistWord
+        )) {
+            return new WaitFeedbackState(
+                    letters,
+                    task.getWord().length(),
+                    user.getActiveGifts()
+            );
         }
 
-        List<LetterColor> attemptsInfo = new ArrayList<>();
-        for (Attempt attempt : currentAttempts) {
-            attemptsInfo.addAll(compare(task.getWord(), attempt.getWord()));
+        // WaitLottery
+        if (now.isAfter(commonService.getTasksEndTime())) {
+            return new WaitLotteryState(
+                    user.getActiveGifts(),
+                    user.getTicketNumber(),
+                    configService.getLotteryDate()
+            );
         }
 
-        boolean isEnd = currentAttempts.size() == 5 || taskService.countCorrectAnswers(currentAttempts) >= 1;
+        // WaitNextGame
+        if (isExistWord || currentAttempts.size() >= configService.getTasksCount()) {
+            return new WaitNextGameState(user.getActiveGifts());
+        }
 
-        // :TODO change logic
-        boolean isPuttedFeedback = false && isEnd && now.isAfter(taskService.getMaxDate());
-
-        return new BeforeGameState();
-//        return new GameStateKlass(
-//                null,
-//                null,
-//                null,
-//                0,
-//                0,
-//                attemptsInfo,
-//                answer.getWord().length(),
-//                currentAttempts.size(),
-//                isEnd,
-//                isPuttedFeedback,
-//                null,
-//                isEnd ? answer.getDescription() : "",
-//                null,
-//                countCorrectAnswersBefore,
-//                false
-//        );
+        // InGame
+        return new InGameState(
+                letters,
+                task.getWord().length(),
+                currentAttempts.size(),
+                user.getActiveGifts()
+        );
     }
 
     public State addNewWord(
@@ -179,59 +180,59 @@ public class AttemptService {
             Task task,
             String word,
             OffsetDateTime offsetDateTime
-    ) throws NotValidException {
+    ) throws NotValidException, BadRequestException {
+        logger.info(User.class.toString() + user);
+        logger.info(Task.class.toString() + task);
+        logger.info(String.class.toString() + word);
+        logger.info(OffsetDateTime.class.toString() + offsetDateTime);
         if (word == null) {
+            logger.info("Word is null");
             throw new NotValidException();
         }
         word = getWordInUTF8(word);
-
+        logger.info("Word: " + word);
         if (!wordService.isWordExists(word)) {
+            logger.info("Word is no in dictionary");
             throw new NoWordInDictionaryException();
         }
 
-        List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
-        List<Attempt> currentAttempts = new ArrayList<>();
-        for (Attempt attempt : attempts) {
-            if (commonService.isAttemptInTask(task, attempt)) {
-                currentAttempts.add(attempt);
-            }
-        }
-
-        for (Attempt attempt : currentAttempts) {
-            if (attempt.getWord().equals(task.getWord())) {
-                throw new BadRequestException();
-            }
-        }
-
-        if (currentAttempts.size() >= 5) {
+        List<Attempt> currentAttempts = attemptsInTask(user, task);
+        logger.info("Current attempts: " + currentAttempts.toString());
+        if (isExistWord(currentAttempts, task.getWord()) || currentAttempts.size() >= configService.getTasksCount()) {
             throw new BadRequestException();
         }
 
+        // If no feedback, then make
+        if (currentAttempts.isEmpty()) {
+            feedbackRepository.save(new Feedback(user.getId(), task.getId()));
+        }
         attemptRepository.save(new Attempt(user.getId(), word, offsetDateTime));
 
-        return new InGameState(
-                compare(task.getWord(), word),
-                0,
-                0,
-                0
-        );
-//        return new GameStateKlass(
-//                null,
-//                null,
-//                null,
-//                0,
-//                0,
-//                compare(answer.getWord(), word),
-//                0,
-//                0,
-//                false,
-//                (answer.getWord().equals(word) || currentAttempts.size() == 4)
-//                        && answer.getDescription().equals("5"),
-//                null,
-//                answer.getWord().equals(word) ? answer.getDescription() : null,
-//                null,
-//                0,
-//                answer.getWord().equals(word)
-//        );
+        return getState(user);
+    }
+
+    private List<LetterColor> getLetters(List<Attempt> attempts, Task task) {
+        return attempts
+                .stream()
+                .map(attempt -> compare(task.getWord(), attempt.getWord()))
+                .flatMap(List::stream)
+                .toList();
+    }
+
+    private List<Attempt> attemptsInTask(User user, Task task) {
+        return attemptRepository
+                .findAllByUserIdOrderByDate(user.getId())
+                .stream()
+                .filter(attempt -> commonService.isAttemptInTask(task, attempt))
+                .toList();
+    }
+
+    private boolean isExistWord(List<Attempt> attempts, String word) throws BadRequestException {
+        for (Attempt attempt : attempts) {
+            if (attempt.getWord().equals(word)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

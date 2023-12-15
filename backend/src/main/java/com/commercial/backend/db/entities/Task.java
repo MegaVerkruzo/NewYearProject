@@ -35,13 +35,11 @@ public class Task {
     @Column(name="non_active_prizes")
     private String nonActivePrizes;
     private String word;
-    private String description;
 
-    public Task(String word, String activePrizes, String nonActivePrizes, String description) {
+    public Task(String word, String activePrizes, String nonActivePrizes) {
         this.word = word;
         this.activePrizes = activePrizes;
         this.nonActivePrizes = nonActivePrizes;
-        this.description = description;
     }
 
     @Override

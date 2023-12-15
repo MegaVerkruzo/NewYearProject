@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -20,37 +21,15 @@ public class TaskService {
 
     private final Logger logger = LoggerFactory.getLogger(TaskService.class);
 
-    public Task findPreviousAnswer(OffsetDateTime offsetDateTime) {
+    public Optional<Task> findPreviousAnswer(OffsetDateTime offsetDateTime) {
         OffsetDateTime previousDate = deltaService.getDeltaDown(offsetDateTime);
         logger.info("previousDate: " + previousDate);
 
         for (Task task : taskRepository.findAll()) {
             if (commonService.getTaskStartTime(task).isAfter(previousDate)) {
-                return task;
+                return Optional.of(task);
             }
         }
-        return null;
-    }
-
-    public int countCorrectAnswers(List<Attempt> attempts) {
-        int correctAnswers = 0;
-        for (Attempt attempt : attempts) {
-            for (Task task : taskRepository.findAll()) {
-                if (task.getWord().equals(attempt.getWord()) && commonService.isAttemptInTask(task, attempt)) {
-                    correctAnswers++;
-                }
-            }
-        }
-        return correctAnswers;
-    }
-
-    public OffsetDateTime getMaxDate() {
-        OffsetDateTime maxDate = OffsetDateTime.MIN;
-        for (Task task : taskRepository.findAll()) {
-            if (commonService.getTaskStartTime(task).isAfter(maxDate)) {
-                maxDate = commonService.getTaskStartTime(task);
-            }
-        }
-        return maxDate;
+        return Optional.empty();
     }
 }

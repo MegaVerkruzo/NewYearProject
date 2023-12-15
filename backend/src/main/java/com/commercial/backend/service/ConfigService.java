@@ -16,18 +16,22 @@ public class ConfigService {
     private final ConfigRepository configRepository;
 
     public OffsetDateTime getStartDate() {
-        return configRepository.findByNameId(env.getProperty("date.start.game")).getDateProperty();
+        return configRepository.findById(env.getProperty("date.start.game")).get().getDateProperty();
     }
 
     public Long getDelta() {
-        return configRepository.findByNameId(env.getProperty("answers.delta.minutes")).getLongProperty();
+        return configRepository.findById(env.getProperty("answers.delta.minutes")).get().getLongProperty();
     }
 
     public Long getTasksCount() {
-        return configRepository.findByNameId(env.getProperty("tasks.count")).getLongProperty();
+        return configRepository.findById(env.getProperty("tasks.count")).get().getLongProperty();
     }
 
     public Boolean isFinishLottery() {
-        return configRepository.findByNameId(env.getProperty("is.lottery.finish")).getBooleanProperty();
+        return configRepository.findById(env.getProperty("is.lottery.finish")).get().getBooleanProperty();
+    }
+
+    public OffsetDateTime getLotteryDate() {
+        return configRepository.findById(env.getProperty("lottery.date")).get().getDateProperty();
     }
 }
