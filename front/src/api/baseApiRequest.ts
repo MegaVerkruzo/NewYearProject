@@ -16,7 +16,7 @@ export const baseApiRequest = async <T>({
   url,
   method,
   data,
-}: BaseApiRequestOptions): Promise<T | ApiError> => {
+}: BaseApiRequestOptions): Promise<T> => {
   const signature = getTgParams()
 
   const headers: Record<string, string> = {

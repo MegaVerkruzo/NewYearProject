@@ -29,7 +29,7 @@ export const HowToPlay = () => {
               </div>
             </div>
             <div className="letter__item">
-              <div className="example__cell gray">
+              <div className="example__cell grey">
                 <div className="letter">т</div>
               </div>
               <div className="letter__text">
@@ -48,31 +48,31 @@ export const HowToPlay = () => {
                   <div className="example__cell yellow">
                     <div className="letter">г</div>
                   </div>
-                  <div className="example__cell gray">
+                  <div className="example__cell grey">
                     <div className="letter">е</div>
                   </div>
-                  <div className="example__cell gray">
+                  <div className="example__cell grey">
                     <div className="letter">р</div>
                   </div>
-                  <div className="example__cell gray">
+                  <div className="example__cell grey">
                     <div className="letter">о</div>
                   </div>
-                  <div className="example__cell gray">
+                  <div className="example__cell grey">
                     <div className="letter">й</div>
                   </div>
                   <div className="example__cell green">
                     <div className="letter">в</div>
                   </div>
-                  <div className="example__cell gray">
+                  <div className="example__cell grey">
                     <div className="letter">и</div>
                   </div>
-                  <div className="example__cell gray">
+                  <div className="example__cell grey">
                     <div className="letter">л</div>
                   </div>
-                  <div className="example__cell gray">
+                  <div className="example__cell grey">
                     <div className="letter">л</div>
                   </div>
-                  <div className="example__cell gray">
+                  <div className="example__cell grey">
                     <div className="letter">а</div>
                   </div>
                   <div className="example__cell green">
