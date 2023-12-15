@@ -38,6 +38,8 @@ public class User {
     private String email;
     private String place;
     private String division;
+    @Column(name = "active_gifts")
+    private Integer activeGifts;
 
     public User(
             Long id,
@@ -47,7 +49,8 @@ public class User {
             String middleName,
             String email,
             String place,
-            String division
+            String division,
+            int activeGifts
     ) {
         this.id = id;
         this.phone = phone;
@@ -57,6 +60,7 @@ public class User {
         this.email = email;
         this.place = place;
         this.division = division;
+        this.activeGifts = activeGifts;
     }
 
     //
@@ -70,6 +74,7 @@ public class User {
         this.email = json.getEmail();
         this.place = json.getPlace();
         this.division = json.getDivision();
+        this.activeGifts = 0;
     }
 
     @Override

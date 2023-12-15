@@ -16,8 +16,8 @@ public class AfterLotteryState implements State {
     private final Integer activeGifts;
 
     public AfterLotteryState(Integer activeGifts) {
-        // :TODO think about text
-        this.text = "С новым годом!";
+        // :TODO change text
+        this.text = "Спасибо за участие в розыгрыше, c новым годом!";
         this.activeGifts = activeGifts;
         this.gameState = afterLottery;
     }

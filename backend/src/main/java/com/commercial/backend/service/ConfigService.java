@@ -26,4 +26,8 @@ public class ConfigService {
     public Long getTasksCount() {
         return configRepository.findByNameId(env.getProperty("tasks.count")).getLongProperty();
     }
+
+    public Boolean isFinishLottery() {
+        return configRepository.findByNameId(env.getProperty("is.lottery.finish")).getBooleanProperty();
+    }
 }

@@ -30,6 +30,8 @@ public class ConfigField {
     private OffsetDateTime dateProperty;
     @Column(name = "long_property")
     private Long longProperty;
+    @Column(name = "boolean_property")
+    private Boolean booleanProperty;
 
     @Override
     public final boolean equals(Object o) {

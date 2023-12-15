@@ -9,13 +9,13 @@ import java.time.OffsetDateTime;
 @Service
 @AllArgsConstructor
 public class DeltaService {
-    private final ConfigRepository configRepository;
+    private final ConfigService configService;
 
     public OffsetDateTime getDeltaUp(OffsetDateTime offsetDateTime) {
-        return offsetDateTime.plusMinutes(configRepository.findByNameId("answers_delta_minutes").getLongProperty());
+        return offsetDateTime.plusMinutes(configService.getDelta());
     }
 
     public OffsetDateTime getDeltaDown(OffsetDateTime offsetDateTime) {
-        return offsetDateTime.minusMinutes(configRepository.findByNameId("answers_delta_minutes").getLongProperty());
+        return offsetDateTime.minusMinutes(configService.getDelta());
     }
 }
