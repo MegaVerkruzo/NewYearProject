@@ -16,9 +16,9 @@ export const useNewAttempt = () => {
         data: mutationData,
       })
     },
+    retry: false,
     onSuccess: () => {
       client.invalidateQueries({ queryKey: ['getState'] })
     },
-    onError: () => {},
   })
 }
