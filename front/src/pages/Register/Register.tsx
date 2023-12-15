@@ -6,7 +6,8 @@ import { fieldsData } from './registerData'
 import { Input } from '../../components/Input/Input'
 import { RegisterFields, FieldsNames } from '../../types/register'
 import { useRegister } from '../../api/register'
-import { useNavigate } from 'react-router-dom'
+import { AxiosError } from 'axios'
+import { ApiError } from '../../types/error'
 
 const initialFields: RegisterFields = {
   name: '',
@@ -19,13 +20,16 @@ const initialFields: RegisterFields = {
 }
 
 export const Register = () => {
-  const navigate = useNavigate()
   const [fields, setFields] = useState<RegisterFields>(initialFields)
   const [isAgreePolicy, setIsAgreePolicy] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
 
-  const { mutate: register } = useRegister({ navigate, setError })
+  const {
+    mutate: register,
+    isError,
+    error: mutateError,
+    isPending,
+  } = useRegister()
 
   const onSignUp = () => {
     setError(null)
@@ -59,6 +63,18 @@ export const Register = () => {
     register(fields)
     console.log(fields)
   }
+
+  useEffect(() => {
+    if (isError && mutateError instanceof AxiosError) {
+      const err = mutateError as AxiosError<ApiError>
+      if (err.response?.status === 500) {
+        setError('Ошибка сервера')
+        return
+      }
+      setError('Некорректный запрос')
+    }
+  }, [isError, mutateError])
+
   const onChangeInput = (field: FieldsNames, value: string) => {
     setFields((prev) => ({ ...prev, [field]: value }))
   }
@@ -108,7 +124,7 @@ export const Register = () => {
               </div>
             </div>
             {error && <div className="error">{error}</div>}
-            {isLoading && (
+            {isPending && (
               <div className="form_loading">
                 <Spinner />
               </div>

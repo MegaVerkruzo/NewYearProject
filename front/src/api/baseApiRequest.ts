@@ -8,10 +8,6 @@ interface BaseApiRequestOptions {
   data?: object
 }
 
-export interface ApiError {
-  exception: string
-}
-
 export const baseApiRequest = async <T>({
   url,
   method,
