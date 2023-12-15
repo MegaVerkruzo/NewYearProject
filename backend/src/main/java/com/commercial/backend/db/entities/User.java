@@ -9,7 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
@@ -17,6 +17,7 @@ import org.hibernate.proxy.HibernateProxy;
 import java.util.Objects;
 
 import static com.commercial.backend.service.CommonLibrary.parseId;
+import static com.commercial.backend.service.CommonLibrary.parseUsername;
 
 @Entity
 @Table(name = "users", schema = "public")
@@ -24,7 +25,7 @@ import static com.commercial.backend.service.CommonLibrary.parseId;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     private Long id;
@@ -61,6 +62,7 @@ public class User {
     //
     public User(String token, JsonRegistration json) throws NotRegisteredException, NotValidException {
         this.id = parseId(token);
+        this.username = parseUsername(token);
         this.phone = json.getPhone();
         this.name = json.getName();
         this.surname = json.getSurname();
