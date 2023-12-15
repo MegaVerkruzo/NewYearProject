@@ -11,6 +11,7 @@ import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
 import com.commercial.backend.security.response.NotRegisteredResponse;
 import com.commercial.backend.security.response.NotValidResponse;
+import com.commercial.backend.service.AttemptService;
 import com.commercial.backend.service.UserService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,7 +31,9 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class FeedbackController {
     private final Logger logger = LoggerFactory.getLogger(FeedbackController.class);
+
     private final UserService userService;
+    private final AttemptService attemptService;
 
     @ApiResponses(value = {
             @ApiResponse(
@@ -74,29 +77,6 @@ public class FeedbackController {
             @RequestHeader("authorization") String token,
             @RequestBody JsonFeedback jsonFeedback
     ) {
-        if (token == null) {
-            throw new NotRegisteredException();
-        }
-
-        User user = userService.getUserByToken(token);
-        logger.info("Read user " + user);
-        if (user == null) {
-            throw new NotRegisteredException();
-        }
-
-        String feedback = jsonFeedback.getFeedback();
-        logger.info("Read feedback " + feedback);
-        if (feedback == null || feedback.isBlank()) {
-            throw new NotValidException();
-        }
-
-        // :TODO change logic of feedback
-//        if (user.getFeedback() != null && !user.getFeedback().isBlank()) {
-//            return new Feedback(hadFeedback);
-//        }
-
-        // :TODO change it
-//        return userService.addFeedback(user, feedback);
-        return new WaitFeedbackState(null, null, null);
+        return userService.addFeedback(token, jsonFeedback);
     }
 }

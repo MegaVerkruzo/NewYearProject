@@ -1,8 +1,10 @@
 package com.commercial.backend.service;
 
+import com.commercial.backend.db.FeedbackRepository;
 import com.commercial.backend.db.UserRepository;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.feedback.Feedback;
+import com.commercial.backend.model.json.JsonFeedback;
 import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.BeforeGameState;
 import com.commercial.backend.security.exception.NotRegisteredException;
@@ -24,6 +26,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AttemptService attemptService;
+    private final FeedbackRepository feedbackRepository;
 
     private boolean checkFieldOnSize(String str) {
         return str.length() < 250;
@@ -58,17 +61,18 @@ public class UserService {
         return attemptService.getState(user);
     }
 
-    public Feedback addFeedback(User user, String feedback) {
-        if (user == null) {
-            return new Feedback(notRegistered);
+    public State addFeedback(String authorization, JsonFeedback feedback) {
+        User user = userRepository
+                .findUserById(parseId(authorization))
+                .orElseThrow(NotRegisteredException::new);
+
+        if (feedback == null || feedback.getFeedback().isEmpty()) {
+            throw new NotValidException();
         }
 
-        if (feedback == null || feedback.isEmpty()) {
-            return new Feedback(noFeedback);
-        }
-
-        userRepository.updateFeedbackByPhone(feedback, user.getId());
-        return null;
+        feedbackRepository.updateFeedbackById(feedback.getFeedback(), user.getId());
+        userRepository.updateUsersById(user.getActiveGifts() + 1L, user.getId());
+        return attemptService.getState(user);
     }
 
     public User getUserByToken(String token) throws NotRegisteredException, NotValidException {

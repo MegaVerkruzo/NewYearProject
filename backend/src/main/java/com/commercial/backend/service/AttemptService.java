@@ -181,15 +181,23 @@ public class AttemptService {
             String word,
             OffsetDateTime offsetDateTime
     ) throws NotValidException, BadRequestException {
+        logger.info(User.class.toString() + user);
+        logger.info(Task.class.toString() + task);
+        logger.info(String.class.toString() + word);
+        logger.info(OffsetDateTime.class.toString() + offsetDateTime);
         if (word == null) {
+            logger.info("Word is null");
             throw new NotValidException();
         }
         word = getWordInUTF8(word);
+        logger.info("Word: " + word);
         if (!wordService.isWordExists(word)) {
+            logger.info("Word is no in dictionary");
             throw new NoWordInDictionaryException();
         }
 
         List<Attempt> currentAttempts = attemptsInTask(user, task);
+        logger.info("Current attempts: " + currentAttempts.toString());
         if (isExistWord(currentAttempts, task.getWord()) || currentAttempts.size() >= configService.getTasksCount()) {
             throw new BadRequestException();
         }
@@ -199,9 +207,6 @@ public class AttemptService {
             feedbackRepository.save(new Feedback(user.getId(), task.getId()));
         }
         attemptRepository.save(new Attempt(user.getId(), word, offsetDateTime));
-        if (word.equals(task.getWord())) {
-            userRepository.updateActiveGifts(user.getActiveGifts() + 1L, user.getId());
-        }
 
         return getState(user);
     }
