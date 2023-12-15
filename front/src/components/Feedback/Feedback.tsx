@@ -1,7 +1,10 @@
 import giftTop from '../../assets/images/gift_top.png'
 import giftBottom from '../../assets/images/gift_bottom.png'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useSendFeedback } from '../../api/sendFeedback'
+import Spinner from '../../assets/svgs/Spinner'
+import { AxiosError } from 'axios'
+import { ApiError } from '../../types/error'
 
 type FeedbackProps = {
   text: string
@@ -9,17 +12,32 @@ type FeedbackProps = {
 
 export const Feedback: FC<FeedbackProps> = ({ text }) => {
   const [feedback, setFeedback] = useState('')
+  const [error, setError] = useState<string | null>(null)
   const [isFeedbackJustSent, setIsFeedbackJustSent] = useState(false)
 
-  // TODO: дописать прокидываение ошибок и setIsFeedbackJustSent при успешной отправке
-  const { mutate: sendFeedback } = useSendFeedback()
+  const {
+    mutate: sendFeedback,
+    isError,
+    isPending,
+    error: mutateError,
+  } = useSendFeedback({ setIsFeedbackJustSent })
 
   const onSendFeedback = () => {
     const trimmedFeedback = feedback.trim()
     if (trimmedFeedback.length === 0) return
-
+    setError(null)
     sendFeedback({ feedback: trimmedFeedback })
   }
+
+  useEffect(() => {
+    if (isError && mutateError instanceof AxiosError) {
+      const err = mutateError as AxiosError<ApiError>
+      if (err.response?.status === 500) {
+        return setError('Ошибка сервера')
+      }
+      setError('Некорректный запрос')
+    }
+  }, [isError, mutateError])
 
   return (
     <div className="feedback">
@@ -41,14 +59,12 @@ export const Feedback: FC<FeedbackProps> = ({ text }) => {
                 />
               </label>
             </div>
-            {/* {store.feedbackError && (
-                <div className="error">{store.feedbackError}</div>
-              )}
-              {store.isFormLoading && (
-                <div className="form_loading">
-                  <Spinner />
-                </div>
-              )} */}
+            {error && <div className="error">{error}</div>}
+            {isPending && (
+              <div className="form_loading">
+                <Spinner />
+              </div>
+            )}
             <div className="reg-form__btn feedback-form__btn">
               <button onClick={() => onSendFeedback()}>Отправить</button>
             </div>

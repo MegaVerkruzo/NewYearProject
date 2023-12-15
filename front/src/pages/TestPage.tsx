@@ -2,12 +2,12 @@ import React from 'react'
 import { Message } from '../components/Message.tsx/Message'
 import HowToPlay from '../components/HowToPlay/HowToPlay'
 import { Rules } from '../components/Rules/Rules'
-import TreeSanki from '../assets/images/Tree/TreeSanki.png'
 import { Meaning } from '../components/Meaning/Meaning'
 import { LotteryTicket } from '../components/App/LotteryTicket/LotteryTicket'
 import { Feedback } from '../components/Feedback/Feedback'
 import { Game } from '../components/Game/Game'
 import { Letter } from '../types/game'
+import { Tree } from '../components/Tree/Tree'
 
 const TestPage = () => {
   const letters: Letter[] = [
@@ -31,13 +31,11 @@ const TestPage = () => {
   return (
     <div className="main-wrapper">
       <div className="main-page__row">
-        <div className="main-image__container">
-          <div className="main-page__title">
-            <h1>Наряди свою ёлочку Благополучия</h1>
-          </div>
-
-          <img src={TreeSanki} alt="Ёлочка" />
-        </div>
+        <Tree
+          activeGifts={3}
+          activePrizes="Активный подарок"
+          nonActivePrizes="Неактивный подарок"
+        />
       </div>
       <div className="main-page__row">
         <Message text="Новогодняя викторина начнется 18 декабря в 10.00" />

@@ -5,7 +5,11 @@ type NewAttemptData = {
   word: string
 }
 
-export const useNewAttempt = () => {
+type NewAttemptParams = {
+  clearField: () => void
+}
+
+export const useNewAttempt = ({ clearField }: NewAttemptParams) => {
   const client = useQueryClient()
   return useMutation({
     mutationKey: ['newAttepmt'],
@@ -16,9 +20,10 @@ export const useNewAttempt = () => {
         data: mutationData,
       })
     },
+    retry: false,
     onSuccess: () => {
       client.invalidateQueries({ queryKey: ['getState'] })
+      clearField()
     },
-    onError: () => {},
   })
 }

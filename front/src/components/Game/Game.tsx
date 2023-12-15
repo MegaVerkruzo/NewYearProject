@@ -1,10 +1,14 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import cn from 'classnames'
 import { Letter } from '../../types/game'
 import { useNewAttempt } from '../../api/newAttempt'
 import { GameLetter } from './GameLetter'
 import { Keyboard } from '../Keyboard/Keyboard'
 import { createPortal } from 'react-dom'
+import { AxiosError } from 'axios'
+import { ApiError, ApiErrorString } from '../../types/error'
+import Spinner from '../../assets/svgs/Spinner'
+import { russianLetters } from '../../config/gameData'
 
 type GameProps = {
   letters: Letter[]
@@ -19,25 +23,46 @@ export const Game: FC<GameProps> = ({
   currentLine = 0,
   isEnd,
 }) => {
+  const keyboardHandler = (e: KeyboardEvent) => {
+    if (!isEnd) {
+      if (e.key === 'Backspace') {
+        onChangeInput()
+      } else if (e.key === 'Enter') {
+        onNewAttempt()
+      } else if (e.key === ' ') {
+        e.preventDefault()
+      } else if (russianLetters.includes(e.key)) {
+        onChangeInput(e.key)
+      }
+    }
+  }
+
   const freeCellsCount = (5 - currentLine - 1) * wordLength
   const freeCells: Letter[] = new Array(freeCellsCount).fill({
     letter: '',
     state: '',
   })
 
-  // TODO: дописать обработку ошибок из игры с сервера
+  const [error, setError] = useState<string | null>(null)
   const [inputWord, setInputWord] = useState<string[]>(
     new Array(wordLength).fill(''),
   )
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false)
   const [canAttempt, setCanAttempt] = useState(false)
+  const clearField = () => setInputWord(new Array(wordLength).fill(''))
 
-  const { mutate: sendNewAttempt } = useNewAttempt()
+  const {
+    mutate: sendNewAttempt,
+    error: mutateError,
+    isError,
+    isPending,
+  } = useNewAttempt({ clearField })
 
   const onNewAttempt = () => {
     if (!canAttempt) return
 
+    setError(null)
     const transformedWord = inputWord.join('').toLocaleLowerCase()
     sendNewAttempt({ word: transformedWord })
   }
@@ -68,6 +93,26 @@ export const Game: FC<GameProps> = ({
     }
   }
 
+  useEffect(() => {
+    if (isError && mutateError instanceof AxiosError) {
+      const err = mutateError as AxiosError<ApiError>
+      if (err.response?.data.exception === ApiErrorString.NoWordInDictionary) {
+        return setError('Некорректное слово')
+      }
+      if (err.response?.status === 500) {
+        return setError('Ошибка сервера')
+      }
+      setError('Некорректный запрос')
+    }
+  }, [isError, mutateError])
+
+  useEffect(() => {
+    document.addEventListener('keydown', keyboardHandler)
+    return () => {
+      document.removeEventListener('keydown', keyboardHandler)
+    }
+  }, [])
+
   return (
     <div className={cn('game', { open: isKeyboardOpen })}>
       <div
@@ -89,12 +134,12 @@ export const Game: FC<GameProps> = ({
             <GameLetter key={index} letter={item.letter} state={item.state} />
           ))}
         </div>
-        {/* {store.gameError && <div className="error">{store.gameError}</div>}
-        {store.isFormLoading && (
+        {error && <div className="error">{error}</div>}
+        {isPending && (
           <div className="form_loading">
             <Spinner />
           </div>
-        )} */}
+        )}
         {!isEnd && (
           <div className="game-field__interface">
             <div className="game-field__attempts">
