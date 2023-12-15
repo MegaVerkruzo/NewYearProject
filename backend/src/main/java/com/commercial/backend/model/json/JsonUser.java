@@ -9,4 +9,6 @@ import lombok.Getter;
 public class JsonUser {
     @JsonProperty("id")
     private Long id;
+    @JsonProperty("username")
+    private String username;
 }

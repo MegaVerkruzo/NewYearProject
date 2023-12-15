@@ -35,15 +35,11 @@ public class Task {
     @Column(name="non_active_prizes")
     private String nonActivePrizes;
     private String word;
-    private OffsetDateTime date;
-    private String description;
 
-    public Task(String word, String activePrizes, String nonActivePrizes, Timestamp date, String description) {
+    public Task(String word, String activePrizes, String nonActivePrizes) {
         this.word = word;
         this.activePrizes = activePrizes;
         this.nonActivePrizes = nonActivePrizes;
-        this.date = date.toLocalDateTime().atOffset(OffsetDateTime.now().getOffset());
-        this.description = description;
     }
 
     @Override

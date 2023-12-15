@@ -23,20 +23,17 @@ public class WaitFeedbackState implements State {
     @Schema(example = "Укажите отзыв!")
     private final String feedbackQuestion;
     private final List<LetterColor> letters;
-    @Schema(example = "Благополучие - это то, что мы сделали вместе за этот год для нас всех")
-    private final String description;
     private final Integer wordLength;
     private final Integer activeGifts;
 
-    public WaitFeedbackState(List<LetterColor> letters, String description, Integer wordLength, Integer activeGifts) {
-        // :TODO think about text
+    // :TODO fix think about text
+    public WaitFeedbackState(List<LetterColor> letters, Integer wordLength, Integer activeGifts) {
         this.activePrizes = "Вы учавствует в розыгрыше таких вещей";
         this.nonActivePrizes = "Чтобы учавствовать в розыгрыше всех подарков, вам осталось ответить на 3 загадки";
         this.text = "Угадай слово, какое слово стоит в обозначении радуги после \"сидит\"";
         this.feedbackQuestion = "Укажите отзыв!";
         this.gameState = waitFeedback;
         this.letters = letters;
-        this.description = description;
         this.wordLength = wordLength;
         this.activeGifts = activeGifts;
     }

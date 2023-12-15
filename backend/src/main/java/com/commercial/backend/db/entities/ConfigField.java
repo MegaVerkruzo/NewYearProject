@@ -11,7 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
@@ -22,14 +22,15 @@ import java.util.Objects;
 @Table(name = "config", schema = "public")
 public class ConfigField {
     @Id
-    @Column(name = "id_name")
-    private String nameId;
+    private String id;
     @Column(name = "str_property")
     private String stringProperty;
     @Column(name = "date_property")
-    private LocalDateTime dateProperty;
+    private OffsetDateTime dateProperty;
     @Column(name = "long_property")
     private Long longProperty;
+    @Column(name = "boolean_property")
+    private Boolean booleanProperty;
 
     @Override
     public final boolean equals(Object o) {
@@ -39,7 +40,7 @@ public class ConfigField {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         ConfigField that = (ConfigField) o;
-        return getNameId() != null && Objects.equals(getNameId(), that.getNameId());
+        return getId() != null && Objects.equals(getId(), that.getId());
     }
 
     @Override
