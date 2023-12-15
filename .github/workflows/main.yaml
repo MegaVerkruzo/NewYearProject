@@ -17,4 +17,4 @@ jobs:
             cd new-year-project
             git restore .
             git pull
-            docker compose up -d --build
+            docker-compose --profile production up -d --build
