@@ -7,6 +7,7 @@ import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.game.Color;
 import com.commercial.backend.model.game.LetterColor;
 import com.commercial.backend.model.state.State;
+import com.commercial.backend.model.state.period.AfterLotteryState;
 import com.commercial.backend.model.state.period.BeforeGameState;
 import com.commercial.backend.model.state.period.InGameState;
 import com.commercial.backend.security.exception.BadRequestException;
@@ -22,7 +23,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.commercial.backend.service.CommonLibrary.getWordInUTF8;
+import static com.commercial.backend.service.CommonService.getWordInUTF8;
 
 @Service
 @AllArgsConstructor
@@ -33,7 +34,8 @@ public class AttemptService {
     private final TaskService taskService;
     private final WordService wordService;
     private final AttemptRepository attemptRepository;
-    private final DeltaService deltaService;
+    private final CommonService commonService;
+    private final ConfigService configService;
 
     private List<LetterColor> compare(String answer, String word) {
         answer = getWordInUTF8(answer);
@@ -92,17 +94,21 @@ public class AttemptService {
             throw new NotRegisteredException();
         }
 
-        OffsetDateTime offsetDateTime = OffsetDateTime.now();
-        logger.info("current millis: " + offsetDateTime);
+        OffsetDateTime now = OffsetDateTime.now();
+        logger.info("current millis: " + now);
 
-        Task task = taskService.findPreviousAnswer(offsetDateTime);
+        if (configService.isFinishLottery()) {
+            return new AfterLotteryState(user.getActiveGifts());
+        }
+
+        if (now.isBefore(configService.getStartDate())) {
+            return new BeforeGameState();
+        }
+
+        // :TODO Logic with feedback field
+
+        Task task = taskService.findPreviousAnswer(now);
         logger.info("answer is " + task);
-
-        List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
-        logger.info("attempts size: " + attempts.size());
-
-        int countCorrectAnswersBefore = taskService.countCorrectAnswers(attempts);
-        logger.info("countCorrectAnswersBefore: " + countCorrectAnswersBefore);
 
         if (task == null) {
             return new BeforeGameState();
@@ -125,11 +131,15 @@ public class AttemptService {
 //                    false
 //            );
         }
+        List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
+        logger.info("attempts size: " + attempts.size());
+
+        int countCorrectAnswersBefore = taskService.countCorrectAnswers(attempts);
+        logger.info("countCorrectAnswersBefore: " + countCorrectAnswersBefore);
 
         List<Attempt> currentAttempts = new ArrayList<>();
         for (Attempt attempt : attempts) {
-            if (task.getDate().isBefore(attempt.getDate())
-                    && attempt.getDate().isBefore(deltaService.getDeltaUp(task.getDate()))) {
+            if (commonService.isAttemptInTask(task, attempt)) {
                 currentAttempts.add(attempt);
             }
         }
@@ -142,7 +152,7 @@ public class AttemptService {
         boolean isEnd = currentAttempts.size() == 5 || taskService.countCorrectAnswers(currentAttempts) >= 1;
 
         // :TODO change logic
-        boolean isPuttedFeedback = false && isEnd && offsetDateTime.isAfter(taskService.getMaxDate());
+        boolean isPuttedFeedback = false && isEnd && now.isAfter(taskService.getMaxDate());
 
         return new BeforeGameState();
 //        return new GameStateKlass(
@@ -182,8 +192,7 @@ public class AttemptService {
         List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
         List<Attempt> currentAttempts = new ArrayList<>();
         for (Attempt attempt : attempts) {
-            if (task.getDate().isBefore(attempt.getDate())
-                    && attempt.getDate().isBefore(deltaService.getDeltaUp(task.getDate()))) {
+            if (commonService.isAttemptInTask(task, attempt)) {
                 currentAttempts.add(attempt);
             }
         }

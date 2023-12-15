@@ -1,17 +1,39 @@
 package com.commercial.backend.service;
 
+import com.commercial.backend.db.entities.Attempt;
+import com.commercial.backend.db.entities.Task;
 import com.commercial.backend.model.json.JsonUser;
 import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.function.Function;
 
-public class CommonLibrary {
+@Service
+@AllArgsConstructor
+public class CommonService {
     private static final ObjectMapper mapper = new ObjectMapper();
+    private final ConfigService configService;
+
+    public OffsetDateTime getTaskStartTime(Task task) {
+        return getTaskStartTime(configService.getStartDate(), configService.getDelta(), task);
+    }
+
+    public Boolean isAttemptInTask(Task task, Attempt attempt) {
+        return getTaskStartTime(task).isBefore(attempt.getDate()) && attempt.getDate().isBefore(
+                getTaskStartTime(task).plusMinutes(configService.getDelta())
+        );
+    }
+
+    public static OffsetDateTime getTaskStartTime(OffsetDateTime startDate, Long delta, Task task) {
+        return startDate.plusMinutes(delta * (task.getId() - 1));
+    }
 
     public static Long parseId(String token) throws NotRegisteredException, NotValidException {
         return parseSomething(token, JsonUser::getId);

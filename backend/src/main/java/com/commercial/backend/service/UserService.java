@@ -13,12 +13,13 @@ import org.springframework.stereotype.Service;
 
 import static com.commercial.backend.security.ApiException.noFeedback;
 import static com.commercial.backend.security.ApiException.notRegistered;
-import static com.commercial.backend.service.CommonLibrary.parseId;
+import static com.commercial.backend.service.CommonService.parseId;
 
 @Service
 @AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final AttemptService attemptService;
 
     private boolean checkFieldOnSize(String str) {
         return str.length() < 250;
@@ -43,11 +44,11 @@ public class UserService {
     }
 
     public State getState(String authorization) throws NotRegisteredException {
-        userRepository
+        User user = userRepository
                 .findUserById(parseId(authorization))
                 .orElseThrow(NotRegisteredException::new);
-        // :TODO ad-hoc
-        return new BeforeGameState();
+
+        return attemptService.getAllInfo(user);
     }
 
     public Feedback addFeedback(User user, String feedback) {

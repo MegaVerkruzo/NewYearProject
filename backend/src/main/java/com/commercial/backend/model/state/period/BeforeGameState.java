@@ -15,8 +15,7 @@ public class BeforeGameState implements State {
     private final String text;
 
     public BeforeGameState() {
-        // :TODO Get text from config
-        this.text = "Первая игра начнётся 19 декабря в 9:00!";
+        this.text = "Первая игра начнётся 18 декабря в 10:00!";
         this.gameState = beforeGame;
     }
 }
