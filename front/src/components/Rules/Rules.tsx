@@ -5,7 +5,7 @@ import RuleIcon4 from '../../assets/svgs/RuleIcon4'
 
 export const Rules = () => {
   return (
-    <div className="main-page__rules" id="rules">
+    <div className="rules" id="rules">
       <div className="rules__title">
         <h1>Правила игры</h1>
       </div>
@@ -34,7 +34,7 @@ export const Rules = () => {
           </div>
           <div className="rule__title">Нарядите ёлочку</div>
           <div className="rule__text">
-            За каждое угаданное слово на ёлочке загорится новая игрушка
+            За каждое угаданное слово на ёлке будут появлятся украшения
           </div>
         </div>
         <div className="rules__item">

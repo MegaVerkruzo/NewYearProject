@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { RegisterFields } from '../types/register'
 import { baseApiRequest } from './baseApiRequest'
 import { NavigateFunction } from 'react-router-dom'
@@ -9,6 +9,7 @@ type UseRegisterParams = {
 }
 
 export const useRegister = ({ navigate, setError }: UseRegisterParams) => {
+  const client = useQueryClient()
   return useMutation({
     mutationFn: (mutationData: RegisterFields) => {
       return baseApiRequest({
@@ -18,7 +19,8 @@ export const useRegister = ({ navigate, setError }: UseRegisterParams) => {
       })
     },
     onSuccess: () => {
-      navigate('/')
+      client.invalidateQueries({ queryKey: ['getState'] })
+      // navigate('/')
     },
     onError: (data) => {
       console.log(data)

@@ -1,63 +1,47 @@
-import giftTop from '../..accets/images/gift_top.png'
-import giftBottom from '../../accets/images/gift_bottom.png'
-import { useState } from 'react'
+import giftTop from '../../assets/images/gift_top.png'
+import giftBottom from '../../assets/images/gift_bottom.png'
+import { FC, useState } from 'react'
+import { useSendFeedback } from '../../api/sendFeedback'
 
-export const Feedback = () => {
+type FeedbackProps = {
+  text: string
+}
+
+export const Feedback: FC<FeedbackProps> = ({ text }) => {
+  const [feedback, setFeedback] = useState('')
   const [isFeedbackJustSent, setIsFeedbackJustSent] = useState(false)
-  const [feedbackText, setFeedbackText] = useState('')
-  //   const onSendFeedback = async () => {
-  //     try {
-  //       store.setFeedbackError('')
-  //       if (!store.feedback?.trim()) {
-  //         store.setFeedbackError('Форма не может быть пустой')
-  //         return
-  //       }
-  //       store.setIsFormLoading(true)
-  //       const data = await sendFeedback(store.feedback)
-  //       store.setIsFormLoading(false)
-  //       if (data.exception === 'noUser') {
-  //         store.setFeedbackError('Пользователь не зарегистрирован')
-  //       } else if (data.exception === 'hadFeedback') {
-  //         store.setFeedbackError('Форма уже была отправлена ранее')
-  //       } else {
-  //         store.setIsFeedbackJustSent()
-  //       }
-  //     } catch (e) {
-  //       store.setIsFormLoading(false)
-  //       store.setFeedbackError('Произошла ошибка сервера')
-  //     }
-  //   }
 
-  const onSendFeedback = async () => {
-    console.log('send feedback')
+  // TODO: дописать прокидываение ошибок и setIsFeedbackJustSent при успешной отправке
+  const { mutate: sendFeedback } = useSendFeedback()
+
+  const onSendFeedback = () => {
+    const trimmedFeedback = feedback.trim()
+    if (trimmedFeedback.length === 0) return
+
+    sendFeedback({ feedback: trimmedFeedback })
   }
 
   return (
-    <div className="main-page__feedback">
-      <div className="main__wrapper">
-        <div className="top__gift">
-          <img src={giftTop} alt="" />
-        </div>
-        {!isFeedbackJustSent ? (
-          <div className="reg-form feedback-form">
-            <div className="reg-form__wrapper">
-              <div className="reg-form__title">
-                <h3>
-                  Для участия в розыгрыше супер-призов, ответьте на вопрос:
-                  Какое мероприятие (активность, обучение и т.д.) нужно провести
-                  в рамках программы «Благополучие» в следующем году?
-                </h3>
-              </div>
-              <div className="reg-form__input">
-                <label>
-                  <textarea
-                    placeholder="Проведите семейный спортивный марафон"
-                    onChange={(e) => setFeedbackText(e.target.value)}
-                    value={feedbackText}
-                  />
-                </label>
-              </div>
-              {/* {store.feedbackError && (
+    <div className="feedback">
+      <div className="top__gift">
+        <img src={giftTop} alt="" />
+      </div>
+      {!isFeedbackJustSent ? (
+        <div className="reg-form feedback-form">
+          <div className="reg-form__wrapper">
+            <div className="reg-form__title">
+              <h3>{text}</h3>
+            </div>
+            <div className="reg-form__input">
+              <label>
+                <textarea
+                  placeholder="Дорогой Дедушка Мороз, ..."
+                  onChange={(e) => setFeedback(e.target.value)}
+                  value={feedback}
+                />
+              </label>
+            </div>
+            {/* {store.feedbackError && (
                 <div className="error">{store.feedbackError}</div>
               )}
               {store.isFormLoading && (
@@ -65,32 +49,31 @@ export const Feedback = () => {
                   <Spinner />
                 </div>
               )} */}
-              <div className="reg-form__btn feedback-form__btn">
-                <button onClick={() => onSendFeedback()}>Отправить</button>
-              </div>
+            <div className="reg-form__btn feedback-form__btn">
+              <button onClick={() => onSendFeedback()}>Отправить</button>
             </div>
           </div>
-        ) : (
-          <div className="reg-form feedback-form">
-            <div className="reg-form__wrapper">
-              <div className="thanks">
-                <h2>
-                  Спасибо за участие в викторине! Итоги ищите в нашем
-                  telegram-канале.
-                  <br />
-                  <br />
-                  До встречи в Новом году.
-                  <br />
-                  <br />
-                  Ваше Благополучие
-                </h2>
-              </div>
-            </div>
-          </div>
-        )}
-        <div className="bottom__gift">
-          <img src={giftBottom} alt="" />
         </div>
+      ) : (
+        <div className="reg-form feedback-form">
+          <div className="reg-form__wrapper">
+            <div className="thanks">
+              <h2>
+                Спасибо за участие в викторине! Итоги ищите в нашем
+                telegram-канале.
+                <br />
+                <br />
+                До встречи в Новом году.
+                <br />
+                <br />
+                Ваше Благополучие
+              </h2>
+            </div>
+          </div>
+        </div>
+      )}
+      <div className="bottom__gift">
+        <img src={giftBottom} alt="" />
       </div>
     </div>
   )
