@@ -12,11 +12,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserById(Long id);
 
     @Modifying
-    @Query(value = "UPDATE users SET feedback = :feedback WHERE id = :id", nativeQuery = true)
-    @Transactional
-    void updateFeedbackByPhone(String feedback, Long id);
-
-    @Modifying
     @Query(value = "UPDATE users SET active_gifts = :active_gifts WHERE id = :id", nativeQuery = true)
     @Transactional
     void updateUsersById(Long active_gifts, Long id);
