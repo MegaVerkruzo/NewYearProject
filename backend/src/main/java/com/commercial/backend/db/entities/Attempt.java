@@ -33,13 +33,6 @@ public class Attempt {
     private String word;
     private OffsetDateTime date;
 
-    // :TODO delete in unnecessary
-//    public Attempt(Long userId, String word, Timestamp date) {
-//        this.userId = userId;
-//        this.word = word;
-//        this.date = date.toLocalDateTime().atOffset(OffsetDateTime.now().getOffset());
-//    }
-
     public Attempt(Long userId, String word, OffsetDateTime date) {
         this.userId = userId;
         this.word = word;

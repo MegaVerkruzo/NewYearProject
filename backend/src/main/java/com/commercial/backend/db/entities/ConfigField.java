@@ -11,7 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
@@ -27,7 +27,7 @@ public class ConfigField {
     @Column(name = "str_property")
     private String stringProperty;
     @Column(name = "date_property")
-    private LocalDateTime dateProperty;
+    private OffsetDateTime dateProperty;
     @Column(name = "long_property")
     private Long longProperty;
 

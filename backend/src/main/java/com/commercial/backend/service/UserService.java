@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import static com.commercial.backend.security.ApiException.noFeedback;
 import static com.commercial.backend.security.ApiException.notRegistered;
-import static com.commercial.backend.service.CommonLibrary.parseId;
+import static com.commercial.backend.service.CommonService.parseId;
 
 @Service
 @AllArgsConstructor

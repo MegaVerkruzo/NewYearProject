@@ -16,8 +16,8 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 
-import static com.commercial.backend.service.CommonLibrary.parseId;
-import static com.commercial.backend.service.CommonLibrary.parseUsername;
+import static com.commercial.backend.service.CommonService.parseId;
+import static com.commercial.backend.service.CommonService.parseUsername;
 
 @Entity
 @Table(name = "users", schema = "public")

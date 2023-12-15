@@ -16,6 +16,7 @@ import java.util.List;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final DeltaService deltaService;
+    private final CommonService commonService;
 
     private final Logger logger = LoggerFactory.getLogger(TaskService.class);
 
@@ -24,7 +25,7 @@ public class TaskService {
         logger.info("previousDate: " + previousDate);
 
         for (Task task : taskRepository.findAll()) {
-            if (task.getDate().isAfter(previousDate)) {
+            if (commonService.getTaskStartTime(task).isAfter(previousDate)) {
                 return task;
             }
         }
@@ -35,9 +36,7 @@ public class TaskService {
         int correctAnswers = 0;
         for (Attempt attempt : attempts) {
             for (Task task : taskRepository.findAll()) {
-                if (task.getWord().equals(attempt.getWord())
-                        && task.getDate().isBefore(attempt.getDate())
-                        && attempt.getDate().isBefore(deltaService.getDeltaUp(task.getDate()))) {
+                if (task.getWord().equals(attempt.getWord()) && commonService.isAttemptInTask(task, attempt)) {
                     correctAnswers++;
                 }
             }
@@ -48,8 +47,8 @@ public class TaskService {
     public OffsetDateTime getMaxDate() {
         OffsetDateTime maxDate = OffsetDateTime.MIN;
         for (Task task : taskRepository.findAll()) {
-            if (task.getDate().isAfter(maxDate)) {
-                maxDate = task.getDate();
+            if (commonService.getTaskStartTime(task).isAfter(maxDate)) {
+                maxDate = commonService.getTaskStartTime(task);
             }
         }
         return maxDate;

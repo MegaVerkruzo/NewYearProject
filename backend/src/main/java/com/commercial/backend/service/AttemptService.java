@@ -22,7 +22,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.commercial.backend.service.CommonLibrary.getWordInUTF8;
+import static com.commercial.backend.service.CommonService.getWordInUTF8;
 
 @Service
 @AllArgsConstructor
@@ -33,7 +33,7 @@ public class AttemptService {
     private final TaskService taskService;
     private final WordService wordService;
     private final AttemptRepository attemptRepository;
-    private final DeltaService deltaService;
+    private final CommonService commonService;
 
     private List<LetterColor> compare(String answer, String word) {
         answer = getWordInUTF8(answer);
@@ -128,8 +128,7 @@ public class AttemptService {
 
         List<Attempt> currentAttempts = new ArrayList<>();
         for (Attempt attempt : attempts) {
-            if (task.getDate().isBefore(attempt.getDate())
-                    && attempt.getDate().isBefore(deltaService.getDeltaUp(task.getDate()))) {
+            if (commonService.isAttemptInTask(task, attempt)) {
                 currentAttempts.add(attempt);
             }
         }
@@ -182,8 +181,7 @@ public class AttemptService {
         List<Attempt> attempts = attemptRepository.findAllByUserIdOrderByDate(user.getId());
         List<Attempt> currentAttempts = new ArrayList<>();
         for (Attempt attempt : attempts) {
-            if (task.getDate().isBefore(attempt.getDate())
-                    && attempt.getDate().isBefore(deltaService.getDeltaUp(task.getDate()))) {
+            if (commonService.isAttemptInTask(task, attempt)) {
                 currentAttempts.add(attempt);
             }
         }
