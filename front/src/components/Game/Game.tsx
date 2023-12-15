@@ -50,13 +50,14 @@ export const Game: FC<GameProps> = ({
 
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false)
   const [canAttempt, setCanAttempt] = useState(false)
+  const clearField = () => setInputWord(new Array(wordLength).fill(''))
 
   const {
     mutate: sendNewAttempt,
     error: mutateError,
     isError,
     isPending,
-  } = useNewAttempt()
+  } = useNewAttempt({ clearField })
 
   const onNewAttempt = () => {
     if (!canAttempt) return
