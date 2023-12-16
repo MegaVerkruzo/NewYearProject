@@ -111,3 +111,38 @@ VALUES (1, 'Атмосфера', 'Отгадай слово Атмосфера!'
        (4, 'Детство', '"Детство, ах детство!"'),
        (5, 'Каталог', 'Какую книгу мне прочесть из каталога?');
 --rollback TRUNCATE TABLE task;
+
+--changeset GrunskiiAleksei:12
+--comment add several feedback_question
+ALTER TABLE task
+    ADD COLUMN feedback_question VARCHAR(255) NOT NULL DEFAULT '';
+UPDATE task
+SET feedback_question = 'Что для вас классная атмосфера на работе?'
+WHERE id = 1;
+UPDATE task
+SET feedback_question = 'Какие мероприятия и активности вы бы хотели видеть в программе «Благополучие» в следующем году?'
+WHERE id = 2;
+UPDATE task
+SET feedback_question = 'Какие мероприятия, по вашему мнению, нужно провести в рамках «Благополучие. Дети»?'
+WHERE id = 3;
+UPDATE task
+SET feedback_question = 'А что для вас комфортное рабочее место?'
+WHERE id = 4;
+UPDATE task
+SET feedback_question = 'О каких еще возможностях или сервисах, предоставляемых компанией, вам было бы интересно узнать?'
+WHERE id = 5;
+DELETE FROM config WHERE id = 'feedback_question';
+--rollback ALTER TABLE task DROP COLUMN feedback_question;
+--rollback INSERT INTO config (id, str_property) VALUES ('feedback_question', 'Как вам вопрос?');
+
+--changeset GrunskiiAleksei:13
+--comment add afterFeedbackResponse
+ALTER TABLE task
+    ADD COLUMN after_feedback_response VARCHAR(255) NOT NULL DEFAULT '';
+UPDATE task
+SET after_feedback_response = 'Спасибо! Все ваши ответы мы внимательно изучим! Следующее задание викторины будет ждать вас в телеграм-канале «Благополучие» в 10.00 мск'
+WHERE id IN (1, 2, 3, 4);
+UPDATE task
+SET after_feedback_response = 'Спасибо, что учавствовали и бла-бла-бла'
+WHERE id = 5;
+--rollback ALTER TABLE task DROP COLUMN after_feedback_response;
