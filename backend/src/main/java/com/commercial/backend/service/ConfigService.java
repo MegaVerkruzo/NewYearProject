@@ -75,13 +75,6 @@ public class ConfigService {
                 .getStringProperty();
     }
 
-    public String getFeedbackQuestion() {
-        return configRepository
-                .findById("feedback_question")
-                .orElseThrow(BadRequestException::new)
-                .getStringProperty();
-    }
-
     public String getWaitNextGameMessage() {
         return configRepository
                 .findById("wait_next_game")
