@@ -28,8 +28,11 @@ public class WaitFeedbackState extends State {
     private final List<LetterColor> letters;
     private final Integer wordLength;
     private final Integer activeGifts;
+    private final Integer currentLine;
 
-    public WaitFeedbackState(List<LetterColor> letters, Task task, Integer activeGifts) {
+    public WaitFeedbackState(List<LetterColor> letters, Integer currentLine, Task task, Integer activeGifts) {
+        this.letters = letters;
+        this.currentLine = currentLine;
         this.activePrizes = CommonService.getActivePrizes(activeGifts);
         this.nonActivePrizes = CommonService.getNonActivePrizes(activeGifts);
         this.text = task.getQuestion();
@@ -37,7 +40,6 @@ public class WaitFeedbackState extends State {
         this.afterFeedbackResponse = task.getAfterFeedbackResponse();
         this.wordLength = task.getWord().length();
         this.gameState = waitFeedback;
-        this.letters = letters;
         this.activeGifts = activeGifts;
     }
 }
