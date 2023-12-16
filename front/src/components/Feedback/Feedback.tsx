@@ -8,9 +8,10 @@ import { ApiError } from '../../types/error'
 
 type FeedbackProps = {
   text: string
+  afterFeedbackText: string
 }
 
-export const Feedback: FC<FeedbackProps> = ({ text }) => {
+export const Feedback: FC<FeedbackProps> = ({ text, afterFeedbackText }) => {
   const [feedback, setFeedback] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [isFeedbackJustSent, setIsFeedbackJustSent] = useState(false)
@@ -53,7 +54,7 @@ export const Feedback: FC<FeedbackProps> = ({ text }) => {
             <div className="reg-form__input">
               <label>
                 <textarea
-                  placeholder="Дорогой Дедушка Мороз, ..."
+                  placeholder="Для продолжении игры, нужно оставить отзыв..."
                   onChange={(e) => setFeedback(e.target.value)}
                   value={feedback}
                 />
@@ -74,16 +75,7 @@ export const Feedback: FC<FeedbackProps> = ({ text }) => {
         <div className="reg-form feedback-form">
           <div className="reg-form__wrapper">
             <div className="thanks">
-              <h2>
-                Спасибо за участие в викторине! Итоги ищите в нашем
-                telegram-канале.
-                <br />
-                <br />
-                До встречи в Новом году.
-                <br />
-                <br />
-                Ваше Благополучие
-              </h2>
+              <h2>{afterFeedbackText}</h2>
             </div>
           </div>
         </div>
