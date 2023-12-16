@@ -3,6 +3,7 @@ package com.commercial.backend.model.state.period;
 import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.model.game.LetterColor;
 import com.commercial.backend.model.state.State;
+import com.commercial.backend.service.CommonService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -27,11 +28,11 @@ public class WaitFeedbackState extends State {
     private final Integer activeGifts;
 
     // :TODO fix think about text
-    public WaitFeedbackState(List<LetterColor> letters, Integer wordLength, Integer activeGifts) {
-        this.activePrizes = "Вы учавствует в розыгрыше таких вещей";
-        this.nonActivePrizes = "Чтобы учавствовать в розыгрыше всех подарков, вам осталось ответить на 3 загадки";
-        this.text = "Угадай слово, какое слово стоит в обозначении радуги после \"сидит\"";
-        this.feedbackQuestion = "Укажите отзыв!";
+    public WaitFeedbackState(List<LetterColor> letters, String message, String feedbackQuestion, Integer wordLength, Integer activeGifts) {
+        this.activePrizes = CommonService.getActivePrizes(activeGifts);
+        this.nonActivePrizes = CommonService.getNonActivePrizes(activeGifts);
+        this.text = message;
+        this.feedbackQuestion = feedbackQuestion;
         this.gameState = waitFeedback;
         this.letters = letters;
         this.wordLength = wordLength;

@@ -14,8 +14,8 @@ public class BeforeGameState extends State {
     @Schema(example = "Первая игра начнётся 19 декабря в 9:00!")
     private final String text;
 
-    public BeforeGameState() {
-        this.text = "Первая игра начнётся 18 декабря в 10:00!";
+    public BeforeGameState(String message) {
+        this.text = message;
         this.gameState = beforeGame;
     }
 }

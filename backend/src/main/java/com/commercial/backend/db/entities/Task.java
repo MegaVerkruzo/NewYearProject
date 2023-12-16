@@ -1,7 +1,6 @@
 package com.commercial.backend.db.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,13 +8,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.sql.Timestamp;
-import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
@@ -24,23 +21,14 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Task {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "task_generator")
     @SequenceGenerator(name = "task_generator", sequenceName = "task_seq", allocationSize = 1)
     private Long id;
-    @Column(name="active_prizes")
-    private String activePrizes;
-    @Column(name="non_active_prizes")
-    private String nonActivePrizes;
     private String word;
-
-    public Task(String word, String activePrizes, String nonActivePrizes) {
-        this.word = word;
-        this.activePrizes = activePrizes;
-        this.nonActivePrizes = nonActivePrizes;
-    }
+    private String question;
 
     @Override
     public final boolean equals(Object o) {
