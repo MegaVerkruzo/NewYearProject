@@ -12,6 +12,7 @@ export const WaitingFeedback = () => {
     letters,
     wordLength,
     feedbackQuestion,
+    afterFeedbackResponse,
     activeGifts,
     activePrizes,
     nonActivePrizes,
@@ -33,7 +34,10 @@ export const WaitingFeedback = () => {
         <Game wordLength={wordLength} letters={letters} isEnd={true} />
       </div>
       <div className="main-page__row">
-        <Feedback text={feedbackQuestion} />
+        <Feedback
+          text={feedbackQuestion}
+          afterFeedbackText={afterFeedbackResponse}
+        />
       </div>
     </div>
   )
