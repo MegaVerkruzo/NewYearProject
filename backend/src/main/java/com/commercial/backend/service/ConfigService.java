@@ -3,18 +3,13 @@ package com.commercial.backend.service;
 import com.commercial.backend.db.ConfigRepository;
 import com.commercial.backend.security.exception.BadRequestException;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 
 @Service
 @AllArgsConstructor
 public class ConfigService {
-    private final Logger logger = LoggerFactory.getLogger(ConfigService.class);
-
     private final ConfigRepository configRepository;
 
     public OffsetDateTime getStartDate() {
@@ -50,5 +45,47 @@ public class ConfigService {
                 .findById("lottery_date")
                 .orElseThrow(BadRequestException::new)
                 .getDateTime();
+    }
+
+    public String getLotteryLinkMessage() {
+        return configRepository
+                .findById("lottery_link_text")
+                .orElseThrow(BadRequestException::new)
+                .getStringProperty();
+    }
+
+    public String getLotteryMessage() {
+        return configRepository
+                .findById("lottery_message_text")
+                .orElseThrow(BadRequestException::new)
+                .getStringProperty();
+    }
+
+    public String getBeforeGameMessage() {
+        return configRepository
+                .findById("hello_text")
+                .orElseThrow(BadRequestException::new)
+                .getStringProperty();
+    }
+
+    public String getAfterLotteryMessage() {
+        return configRepository
+                .findById("after_lottery")
+                .orElseThrow(BadRequestException::new)
+                .getStringProperty();
+    }
+
+    public String getFeedbackQuestion() {
+        return configRepository
+                .findById("feedback_question")
+                .orElseThrow(BadRequestException::new)
+                .getStringProperty();
+    }
+
+    public String getWaitNextGameMessage() {
+        return configRepository
+                .findById("wait_next_game")
+                .orElseThrow(BadRequestException::new)
+                .getStringProperty();
     }
 }

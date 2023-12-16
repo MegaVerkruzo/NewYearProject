@@ -3,7 +3,6 @@ package com.commercial.backend.service;
 import com.commercial.backend.db.AttemptRepository;
 import com.commercial.backend.db.FeedbackRepository;
 import com.commercial.backend.db.TaskRepository;
-import com.commercial.backend.db.UserRepository;
 import com.commercial.backend.db.entities.Attempt;
 import com.commercial.backend.db.entities.Feedback;
 import com.commercial.backend.db.entities.Task;
@@ -27,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -47,7 +45,6 @@ public class AttemptService {
     private final CommonService commonService;
     private final ConfigService configService;
     private final FeedbackRepository feedbackRepository;
-    private final UserRepository userRepository;
     private final TaskRepository taskRepository;
 
     private List<LetterColor> compare(String answer, String word) {
@@ -108,16 +105,15 @@ public class AttemptService {
         }
 
         OffsetDateTime now = OffsetDateTime.now();
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss Z");
 
         // After lottery
         if (configService.isFinishLottery()) {
-            return new AfterLotteryState(user.getActiveGifts());
+            return new AfterLotteryState(configService.getAfterLotteryMessage(), user.getActiveGifts());
         }
 
         // Before game
         if (now.isBefore(configService.getStartDate())) {
-            return new BeforeGameState();
+            return new BeforeGameState(configService.getBeforeGameMessage());
         }
 
         Optional<Task> optionalTask = taskService.findPreviousAnswer(now);
@@ -135,10 +131,12 @@ public class AttemptService {
 
             return new WaitFeedbackState(
                     letters,
+                    task.getQuestion(),
+                    configService.getFeedbackQuestion(),
                     task.getWord().length(),
                     user.getActiveGifts()
             );
-        } else if (feedback.isPresent() && optionalTask.isPresent()) {
+        } else if (feedback.isPresent()) {
             Task task = taskRepository
                     .findById(feedback.get().getTaskId())
                     .orElseThrow(BadRequestException::new);
@@ -148,15 +146,19 @@ public class AttemptService {
 
                 return new WaitFeedbackState(
                         letters,
+                        task.getQuestion(),
+                        configService.getFeedbackQuestion(),
                         task.getWord().length(),
                         user.getActiveGifts()
                 );
             }
-        } else if (feedback.isEmpty() && optionalTask.isEmpty()) {
+        } else if (optionalTask.isEmpty()) {
             return new WaitLotteryState(
                     user.getActiveGifts(),
+                    configService.getLotteryMessage(),
                     user.getTicketNumber(),
-                    configService.getLotteryDate()
+                    configService.getLotteryDate(),
+                    configService.getLotteryLinkMessage()
             );
         }
 
@@ -175,28 +177,35 @@ public class AttemptService {
         )) {
             return new WaitFeedbackState(
                     letters,
+                    task.getQuestion(),
+                    configService.getFeedbackQuestion(),
                     task.getWord().length(),
                     user.getActiveGifts()
             );
         }
 
         // WaitLottery
-        if (now.isAfter(commonService.getTasksEndTime())) {
+        if (now.isAfter(commonService.getTasksEndTime()) || Objects.equals(task.getId(), configService.getTasksCount()) &&
+                (isExistWord || currentAttempts.size() >= configService.getTasksCount())
+        ) {
             return new WaitLotteryState(
                     user.getActiveGifts(),
+                    configService.getLotteryMessage(),
                     user.getTicketNumber(),
-                    configService.getLotteryDate()
+                    configService.getLotteryDate(),
+                    configService.getLotteryLinkMessage()
             );
         }
 
         // WaitNextGame
         if (isExistWord || currentAttempts.size() >= configService.getTasksCount()) {
-            return new WaitNextGameState(user.getActiveGifts());
+            return new WaitNextGameState(configService.getWaitNextGameMessage(), user.getActiveGifts());
         }
 
         // InGame
         return new InGameState(
                 letters,
+                task.getQuestion(),
                 task.getWord().length(),
                 currentAttempts.size(),
                 user.getActiveGifts()
@@ -211,7 +220,7 @@ public class AttemptService {
     ) throws NotValidException, BadRequestException {
         logger.info(User.class.toString() + user);
         logger.info(Task.class.toString() + task);
-        logger.info(String.class.toString() + word);
+        logger.info(String.class + word);
         logger.info(OffsetDateTime.class.toString() + offsetDateTime);
         if (word == null) {
             logger.info("Word is null");

@@ -22,10 +22,9 @@ CREATE TABLE IF NOT EXISTS users
 --comment add answers table
 CREATE TABLE IF NOT EXISTS task
 (
-    id                BIGINT       NOT NULL PRIMARY KEY,
-    word              VARCHAR(200) NOT NULL,
-    active_prizes     VARCHAR(255),
-    non_active_prizes VARCHAR(255)
+    id       BIGINT       NOT NULL PRIMARY KEY,
+    word     VARCHAR(200) NOT NULL,
+    question VARCHAR(255) NOT NULL
 );
 --rollback DROP TABLE task
 
@@ -62,6 +61,13 @@ VALUES ('date_start_game', NOW()),
        ('lottery_date', NOW());
 INSERT INTO config (id, boolean_property)
 VALUES ('is_lottery_finish', FALSE);
+INSERT INTO config (id, str_property)
+VALUES ('lottery_link_text', 'Ссылка на трансляцию будет прислана немного позднее'),
+       ('lottery_message_text', 'Молодец! Ты хорошо потрудился, теперь настало время получать подарки:))'),
+       ('hello_text', 'Первая игра начнётся 18 декабря в 10:00!'),
+       ('feedback_question', 'Вам понравился этот вопрос?'),
+       ('wait_next_game', 'Вы хорошо постарались следующий вопрос ожидайте в 10:00 :)'),
+       ('after_lottery', 'C наступающий новым годом!!!! 2024 !!!');
 --rollback TRUNCATE TABLE config;
 
 --changeset GrunskiiAleksei:6
@@ -98,10 +104,10 @@ CREATE UNIQUE INDEX IF NOT EXISTS ids_user_task_feedback
 
 --changeset GrunskiiAleksei:11
 --comment pasteWords
-INSERT INTO task (id, word, active_prizes, non_active_prizes)
-VALUES (1, 'Атмосфера', '', ''),
-       (2, 'Забота', '', ''),
-       (3, 'Детство', '', ''),
-       (4, 'Комфорт', '', ''),
-       (5, 'Каталог', '', '')
+INSERT INTO task (id, word, question)
+VALUES (1, 'Атмосфера', 'Отгадай слово Атмосфера!'),
+       (2, 'Забота', 'Ну или давай слово забота?'),
+       (3, 'Комфорт', 'Я в комфорте дома'),
+       (4, 'Детство', '"Детство, ах детство!"'),
+       (5, 'Каталог', 'Какую книгу мне прочесть из каталога?');
 --rollback TRUNCATE TABLE task;
