@@ -412,10 +412,6 @@ h1 {
   margin-bottom: 50px;
 }
 
-.main-page__row:last-child {
-  margin: 0;
-}
-
 .main-image__container {
   position: relative;
   max-width: calc(100vw - 100px);
