@@ -33,10 +33,10 @@ CREATE TABLE IF NOT EXISTS task
 --comment add attempt table
 CREATE TABLE IF NOT EXISTS attempt
 (
-    id      BIGINT       NOT NULL PRIMARY KEY,
+    id      BIGINT                   NOT NULL PRIMARY KEY,
     user_id BIGINT REFERENCES users (id),
-    word    VARCHAR(200) NOT NULL,
-    date    TIMESTAMP    NOT NULL
+    word    VARCHAR(200)             NOT NULL,
+    date    TIMESTAMP WITH TIME ZONE NOT NULL
 );
 --rollback DROP TABLE attempt
 
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS config
 (
     id               VARCHAR(255) NOT NULL PRIMARY KEY,
     str_property     VARCHAR(255),
-    date_property    TIMESTAMP,
+    date_property    TIMESTAMP WITH TIME ZONE,
     long_property    BIGINT,
     boolean_property BOOLEAN
 );

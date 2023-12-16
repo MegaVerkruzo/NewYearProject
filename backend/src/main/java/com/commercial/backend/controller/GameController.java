@@ -90,7 +90,7 @@ public class GameController {
         if (jsonWord == null) {
             throw new NotValidException();
         }
-        String word = jsonWord.getWord();
+        String word = jsonWord.getWord().toLowerCase();
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
 

@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 import static com.commercial.backend.model.game.GameState.waitEndLottery;
 
 @Getter
-public class WaitLotteryState implements State {
+public class WaitLotteryState extends State {
     @Schema(example = "waitEndLottery")
     private final GameState gameState;
     @Schema(example = "Розыгрыш будет тогда-то, жди!")

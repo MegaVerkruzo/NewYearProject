@@ -11,7 +11,7 @@ import java.util.List;
 import static com.commercial.backend.model.game.GameState.waitFeedback;
 
 @Getter
-public class WaitFeedbackState implements State {
+public class WaitFeedbackState extends State {
     @Schema(example = "waitFeedback")
     private final GameState gameState;
     @Schema(example = "Угадай слово, какое слово стоит в обозначении радуги после \"сидит\"")

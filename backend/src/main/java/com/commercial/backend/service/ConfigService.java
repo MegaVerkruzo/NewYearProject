@@ -1,7 +1,6 @@
 package com.commercial.backend.service;
 
 import com.commercial.backend.db.ConfigRepository;
-import com.commercial.backend.db.entities.ConfigField;
 import com.commercial.backend.security.exception.BadRequestException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -20,14 +18,10 @@ public class ConfigService {
     private final ConfigRepository configRepository;
 
     public OffsetDateTime getStartDate() {
-        return OffsetDateTime.of(
-                configRepository
-                        .findById("date_start_game")
-                        .orElseThrow(BadRequestException::new)
-                        .getTimestamp()
-                        .toLocalDateTime(),
-                ZoneOffset.UTC
-        );
+        return configRepository
+                .findById("date_start_game")
+                .orElseThrow(BadRequestException::new)
+                .getDateTime();
     }
 
     public Long getDelta() {
@@ -52,13 +46,9 @@ public class ConfigService {
     }
 
     public OffsetDateTime getLotteryDate() {
-        return OffsetDateTime.of(
-                configRepository
-                        .findById("lottery_date")
-                        .orElseThrow(BadRequestException::new)
-                        .getTimestamp()
-                        .toLocalDateTime(),
-                ZoneOffset.UTC
-        );
+        return configRepository
+                .findById("lottery_date")
+                .orElseThrow(BadRequestException::new)
+                .getDateTime();
     }
 }

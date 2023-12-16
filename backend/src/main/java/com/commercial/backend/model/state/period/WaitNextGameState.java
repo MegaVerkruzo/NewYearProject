@@ -8,7 +8,7 @@ import lombok.Getter;
 import static com.commercial.backend.model.game.GameState.waitNextGame;
 
 @Getter
-public class WaitNextGameState implements State {
+public class WaitNextGameState extends State {
     @Schema(example = "waitNextGame")
     private final GameState gameState;
     @Schema(example = "Молодец - ты хорошо потрудился! Жди следующей игры")

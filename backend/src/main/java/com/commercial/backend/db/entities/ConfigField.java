@@ -11,6 +11,7 @@ import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.sql.Timestamp;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
@@ -24,8 +25,8 @@ public class ConfigField {
     private String id;
     @Column(name = "str_property")
     private String stringProperty;
-    @Column(name = "date_property", columnDefinition = "TIMESTAMP")
-    private Timestamp timestamp;
+    @Column(name = "date_property")
+    private OffsetDateTime dateTime;
     @Column(name = "long_property")
     private Long longProperty;
     @Column(name = "boolean_property")
