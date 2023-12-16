@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -105,6 +106,8 @@ public class AttemptService {
         }
 
         OffsetDateTime now = OffsetDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss Z");
+        System.out.println("now: " + now.format(timeFormatter));
 
         // After lottery
         if (configService.isFinishLottery()) {
@@ -163,7 +166,13 @@ public class AttemptService {
         }
 
         Task task = optionalTask.get();
+        logger.info("-------------------------");
+        logger.info("now: " + now.format(timeFormatter));
+        logger.info("taskQuesion: " + task.getQuestion());
+        logger.info("taskId: " + task.getId());
+        logger.info("taskWord: " + task.getQuestion());
         logger.info("answer is " + task);
+        logger.info("-------------------------");
 
         List<Attempt> currentAttempts = attemptsInTask(user, task);
         List<LetterColor> letters = getLetters(currentAttempts, task);
