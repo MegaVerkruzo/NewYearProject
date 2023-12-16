@@ -11,7 +11,7 @@ import java.util.List;
 import static com.commercial.backend.model.game.GameState.inGame;
 
 @Getter
-public class InGameState implements State {
+public class InGameState extends State {
     @Schema(example = "inGame")
     private final GameState gameState;
     @Schema(example = "Угадай слово, какое слово стоит в обозначении радуги после \"сидит\"")

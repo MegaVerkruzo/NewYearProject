@@ -8,7 +8,7 @@ import lombok.Getter;
 import static com.commercial.backend.model.game.GameState.beforeGame;
 
 @Getter
-public class BeforeGameState implements State {
+public class BeforeGameState extends State {
     @Schema(type = "beforeGame")
     private final GameState gameState;
     @Schema(example = "Первая игра начнётся 19 декабря в 9:00!")

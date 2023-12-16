@@ -8,7 +8,7 @@ import lombok.Getter;
 import static com.commercial.backend.model.game.GameState.afterLottery;
 
 @Getter
-public class AfterLotteryState implements State {
+public class AfterLotteryState extends State {
     @Schema(example = "afterLottery")
     private final GameState gameState;
     @Schema(example = "Спасибо за участие в розыгрыше, c новым годом!")

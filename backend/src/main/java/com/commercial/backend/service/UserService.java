@@ -2,11 +2,12 @@ package com.commercial.backend.service;
 
 import com.commercial.backend.db.FeedbackRepository;
 import com.commercial.backend.db.UserRepository;
+import com.commercial.backend.db.entities.Feedback;
 import com.commercial.backend.db.entities.User;
-import com.commercial.backend.model.feedback.Feedback;
 import com.commercial.backend.model.json.JsonFeedback;
 import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.BeforeGameState;
+import com.commercial.backend.security.exception.BadRequestException;
 import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
 import com.commercial.backend.security.exception.UserExistsException;
@@ -14,6 +15,8 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import static com.commercial.backend.security.ApiException.noFeedback;
 import static com.commercial.backend.security.ApiException.notRegistered;
@@ -47,7 +50,7 @@ public class UserService {
         ) {
             userRepository.save(user);
 
-            return attemptService.getState(user);
+            return new State();
         } else {
             throw new NotValidException();
         }
@@ -61,18 +64,24 @@ public class UserService {
         return attemptService.getState(user);
     }
 
-    public State addFeedback(String authorization, JsonFeedback feedback) {
+    public State addFeedback(String authorization, JsonFeedback response) throws BadRequestException {
         User user = userRepository
                 .findUserById(parseId(authorization))
                 .orElseThrow(NotRegisteredException::new);
 
-        if (feedback == null || feedback.getFeedback().isEmpty()) {
+        if (response == null || response.getFeedback().isEmpty()) {
             throw new NotValidException();
         }
+        Feedback feedback = feedbackRepository
+                .findFeedbackByUserId(user.getId())
+                .stream()
+                .filter(fb -> fb.getResponse() == null)
+                .findAny()
+                .orElseThrow(BadRequestException::new);
 
-        feedbackRepository.updateFeedbackById(feedback.getFeedback(), user.getId());
+        feedbackRepository.updateFeedbackById(response.getFeedback(), feedback.getId());
         userRepository.updateUsersById(user.getActiveGifts() + 1L, user.getId());
-        return attemptService.getState(user);
+        return new State();
     }
 
     public User getUserByToken(String token) throws NotRegisteredException, NotValidException {
