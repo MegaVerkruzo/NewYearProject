@@ -1,5 +1,6 @@
 package com.commercial.backend.db.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +32,8 @@ public class Attempt {
     private Long id;
     @Column(name="user_id") private Long userId;
     private String word;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSSXXX")
+    @Column(name = "date", columnDefinition = "TIMESTAMP")
     private OffsetDateTime date;
 
     public Attempt(Long userId, String word, OffsetDateTime date) {

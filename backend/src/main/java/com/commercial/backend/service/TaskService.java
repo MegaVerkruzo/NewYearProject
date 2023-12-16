@@ -16,13 +16,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class TaskService {
     private final TaskRepository taskRepository;
-    private final DeltaService deltaService;
     private final CommonService commonService;
+    private final ConfigService configService;
 
     private final Logger logger = LoggerFactory.getLogger(TaskService.class);
 
     public Optional<Task> findPreviousAnswer(OffsetDateTime offsetDateTime) {
-        OffsetDateTime previousDate = deltaService.getDeltaDown(offsetDateTime);
+        OffsetDateTime previousDate = offsetDateTime.minusMinutes(configService.getDelta());
         logger.info("previousDate: " + previousDate);
 
         for (Task task : taskRepository.findAll()) {

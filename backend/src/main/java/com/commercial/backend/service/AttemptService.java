@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -105,7 +106,7 @@ public class AttemptService {
         }
 
         OffsetDateTime now = OffsetDateTime.now();
-        logger.info("current millis: " + now);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss Z");
 
         // After lottery
         if (configService.isFinishLottery()) {
@@ -113,10 +114,13 @@ public class AttemptService {
         }
 
         // Before game
+        logger.info("now: " + now.format(timeFormatter));
+        logger.info("configService.getStartDate(): " + configService.getStartDate().format(timeFormatter));
         if (now.isBefore(configService.getStartDate())) {
             return new BeforeGameState();
         }
 
+        // HERE IS PROBLEM - 1.
         Optional<Task> optionalTask = taskService.findPreviousAnswer(now);
         if (optionalTask.isEmpty()) {
             return new WaitLotteryState(
