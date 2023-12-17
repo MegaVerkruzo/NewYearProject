@@ -9,7 +9,6 @@ import { AxiosError } from 'axios'
 import { ApiError, ApiErrorString } from '../../types/error'
 import Spinner from '../../assets/svgs/Spinner'
 import { russianLetters } from '../../config/gameData'
-import { ClickEvent } from '../../types/event'
 
 type GameProps = {
   letters: Letter[]
@@ -24,20 +23,6 @@ export const Game: FC<GameProps> = ({
   currentLine = 0,
   isEnd,
 }) => {
-  const keyboardHandler = (e: KeyboardEvent) => {
-    if (!isEnd) {
-      if (e.key === 'Backspace') {
-        onChangeInput()
-      } else if (e.key === 'Enter') {
-        onNewAttempt()
-      } else if (e.key === ' ') {
-        e.preventDefault()
-      } else if (russianLetters.includes(e.key)) {
-        onChangeInput(e.key)
-      }
-    }
-  }
-
   const freeCellsCount = !isEnd
     ? (5 - currentLine - 1) * wordLength
     : 5 * wordLength - letters.length
@@ -56,6 +41,23 @@ export const Game: FC<GameProps> = ({
   const [canAttempt, setCanAttempt] = useState(false)
   const clearField = () => setInputWord(new Array(wordLength).fill(''))
 
+  const keyboardHandler = (e: KeyboardEvent) => {
+    if (!isEnd) {
+      if (e.key === 'Backspace') {
+        e.preventDefault()
+        onChangeInput()
+      } else if (e.key === 'Enter') {
+        console.log(e.key, e.key === 'Enter', canAttempt)
+        e.preventDefault()
+        onNewAttempt()
+      } else if (e.key === ' ') {
+        e.preventDefault()
+      } else if (russianLetters.includes(e.key)) {
+        onChangeInput(e.key)
+      }
+    }
+  }
+
   const {
     mutate: sendNewAttempt,
     error: mutateError,
@@ -64,7 +66,10 @@ export const Game: FC<GameProps> = ({
   } = useNewAttempt({ clearField })
 
   const onNewAttempt = () => {
-    if (!canAttempt) return
+    console.log(inputWord)
+
+    // if (inputWord.some((item) => item === '')) return
+    console.log('onNewAttempt', canAttempt)
 
     setError(null)
     const transformedWord = inputWord.join('').toLocaleLowerCase()
@@ -103,6 +108,7 @@ export const Game: FC<GameProps> = ({
       if (err.response?.data.exception === ApiErrorString.NoWordInDictionary) {
         return setError('Некорректное слово')
       }
+
       if (err.response?.status === 500) {
         return setError('Ошибка сервера')
       }

@@ -42,7 +42,7 @@ const TestPage = () => {
       </div>
       <div className="main-page__row">
         <Message
-          text={`<b>Задание 1.</b> <a
+          text={`<a href="https://google.com" target="_blank">Задание 1.</a> <a
           href="https://telegra.ph/Novogodnyaya-viktorina-Naryadi-svoyu-yolochku-12-12"
           target="_blank"
         >
@@ -78,7 +78,7 @@ const TestPage = () => {
       </div>
       {/* Game field */}
       <div className="main-page__row">
-        <Game wordLength={8} currentLine={3} isEnd={false} letters={letters} />
+        <Game wordLength={5} currentLine={3} isEnd={false} letters={letters} />
       </div>
       {/* Порядковый номер */}
       <div className="main-page__row">

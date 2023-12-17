@@ -54,7 +54,7 @@ export const Feedback: FC<FeedbackProps> = ({ text, afterFeedbackText }) => {
             <div className="reg-form__input">
               <label>
                 <textarea
-                  placeholder="Для продолжения игры, нужно оставить отзыв..."
+                  placeholder="Для продолжения игры нужно оставить отзыв..."
                   onChange={(e) => setFeedback(e.target.value)}
                   value={feedback}
                 />
@@ -66,9 +66,12 @@ export const Feedback: FC<FeedbackProps> = ({ text, afterFeedbackText }) => {
                 <Spinner />
               </div>
             )}
-            <div className="reg-form__btn feedback-form__btn">
-              <button onClick={() => onSendFeedback()}>Отправить</button>
-            </div>
+            <button
+              className="reg-form__btn feedback-form__btn"
+              onClick={() => onSendFeedback()}
+            >
+              Отправить
+            </button>
           </div>
         </div>
       ) : (

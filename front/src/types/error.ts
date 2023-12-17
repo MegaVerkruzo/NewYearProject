@@ -3,6 +3,7 @@ export enum ApiErrorString {
   BadRequest = 'badRequest',
   NotValid = 'notValid',
   NoWordInDictionary = 'noWordInDictionary',
+  OldState = 'oldState',
 }
 
 export type ApiError = {

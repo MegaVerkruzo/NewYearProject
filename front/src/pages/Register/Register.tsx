@@ -82,60 +82,62 @@ export const Register = () => {
   return (
     <div className="main-page__login">
       <div className="main__wrapper">
-        <div className="top__gift">
-          <img src={giftTop} alt="" />
-        </div>
-        <div className="reg-form">
-          <div className="reg-form__wrapper">
-            <div className="reg-form__title">
-              <h1>Укажите ваши данные,</h1>
-              чтобы Дед Мороз знал, куда везти подарки
-            </div>
-            {fieldsData.map((item) => (
-              <Input
-                field={item.field}
-                value={fields[item.field]}
-                onChangeInput={onChangeInput}
-                label={item.label}
-                placeholder={item.placeholder}
-                type={item.type}
-                key={item.id}
-              />
-            ))}
-            <div className="reg-form__input last">
-              <div className="checkbox">
-                <input
-                  type="checkbox"
-                  id="checkbox2"
-                  className="checkbox"
-                  onChange={() => setIsAgreePolicy((prev) => !prev)}
-                  checked={isAgreePolicy}
+        <div className="reg__wrapper">
+          <div className="top__gift">
+            <img src={giftTop} alt="" />
+          </div>
+          <div className="reg-form">
+            <div className="reg-form__wrapper">
+              <div className="reg-form__title">
+                <h1>Укажите ваши данные,</h1>
+                чтобы Дед Мороз знал, куда везти подарки
+              </div>
+              {fieldsData.map((item) => (
+                <Input
+                  field={item.field}
+                  value={fields[item.field]}
+                  onChangeInput={onChangeInput}
+                  label={item.label}
+                  placeholder={item.placeholder}
+                  type={item.type}
+                  key={item.id}
                 />
-                <label htmlFor="checkbox2">
-                  Я подтверждаю свое согласие <br />
-                  <a
-                    href="https://questmaniacs.ru/blago_policy.htm"
-                    target="_blank"
-                    className="underline"
-                  >
-                    с политикой конфиденциальности
-                  </a>
-                </label>
+              ))}
+              <div className="reg-form__input last">
+                <div className="checkbox">
+                  <input
+                    type="checkbox"
+                    id="checkbox2"
+                    className="checkbox"
+                    onChange={() => setIsAgreePolicy((prev) => !prev)}
+                    checked={isAgreePolicy}
+                  />
+                  <label htmlFor="checkbox2">
+                    Я подтверждаю свое согласие <br />
+                    <a
+                      href="https://telegra.ph/Politika-v-otnoshenii-obrabotki-personalnyh-dannyh-12-17-2"
+                      target="_blank"
+                      className="underline"
+                    >
+                      с политикой конфиденциальности
+                    </a>
+                  </label>
+                </div>
               </div>
-            </div>
-            {error && <div className="error">{error}</div>}
-            {isPending && (
-              <div className="form_loading">
-                <Spinner />
+              {error && <div className="error">{error}</div>}
+              {isPending && (
+                <div className="form_loading">
+                  <Spinner />
+                </div>
+              )}
+              <div className="reg-form__btn" onClick={onSignUp}>
+                <button>Зарегистрироваться</button>
               </div>
-            )}
-            <div className="reg-form__btn" onClick={onSignUp}>
-              <button>Зарегистрироваться</button>
             </div>
           </div>
-        </div>
-        <div className="bottom__gift">
-          <img src={giftBottom} alt="" />
+          <div className="bottom__gift">
+            <img src={giftBottom} alt="" />
+          </div>
         </div>
       </div>
     </div>

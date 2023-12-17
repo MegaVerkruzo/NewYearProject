@@ -26,7 +26,7 @@ export const Footer = () => {
               <div className="footer__text text__light">Все права защищены</div>
               <div className="footer__text">
                 <a
-                  href="https://questmaniacs.ru/blago_policy.htm"
+                  href="https://telegra.ph/Politika-v-otnoshenii-obrabotki-personalnyh-dannyh-12-17-2"
                   target="_blank"
                   className="underline"
                 >
@@ -37,7 +37,7 @@ export const Footer = () => {
             <div className="footer__column">
               <div className="footer__text">
                 <a
-                  href="https://telegra.ph/Novogodnyaya-viktorina-Naryadi-svoyu-yolochku-12-12"
+                  href="https://telegra.ph/Novogodnyaya-viktorina-Naryadi-svoyu-yolochku-12-17"
                   target="_blank"
                 >
                   Правила игры
@@ -83,7 +83,7 @@ export const Footer = () => {
                 </div>
                 <div className="footer__text">
                   <a
-                    href="https://questmaniacs.ru/blago_policy.htm"
+                    href="https://telegra.ph/Politika-v-otnoshenii-obrabotki-personalnyh-dannyh-12-17-2"
                     target="_blank"
                     className="underline"
                   >
@@ -99,7 +99,7 @@ export const Footer = () => {
                   <div className="footer__header">Меню</div>
                   <div className="footer__text">
                     <a
-                      href="https://telegra.ph/Novogodnyaya-viktorina-Naryadi-svoyu-yolochku-12-12"
+                      href="https://telegra.ph/Novogodnyaya-viktorina-Naryadi-svoyu-yolochku-12-17"
                       target="_blank"
                     >
                       Правила игры

@@ -184,6 +184,12 @@ h3 {
   left: 55px;
 }
 
+.reg__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .reg-form {
   background: var(--color-red);
   box-shadow: 10px 10px 52px rgba(24, 24, 24, 0.18);
@@ -697,7 +703,7 @@ h1 {
 
 .keyboard {
   position: fixed;
-  padding: 10px 5px 15px 5px;
+  padding: 5px 5px 5px 5px;
   bottom: 0;
   left: 0;
   right: 0;

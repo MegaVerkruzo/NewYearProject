@@ -20,7 +20,7 @@ export const BeforeGame = () => {
 
       <div className="main-page__row">
         <a
-          href="https://telegra.ph/Novogodnyaya-viktorina-Naryadi-svoyu-yolochku-12-12"
+          href="https://telegra.ph/Novogodnyaya-viktorina-Naryadi-svoyu-yolochku-12-17"
           target="_blank"
           className="main-page__btn"
         >
