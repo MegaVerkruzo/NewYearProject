@@ -59,7 +59,6 @@ export class TreeEntity extends PIXI.Application {
     this.mainContainer.x = this.clientWidth / 2 - this.mainContainer.width / 2
     this.mainContainer.sortableChildren = true
     this.stage.addChild(this.mainContainer)
-    this.stage.interactive = true
   }
 
   setupTree() {
