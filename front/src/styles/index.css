@@ -474,6 +474,7 @@ h1 {
 
 .game-field__wrapper {
   display: grid;
+  grid-template-rows: repeat(5, 1fr);
   gap: 15px 15px;
   min-width: 470px;
   margin-bottom: 30px;

@@ -59,6 +59,11 @@ export class TreeEntity extends PIXI.Application {
     this.mainContainer.x = this.clientWidth / 2 - this.mainContainer.width / 2
     this.mainContainer.sortableChildren = true
     this.stage.addChild(this.mainContainer)
+    this.renderer.plugins.interaction.autoPreventDefault = false
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    this.renderer.view.style['touch-action'] = 'auto'
   }
 
   setupTree() {
