@@ -697,12 +697,13 @@ h1 {
 
 .keyboard {
   position: fixed;
-  padding: 5px 5px 10px 5px;
+  padding: 10px 5px 15px 5px;
   bottom: 0;
   left: 0;
   right: 0;
   height: 20%;
   display: none;
+  z-index: 10;
   grid-template-rows: repeat(3, 1fr);
   grid-template-columns: repeat(24, 1fr);
   background: var(--color-green);
