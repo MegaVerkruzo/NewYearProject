@@ -23,9 +23,7 @@ public class WordService {
     public WordService(TaskRepository taskRepository) throws IOException {
         logger.info("Start downloading russian words");
         this.words = getContent();
-        taskRepository.findAll().stream().map(Task::getWord).forEach(words::add);
-        // :TODO delete this logging
-        taskRepository.findAll().forEach(answer -> logger.info(answer.toString()));
+        taskRepository.findAll().stream().map(Task::getWord).map(String::toLowerCase).forEach(words::add);
         logger.info("End downloading russian words");
     }
 
@@ -36,11 +34,13 @@ public class WordService {
     private Set<String> getContent() throws IOException {
         try (InputStream is = WordService.class
                 .getClassLoader()
-                .getResourceAsStream("russian_utf_norm.txt")
+                .getResourceAsStream("russian-nouns.txt")
         ) {
             return Arrays.stream(
-                    new String(Objects.requireNonNull(is).readAllBytes(), StandardCharsets.UTF_8).split("\n")
-            ).collect(Collectors.toSet());
+                            new String(Objects.requireNonNull(is).readAllBytes(), StandardCharsets.UTF_8)
+                                    .split("\n")
+                    ).map(String::toLowerCase)
+                    .collect(Collectors.toSet());
         }
     }
 }

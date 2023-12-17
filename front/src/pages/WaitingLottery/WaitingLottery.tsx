@@ -12,8 +12,11 @@ export const WaitingLottery = () => {
     activePrizes,
     nonActivePrizes,
     lotteryTimer,
+    textWithLink,
     ticketNumber,
   } = location.state
+
+  // TODO: добавить таймер в zustand store
 
   return (
     <div className="main-wrapper">
@@ -28,7 +31,10 @@ export const WaitingLottery = () => {
         <Message text={text} />
       </div>
       <div className="main-page__row">
-        <LotteryTicket ticketNumber={ticketNumber.toString()} />
+        <LotteryTicket
+          ticketNumber={ticketNumber.toString()}
+          textBelow={textWithLink}
+        />
       </div>
     </div>
   )

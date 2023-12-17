@@ -39,22 +39,6 @@ public class GameController {
     private final AttemptService attemptService;
     private final TaskService taskService;
 
-    //    @GetMapping(value = "v2", produces = "application/json")
-//    public GameStateKlass trying(@RequestHeader("authorization") String token) {
-//        // :TODO delete copypaste
-//        if (token == null) {
-//            return GameStateKlass.createStateWithException(ApiException.noUser);
-//        }
-//
-//        User user = userService.getUserByToken(token);
-//        logger.info("Read user " + user);
-//
-//        if (user == null) {
-//            return GameStateKlass.createStateWithException(ApiException.noUser);
-//        }
-//
-//        return attemptService.getAllInfo(user);
-//    }
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
@@ -106,17 +90,13 @@ public class GameController {
         if (jsonWord == null) {
             throw new NotValidException();
         }
-        String word = jsonWord.getWord();
+        String word = jsonWord.getWord().toLowerCase();
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
 
         // :TODO thing about this part of code
-        Task task = taskService.findPreviousAnswer(offsetDateTime);
+        Task task = taskService.findPreviousAnswer(offsetDateTime).orElseThrow(NotValidException::new);
         logger.info("answer: " + task);
-
-        if (task == null) {
-            throw new NotValidException();
-        }
 
         if (task.getWord().length() != word.length()) {
             throw new BadRequestException();

@@ -4,34 +4,145 @@
 --comment add users table
 CREATE TABLE IF NOT EXISTS users
 (
-    id          BIGINT NOT NULL PRIMARY KEY,
-    phone       VARCHAR(15)                                      NOT NULL UNIQUE,
-    name        VARCHAR(255)                                     NOT NULL,
-    surname     VARCHAR(255)                                     NOT NULL,
-    middle_name VARCHAR(255)                                     NOT NULL,
-    email       VARCHAR(255)                                     NOT NULL,
-    place       VARCHAR(255)                                     NOT NULL
+    id            BIGINT       NOT NULL PRIMARY KEY,
+    username      VARCHAR(255) NOT NULL UNIQUE,
+    ticket_number SERIAL       NOT NULL UNIQUE,
+    phone         VARCHAR(15)  NOT NULL,
+    name          VARCHAR(255) NOT NULL,
+    surname       VARCHAR(255) NOT NULL,
+    middle_name   VARCHAR(255) NOT NULL,
+    email         VARCHAR(255) NOT NULL,
+    place         VARCHAR(255) NOT NULL,
+    division      VARCHAR(255) NOT NULL,
+    active_gifts  INTEGER      NOT NULL DEFAULT 0
 );
 --rollback DROP TABLE users
 
 --changeset GrunskiiAleksei:2
 --comment add answers table
-CREATE TABLE IF NOT EXISTS answers
+CREATE TABLE IF NOT EXISTS task
 (
-    id          BIGINT NOT NULL PRIMARY KEY,
-    word        VARCHAR(200)                                       NOT NULL,
-    date        TIMESTAMP                                          NOT NULL,
-    description TEXT
+    id       BIGINT       NOT NULL PRIMARY KEY,
+    word     VARCHAR(200) NOT NULL,
+    question VARCHAR(255) NOT NULL
 );
---rollback DROP TABLE answers
+--rollback DROP TABLE task
 
 --changeset GrunskiiAleksei:3
---comment add attempts table
-CREATE TABLE IF NOT EXISTS attempts
+--comment add attempt table
+CREATE TABLE IF NOT EXISTS attempt
 (
-    id    BIGINT NOT NULL PRIMARY KEY,
-    phone VARCHAR(15)                                         NOT NULL,
-    word  VARCHAR(200)                                        NOT NULL,
-    date  TIMESTAMP                                           NOT NULL
+    id      BIGINT                   NOT NULL PRIMARY KEY,
+    user_id BIGINT REFERENCES users (id),
+    word    VARCHAR(200)             NOT NULL,
+    date    TIMESTAMP WITH TIME ZONE NOT NULL
 );
---rollback DROP TABLE attempts
+--rollback DROP TABLE attempt
+
+--changeset GrunskiiAleksei:4
+--comment add config table
+CREATE TABLE IF NOT EXISTS config
+(
+    id               VARCHAR(255) NOT NULL PRIMARY KEY,
+    str_property     VARCHAR(255),
+    date_property    TIMESTAMP WITH TIME ZONE,
+    long_property    BIGINT,
+    boolean_property BOOLEAN
+);
+--rollback DROP TABLE config;
+
+--changeset GrunskiiAleksei:5
+--comment add row
+INSERT INTO config (id, long_property)
+VALUES ('answers_delta_minutes', 1),
+       ('tasks_count', 5);
+INSERT INTO config (id, date_property)
+VALUES ('date_start_game', NOW()),
+       ('lottery_date', NOW());
+INSERT INTO config (id, boolean_property)
+VALUES ('is_lottery_finish', FALSE);
+INSERT INTO config (id, str_property)
+VALUES ('lottery_link_text', 'Ссылка на трансляцию будет прислана немного позднее'),
+       ('lottery_message_text', 'Молодец! Ты хорошо потрудился, теперь настало время получать подарки:))'),
+       ('hello_text', 'Первая игра начнётся 18 декабря в 10:00!'),
+       ('feedback_question', 'Вам понравился этот вопрос?'),
+       ('wait_next_game', 'Вы хорошо постарались следующий вопрос ожидайте в 10:00 :)'),
+       ('after_lottery', 'C наступающий новым годом!!!! 2024 !!!');
+--rollback TRUNCATE TABLE config;
+
+--changeset GrunskiiAleksei:6
+--comment create attempts sequence
+CREATE SEQUENCE attempt_seq START WITH 1 INCREMENT BY 1;
+--rollback DROP SEQUENCE attempt_seq;
+
+--changeset GrunskiiAleksei:7
+--comment make task table reusing answers
+CREATE SEQUENCE task_seq START WITH 1 INCREMENT BY 1;
+--rollback DROP SEQUENCE task_seq;
+
+--changeset GrunskiiAleksei:8
+--comment make task table reusing answers
+CREATE SEQUENCE feedback_seq START WITH 1 INCREMENT BY 1;
+--rollback DROP SEQUENCE feedback_seq;
+
+--changeset GrunskiiAleksei:9
+--comment add feedback table
+CREATE TABLE IF NOT EXISTS feedback
+(
+    id       BIGINT NOT NULL PRIMARY KEY,
+    user_id  BIGINT REFERENCES users (id),
+    task_id  BIGINT REFERENCES task (id),
+    response TEXT
+);
+--rollback DROP TABLE feedback;
+
+--changeset GrunskiiAleksei:10
+--comment createIndex
+CREATE UNIQUE INDEX IF NOT EXISTS ids_user_task_feedback
+    ON feedback (user_id, task_id);
+--rollback DROP INDEX IF EXISTS ids_user_task_feedback
+
+--changeset GrunskiiAleksei:11
+--comment pasteWords
+INSERT INTO task (id, word, question)
+VALUES (1, 'Атмосфера', 'Отгадай слово Атмосфера!'),
+       (2, 'Забота', 'Ну или давай слово забота?'),
+       (3, 'Комфорт', 'Я в комфорте дома'),
+       (4, 'Детство', '"Детство, ах детство!"'),
+       (5, 'Каталог', 'Какую книгу мне прочесть из каталога?');
+--rollback TRUNCATE TABLE task;
+
+--changeset GrunskiiAleksei:12
+--comment add several feedback_question
+ALTER TABLE task
+    ADD COLUMN feedback_question VARCHAR(255) NOT NULL DEFAULT '';
+UPDATE task
+SET feedback_question = 'Что для вас классная атмосфера на работе?'
+WHERE id = 1;
+UPDATE task
+SET feedback_question = 'Какие мероприятия и активности вы бы хотели видеть в программе «Благополучие» в следующем году?'
+WHERE id = 2;
+UPDATE task
+SET feedback_question = 'Какие мероприятия, по вашему мнению, нужно провести в рамках «Благополучие. Дети»?'
+WHERE id = 3;
+UPDATE task
+SET feedback_question = 'А что для вас комфортное рабочее место?'
+WHERE id = 4;
+UPDATE task
+SET feedback_question = 'О каких еще возможностях или сервисах, предоставляемых компанией, вам было бы интересно узнать?'
+WHERE id = 5;
+DELETE FROM config WHERE id = 'feedback_question';
+--rollback ALTER TABLE task DROP COLUMN feedback_question;
+--rollback INSERT INTO config (id, str_property) VALUES ('feedback_question', 'Как вам вопрос?');
+
+--changeset GrunskiiAleksei:13
+--comment add afterFeedbackResponse
+ALTER TABLE task
+    ADD COLUMN after_feedback_response VARCHAR(255) NOT NULL DEFAULT '';
+UPDATE task
+SET after_feedback_response = 'Спасибо! Все ваши ответы мы внимательно изучим! Следующее задание викторины будет ждать вас в телеграм-канале «Благополучие» в 10.00 мск'
+WHERE id IN (1, 2, 3, 4);
+UPDATE task
+SET after_feedback_response = 'Спасибо, что учавствовали и бла-бла-бла'
+WHERE id = 5;
+--rollback ALTER TABLE task DROP COLUMN after_feedback_response;

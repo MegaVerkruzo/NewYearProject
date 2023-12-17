@@ -9,13 +9,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.sql.Timestamp;
-import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
@@ -24,27 +22,18 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Task {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "task_generator")
     @SequenceGenerator(name = "task_generator", sequenceName = "task_seq", allocationSize = 1)
     private Long id;
-    @Column(name="active_prizes")
-    private String activePrizes;
-    @Column(name="non_active_prizes")
-    private String nonActivePrizes;
     private String word;
-    private OffsetDateTime date;
-    private String description;
-
-    public Task(String word, String activePrizes, String nonActivePrizes, Timestamp date, String description) {
-        this.word = word;
-        this.activePrizes = activePrizes;
-        this.nonActivePrizes = nonActivePrizes;
-        this.date = date.toLocalDateTime().atOffset(OffsetDateTime.now().getOffset());
-        this.description = description;
-    }
+    private String question;
+    @Column(name = "after_feedback_response")
+    private String afterFeedbackResponse;
+    @Column(name = "feedback_question")
+    private String feedbackQuestion;
 
     @Override
     public final boolean equals(Object o) {

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import cn from 'classnames'
 import { Letter } from '../../types/game'
 import { useNewAttempt } from '../../api/newAttempt'
@@ -9,6 +9,7 @@ import { AxiosError } from 'axios'
 import { ApiError, ApiErrorString } from '../../types/error'
 import Spinner from '../../assets/svgs/Spinner'
 import { russianLetters } from '../../config/gameData'
+import { ClickEvent } from '../../types/event'
 
 type GameProps = {
   letters: Letter[]
@@ -37,7 +38,10 @@ export const Game: FC<GameProps> = ({
     }
   }
 
-  const freeCellsCount = (5 - currentLine - 1) * wordLength
+  const freeCellsCount = !isEnd
+    ? (5 - currentLine - 1) * wordLength
+    : 5 * wordLength - letters.length
+
   const freeCells: Letter[] = new Array(freeCellsCount).fill({
     letter: '',
     state: '',
@@ -106,6 +110,12 @@ export const Game: FC<GameProps> = ({
     }
   }, [isError, mutateError])
 
+  const onKeyboardOpen = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isEnd) return
+    setIsKeyboardOpen(true)
+    e.stopPropagation()
+  }
+
   useEffect(() => {
     document.addEventListener('keydown', keyboardHandler)
     return () => {
@@ -115,21 +125,21 @@ export const Game: FC<GameProps> = ({
 
   return (
     <div className={cn('game', { open: isKeyboardOpen })}>
-      <div
-        className="game-field"
-        id="game-field"
-        onClick={() => setIsKeyboardOpen(true)}
-      >
+      <div className="game-field" id="game-field">
         <div
-          className={'game-field__wrapper'}
+          className={cn('game-field__wrapper', {
+            'game-field__wrapper--long': wordLength >= 8,
+          })}
           style={{ gridTemplateColumns: `repeat(${wordLength}, 1fr)` }}
+          onClick={onKeyboardOpen}
         >
           {letters.map((item, index) => (
             <GameLetter key={index} letter={item.letter} state={item.state} />
           ))}
-          {inputWord.map((item, index) => (
-            <GameLetter key={index} letter={item} />
-          ))}
+          {!isEnd &&
+            inputWord.map((item, index) => (
+              <GameLetter key={index} letter={item} />
+            ))}
           {freeCells.map((item, index) => (
             <GameLetter key={index} letter={item.letter} state={item.state} />
           ))}

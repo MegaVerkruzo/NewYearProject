@@ -6,17 +6,21 @@ import com.commercial.backend.security.exception.NotValidException;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 
-import static com.commercial.backend.service.CommonLibrary.parseId;
+import static com.commercial.backend.service.CommonService.parseId;
+import static com.commercial.backend.service.CommonService.parseUsername;
 
 @Entity
 @Table(name = "users", schema = "public")
@@ -24,7 +28,7 @@ import static com.commercial.backend.service.CommonLibrary.parseId;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     private Long id;
@@ -37,30 +41,16 @@ public class User {
     private String email;
     private String place;
     private String division;
+    @Column(name = "active_gifts")
+    private int activeGifts;
+    @Column(name = "ticket_number")
+    private int ticketNumber;
 
-    public User(
-            Long id,
-            String phone,
-            String name,
-            String surname,
-            String middleName,
-            String email,
-            String place,
-            String division
-    ) {
-        this.id = id;
-        this.phone = phone;
-        this.name = name;
-        this.surname = surname;
-        this.middleName = middleName;
-        this.email = email;
-        this.place = place;
-        this.division = division;
-    }
+    private static int randomNumber = 100;
 
-    //
     public User(String token, JsonRegistration json) throws NotRegisteredException, NotValidException {
         this.id = parseId(token);
+        this.username = parseUsername(token);
         this.phone = json.getPhone();
         this.name = json.getName();
         this.surname = json.getSurname();
@@ -68,6 +58,8 @@ public class User {
         this.email = json.getEmail();
         this.place = json.getPlace();
         this.division = json.getDivision();
+        this.activeGifts = 0;
+        this.ticketNumber = randomNumber++;
     }
 
     @Override

@@ -479,6 +479,10 @@ h1 {
   margin-bottom: 30px;
 }
 
+.game-field__wrapper.game-field__wrapper--long {
+  width: 100%;
+}
+
 .game-field__attempts {
   margin-bottom: 15px;
 }
@@ -636,7 +640,7 @@ h1 {
   top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 170px;
+  font-size: 120px;
   font-weight: bold;
 }
 
@@ -689,23 +693,6 @@ h1 {
 }
 
 /* KEYBOARD */
-.keyboard-wrapper {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  /* top: 0; */
-  z-index: 50;
-}
-
-.keyboard-wrapper.open {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 50;
-}
 
 .keyboard {
   position: fixed;
@@ -1166,6 +1153,10 @@ h1 {
   }
 }
 @media screen and (max-width: 543px) {
+  .game-field__wrapper {
+    gap: 10px;
+  }
+
   .timer_bg {
     max-width: 400px;
   }

@@ -1,8 +1,10 @@
 package com.commercial.backend.model.state.period;
 
+import com.commercial.backend.db.entities.Task;
 import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.model.game.LetterColor;
 import com.commercial.backend.model.state.State;
+import com.commercial.backend.service.CommonService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -11,7 +13,7 @@ import java.util.List;
 import static com.commercial.backend.model.game.GameState.waitFeedback;
 
 @Getter
-public class WaitFeedbackState implements State {
+public class WaitFeedbackState extends State {
     @Schema(example = "waitFeedback")
     private final GameState gameState;
     @Schema(example = "Угадай слово, какое слово стоит в обозначении радуги после \"сидит\"")
@@ -22,22 +24,22 @@ public class WaitFeedbackState implements State {
     private final String nonActivePrizes;
     @Schema(example = "Укажите отзыв!")
     private final String feedbackQuestion;
+    private final String afterFeedbackResponse;
     private final List<LetterColor> letters;
-    @Schema(example = "Благополучие - это то, что мы сделали вместе за этот год для нас всех")
-    private final String description;
     private final Integer wordLength;
     private final Integer activeGifts;
+    private final Integer currentLine;
 
-    public WaitFeedbackState(List<LetterColor> letters, String description, Integer wordLength, Integer activeGifts) {
-        // :TODO think about text
-        this.activePrizes = "Вы учавствует в розыгрыше таких вещей";
-        this.nonActivePrizes = "Чтобы учавствовать в розыгрыше всех подарков, вам осталось ответить на 3 загадки";
-        this.text = "Угадай слово, какое слово стоит в обозначении радуги после \"сидит\"";
-        this.feedbackQuestion = "Укажите отзыв!";
-        this.gameState = waitFeedback;
+    public WaitFeedbackState(List<LetterColor> letters, Integer currentLine, Task task, Integer activeGifts) {
         this.letters = letters;
-        this.description = description;
-        this.wordLength = wordLength;
+        this.currentLine = currentLine;
+        this.activePrizes = CommonService.getActivePrizes(activeGifts);
+        this.nonActivePrizes = CommonService.getNonActivePrizes(activeGifts);
+        this.text = task.getQuestion();
+        this.feedbackQuestion = task.getFeedbackQuestion();
+        this.afterFeedbackResponse = task.getAfterFeedbackResponse();
+        this.wordLength = task.getWord().length();
+        this.gameState = waitFeedback;
         this.activeGifts = activeGifts;
     }
 }

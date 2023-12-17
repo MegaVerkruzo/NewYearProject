@@ -8,16 +8,15 @@ import lombok.Getter;
 import static com.commercial.backend.model.game.GameState.afterLottery;
 
 @Getter
-public class AfterLotteryState implements State {
+public class AfterLotteryState extends State {
     @Schema(example = "afterLottery")
     private final GameState gameState;
     @Schema(example = "Спасибо за участие в розыгрыше, c новым годом!")
     private final String text;
     private final Integer activeGifts;
 
-    public AfterLotteryState(Integer activeGifts) {
-        // :TODO think about text
-        this.text = "С новым годом!";
+    public AfterLotteryState(String message, Integer activeGifts) {
+        this.text = message;
         this.activeGifts = activeGifts;
         this.gameState = afterLottery;
     }

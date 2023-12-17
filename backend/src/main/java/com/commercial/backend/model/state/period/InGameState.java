@@ -3,6 +3,7 @@ package com.commercial.backend.model.state.period;
 import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.model.game.LetterColor;
 import com.commercial.backend.model.state.State;
+import com.commercial.backend.service.CommonService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -11,7 +12,7 @@ import java.util.List;
 import static com.commercial.backend.model.game.GameState.inGame;
 
 @Getter
-public class InGameState implements State {
+public class InGameState extends State {
     @Schema(example = "inGame")
     private final GameState gameState;
     @Schema(example = "Угадай слово, какое слово стоит в обозначении радуги после \"сидит\"")
@@ -25,11 +26,10 @@ public class InGameState implements State {
     private final Integer currentLine;
     private final Integer activeGifts;
 
-    public InGameState(List<LetterColor> letters, Integer wordLength, Integer currentLine, Integer activeGifts) {
-        // :TODO Get text from config
-        this.text = "Угадай слово, какое слово стоит в обозначении радуги после \"сидит\"";
-        this.activePrizes = "Вы учавствует в розыгрыше таких вещей";
-        this.nonActivePrizes = "Чтобы учавствовать в розыгрыше всех подарков, вам осталось ответить на 3 загадки";
+    public InGameState(List<LetterColor> letters, String question, Integer wordLength, Integer currentLine, Integer activeGifts) {
+        this.text = question;
+        this.activePrizes = CommonService.getActivePrizes(activeGifts);
+        this.nonActivePrizes = CommonService.getNonActivePrizes(activeGifts);
         this.letters = letters;
         this.wordLength = wordLength;
         this.currentLine = currentLine;
