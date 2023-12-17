@@ -45,7 +45,7 @@ public class SecurityControllerAdvice {
         return new NoWordInDictionaryResponse();
     }
 
-    @ExceptionHandler(UserExistsException.class)
+    @ExceptionHandler(OldStateException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public UserExistsResponse handleUserExistsException(UserExistsException ignored) {
         return new UserExistsResponse();
