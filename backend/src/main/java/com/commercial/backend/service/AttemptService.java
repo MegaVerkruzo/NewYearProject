@@ -3,12 +3,14 @@ package com.commercial.backend.service;
 import com.commercial.backend.db.AttemptRepository;
 import com.commercial.backend.db.FeedbackRepository;
 import com.commercial.backend.db.TaskRepository;
+import com.commercial.backend.db.UserRepository;
 import com.commercial.backend.db.entities.Attempt;
 import com.commercial.backend.db.entities.Feedback;
 import com.commercial.backend.db.entities.Task;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.game.Color;
 import com.commercial.backend.model.game.LetterColor;
+import com.commercial.backend.model.json.JsonWord;
 import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.AfterLotteryState;
 import com.commercial.backend.model.state.period.BeforeGameState;
@@ -20,6 +22,7 @@ import com.commercial.backend.security.exception.BadRequestException;
 import com.commercial.backend.security.exception.NoWordInDictionaryException;
 import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
+import com.commercial.backend.security.exception.OldStateException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +50,7 @@ public class AttemptService {
     private final ConfigService configService;
     private final FeedbackRepository feedbackRepository;
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
     private List<LetterColor> compare(String answer, String word) {
         answer = getWordInUTF8(answer);
@@ -203,20 +207,21 @@ public class AttemptService {
         );
     }
 
-    public State addNewWord(
-            User user,
-            Task task,
-            String word,
-            OffsetDateTime offsetDateTime
-    ) throws NotValidException, BadRequestException {
-        logger.info(User.class.toString() + user);
-        logger.info(Task.class.toString() + task);
-        logger.info(String.class + word);
-        logger.info(OffsetDateTime.class.toString() + offsetDateTime);
-        if (word == null) {
-            logger.info("Word is null");
-            throw new NotValidException();
+    public State addNewWord(User user, JsonWord jsonWord) throws NotValidException, BadRequestException {
+        if (jsonWord == null) {
+            throw new OldStateException();
         }
+        String word = jsonWord.getWord().toLowerCase();
+        OffsetDateTime offsetDateTime = OffsetDateTime.now();
+
+        // :TODO thing about this part of code
+        Task task = taskService.findPreviousAnswer(offsetDateTime).orElseThrow(NotValidException::new);
+        logger.info("answer: " + task);
+
+        if (task.getWord().length() != word.length()) {
+            throw new OldStateException();
+        }
+
         word = getWordInUTF8(word);
         logger.info("Word: " + word);
         if (!wordService.isWordExists(word)) {
@@ -235,6 +240,7 @@ public class AttemptService {
             feedbackRepository.save(new Feedback(user.getId(), task.getId()));
         }
         attemptRepository.save(new Attempt(user.getId(), word, offsetDateTime));
+        userRepository.updateUsersById(user.getActiveGifts() + 1L, user.getId());
 
         return new State();
     }

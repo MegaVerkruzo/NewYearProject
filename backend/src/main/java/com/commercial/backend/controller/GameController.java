@@ -1,13 +1,10 @@
 package com.commercial.backend.controller;
 
-import com.commercial.backend.db.entities.Task;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.json.JsonWord;
 import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.InGameState;
 import com.commercial.backend.model.state.period.WaitFeedbackState;
-import com.commercial.backend.security.exception.BadRequestException;
-import com.commercial.backend.security.exception.NotValidException;
 import com.commercial.backend.security.response.BadRequestResponse;
 import com.commercial.backend.security.response.NoWordInDictionaryResponse;
 import com.commercial.backend.security.response.NotRegisteredResponse;
@@ -27,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.OffsetDateTime;
 
 @RestController
 @RequestMapping("api/game")
@@ -84,24 +79,8 @@ public class GameController {
                     )}),
     })
     @PostMapping(value = "new_attempt/v2", consumes = "application/json", produces = "application/json")
-    // :TODO find good thing for deleting unnecessary objects
     public State newAttempt(@RequestHeader("authorization") String token, @RequestBody JsonWord jsonWord) {
         User user = userService.getUserByToken(token);
-        if (jsonWord == null) {
-            throw new NotValidException();
-        }
-        String word = jsonWord.getWord().toLowerCase();
-
-        OffsetDateTime offsetDateTime = OffsetDateTime.now();
-
-        // :TODO thing about this part of code
-        Task task = taskService.findPreviousAnswer(offsetDateTime).orElseThrow(NotValidException::new);
-        logger.info("answer: " + task);
-
-        if (task.getWord().length() != word.length()) {
-            throw new BadRequestException();
-        }
-
-        return attemptService.addNewWord(user, task, word, offsetDateTime);
+        return attemptService.addNewWord(user, jsonWord);
     }
 }
