@@ -21,8 +21,8 @@ export const Main = () => {
 
     if (data) {
       console.log('Main components data ', data)
-      // navigate('/testPage')
-      // return
+      navigate('/testPage')
+      return
       switch (data.gameState) {
         case 'beforeGame':
           navigate('/beforeGame', { state: data })

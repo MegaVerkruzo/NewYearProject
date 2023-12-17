@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Logo from '../../assets/svgs/LogoIcon'
 import NoSound from '../../assets/svgs/NoSoundIcon'
 import Sound from '../../assets/svgs/SoundIcon'
@@ -9,10 +9,13 @@ import TimerBg from '../../assets/images/TimerBG.png'
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isSound, setIsSound] = useState(false)
+  const [isSound, setIsSound] = useState(true)
 
   const toggleIsSound = () => {
-    setIsSound((prev) => !prev)
+    setIsSound((prev) => {
+      localStorage.setItem('isSound', (!prev).toString())
+      return !prev
+    })
   }
 
   const onMenuOpen = () => {
@@ -21,6 +24,19 @@ export const Header = () => {
       return !prev
     })
   }
+
+  useEffect(() => {
+    const value = localStorage.getItem('isSound')
+    if (value !== undefined) {
+      setIsSound(value === 'true' ? true : false)
+    } else {
+      localStorage.setItem('isSound', 'true')
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log(isSound, localStorage.getItem('isSound'))
+  }, [isSound])
 
   return (
     <header className="header">
