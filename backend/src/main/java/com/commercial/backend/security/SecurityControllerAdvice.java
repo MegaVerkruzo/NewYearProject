@@ -4,11 +4,13 @@ import com.commercial.backend.security.exception.BadRequestException;
 import com.commercial.backend.security.exception.NoWordInDictionaryException;
 import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
+import com.commercial.backend.security.exception.OldStateException;
 import com.commercial.backend.security.exception.UserExistsException;
 import com.commercial.backend.security.response.BadRequestResponse;
 import com.commercial.backend.security.response.NoWordInDictionaryResponse;
 import com.commercial.backend.security.response.NotRegisteredResponse;
 import com.commercial.backend.security.response.NotValidResponse;
+import com.commercial.backend.security.response.OldStateResponse;
 import com.commercial.backend.security.response.UserExistsResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -47,5 +49,11 @@ public class SecurityControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public UserExistsResponse handleUserExistsException(UserExistsException ignored) {
         return new UserExistsResponse();
+    }
+
+    @ExceptionHandler(UserExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public OldStateResponse handleUserExistsException(OldStateException ignored) {
+        return new OldStateResponse();
     }
 }

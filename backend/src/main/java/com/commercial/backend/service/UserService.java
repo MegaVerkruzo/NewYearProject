@@ -6,7 +6,6 @@ import com.commercial.backend.db.entities.Feedback;
 import com.commercial.backend.db.entities.User;
 import com.commercial.backend.model.json.JsonFeedback;
 import com.commercial.backend.model.state.State;
-import com.commercial.backend.model.state.period.BeforeGameState;
 import com.commercial.backend.security.exception.BadRequestException;
 import com.commercial.backend.security.exception.NotRegisteredException;
 import com.commercial.backend.security.exception.NotValidException;
@@ -16,10 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
-import static com.commercial.backend.security.ApiException.noFeedback;
-import static com.commercial.backend.security.ApiException.notRegistered;
 import static com.commercial.backend.service.CommonService.parseId;
 
 @Service
@@ -80,7 +75,6 @@ public class UserService {
                 .orElseThrow(BadRequestException::new);
 
         feedbackRepository.updateFeedbackById(response.getFeedback(), feedback.getId());
-        userRepository.updateUsersById(user.getActiveGifts() + 1L, user.getId());
         return new State();
     }
 

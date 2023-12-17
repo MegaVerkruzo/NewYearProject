@@ -13,5 +13,6 @@ public enum ApiException {
     noFeedback,
     hadFeedback,
     badRequest,
-    notValid
+    notValid,
+    oldState
 }
