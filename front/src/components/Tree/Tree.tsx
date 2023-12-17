@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import TreeSanki from '../../assets/images/Tree/TreeSanki.png'
+import TreeSanki from '../../assets/images/TreeSanki.png'
 import { TreeCanvas } from './TreeCanvas'
 
 type TreeProps = {
@@ -15,7 +15,7 @@ export const Tree: FC<TreeProps> = ({
 }) => {
   return (
     <>
-      {!activeGifts ? (
+      {activeGifts == undefined ? (
         <div className="main-image__container">
           <div className="main-page__title">
             <h1>Наряди свою ёлочку Благополучия</h1>
