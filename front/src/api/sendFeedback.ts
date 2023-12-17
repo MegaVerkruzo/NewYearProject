@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { baseApiRequest } from './baseApiRequest'
 
 type FeedbackData = {
@@ -12,6 +12,7 @@ type SendFeedbackParams = {
 export const useSendFeedback = ({
   setIsFeedbackJustSent,
 }: SendFeedbackParams) => {
+  const client = useQueryClient()
   return useMutation({
     mutationKey: ['feedback'],
     mutationFn: (mutationData: FeedbackData) => {
@@ -24,6 +25,9 @@ export const useSendFeedback = ({
     retry: false,
     onSuccess: () => {
       setIsFeedbackJustSent(true)
+      setTimeout(() => {
+        client.invalidateQueries({ queryKey: ['getState'] })
+      }, 5000)
     },
     onError: () => {},
   })

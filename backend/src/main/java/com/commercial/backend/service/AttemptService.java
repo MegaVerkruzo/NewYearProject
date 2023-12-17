@@ -132,13 +132,7 @@ public class AttemptService {
             List<Attempt> currentAttempts = attemptsInTask(user, task);
             List<LetterColor> letters = getLetters(currentAttempts, task);
 
-            return new WaitFeedbackState(
-                    letters,
-                    task.getQuestion(),
-                    configService.getFeedbackQuestion(),
-                    task.getWord().length(),
-                    user.getActiveGifts()
-            );
+            return new WaitFeedbackState(letters, currentAttempts.size(), task, user.getActiveGifts());
         } else if (feedback.isPresent()) {
             Task task = taskRepository
                     .findById(feedback.get().getTaskId())
@@ -147,13 +141,7 @@ public class AttemptService {
                 List<Attempt> currentAttempts = attemptsInTask(user, task);
                 List<LetterColor> letters = getLetters(currentAttempts, task);
 
-                return new WaitFeedbackState(
-                        letters,
-                        task.getQuestion(),
-                        configService.getFeedbackQuestion(),
-                        task.getWord().length(),
-                        user.getActiveGifts()
-                );
+                return new WaitFeedbackState(letters, currentAttempts.size(), task, user.getActiveGifts());
             }
         } else if (optionalTask.isEmpty()) {
             return new WaitLotteryState(
@@ -184,13 +172,7 @@ public class AttemptService {
                 || currentAttempts.size() >= configService.getTasksCount()
                 || isExistWord
         )) {
-            return new WaitFeedbackState(
-                    letters,
-                    task.getQuestion(),
-                    configService.getFeedbackQuestion(),
-                    task.getWord().length(),
-                    user.getActiveGifts()
-            );
+            return new WaitFeedbackState(letters, currentAttempts.size(), task, user.getActiveGifts());
         }
 
         // WaitLottery

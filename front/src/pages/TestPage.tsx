@@ -32,7 +32,7 @@ const TestPage = () => {
     <div className="main-wrapper">
       <div className="main-page__row">
         <Tree
-          activeGifts={3}
+          activeGifts={5}
           activePrizes="Активный подарок"
           nonActivePrizes="Неактивный подарок"
         />
@@ -71,15 +71,18 @@ const TestPage = () => {
       </div>
       {/* Feedback */}
       <div className="main-page__row">
-        <Feedback text="Деду Морозу хочется узнать твое мнение" />
+        <Feedback
+          text="Деду Морозу хочется узнать твое мнение"
+          afterFeedbackText="Спасибо! Все ваши ответы мы внимательно изучим! Следующее задание викторины будет ждать вас в телеграм-канале «Благополучие» в 10.00 мск"
+        />
       </div>
       {/* Game field */}
       <div className="main-page__row">
-        <Game wordLength={5} currentLine={3} isEnd={false} letters={letters} />
+        <Game wordLength={8} currentLine={3} isEnd={false} letters={letters} />
       </div>
       {/* Порядковый номер */}
       <div className="main-page__row">
-        <LotteryTicket ticketNumber="11" />
+        <LotteryTicket ticketNumber="11" textBelow="Ссылка будет позже" />
       </div>
       {/* Елка на канвасе */}
       <div className="main-page__row"></div>

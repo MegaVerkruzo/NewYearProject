@@ -1,5 +1,6 @@
 package com.commercial.backend.model.state.period;
 
+import com.commercial.backend.db.entities.Task;
 import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.model.game.LetterColor;
 import com.commercial.backend.model.state.State;
@@ -23,19 +24,22 @@ public class WaitFeedbackState extends State {
     private final String nonActivePrizes;
     @Schema(example = "Укажите отзыв!")
     private final String feedbackQuestion;
+    private final String afterFeedbackResponse;
     private final List<LetterColor> letters;
     private final Integer wordLength;
     private final Integer activeGifts;
+    private final Integer currentLine;
 
-    // :TODO fix think about text
-    public WaitFeedbackState(List<LetterColor> letters, String message, String feedbackQuestion, Integer wordLength, Integer activeGifts) {
+    public WaitFeedbackState(List<LetterColor> letters, Integer currentLine, Task task, Integer activeGifts) {
+        this.letters = letters;
+        this.currentLine = currentLine;
         this.activePrizes = CommonService.getActivePrizes(activeGifts);
         this.nonActivePrizes = CommonService.getNonActivePrizes(activeGifts);
-        this.text = message;
-        this.feedbackQuestion = feedbackQuestion;
+        this.text = task.getQuestion();
+        this.feedbackQuestion = task.getFeedbackQuestion();
+        this.afterFeedbackResponse = task.getAfterFeedbackResponse();
+        this.wordLength = task.getWord().length();
         this.gameState = waitFeedback;
-        this.letters = letters;
-        this.wordLength = wordLength;
         this.activeGifts = activeGifts;
     }
 }

@@ -1,6 +1,7 @@
 package com.commercial.backend.db.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +30,10 @@ public class Task {
     private Long id;
     private String word;
     private String question;
+    @Column(name = "after_feedback_response")
+    private String afterFeedbackResponse;
+    @Column(name = "feedback_question")
+    private String feedbackQuestion;
 
     @Override
     public final boolean equals(Object o) {

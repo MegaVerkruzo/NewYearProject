@@ -33,6 +33,7 @@ export type WaitFeedbackState = {
   letters: Letter[]
   wordLength: number
   feedbackQuestion: string
+  afterFeedbackResponse: string
 } & Gifts
 
 export type WaitNextGameState = {
@@ -45,6 +46,7 @@ export type WaitEndLotteryState = {
   text: string
   lotteryTimer: string | null
   ticketNumber: number
+  textWithLink: string
 } & Gifts
 
 export type AfterLotteryState = {
