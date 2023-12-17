@@ -34,7 +34,7 @@ public class WordService {
     private Set<String> getContent() throws IOException {
         try (InputStream is = WordService.class
                 .getClassLoader()
-                .getResourceAsStream("russian-words.txt")
+                .getResourceAsStream("russian-nouns.txt")
         ) {
             return Arrays.stream(
                             new String(Objects.requireNonNull(is).readAllBytes(), StandardCharsets.UTF_8)
