@@ -1,9 +1,9 @@
 package com.commercial.backend.model.state.period;
 
+import com.commercial.backend.db.entities.TreeState;
 import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.model.game.LetterColor;
 import com.commercial.backend.model.state.State;
-import com.commercial.backend.service.CommonService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -26,10 +26,10 @@ public class InGameState extends State {
     private final Integer currentLine;
     private final Integer activeGifts;
 
-    public InGameState(List<LetterColor> letters, String question, Integer wordLength, Integer currentLine, Integer activeGifts) {
+    public InGameState(List<LetterColor> letters, TreeState state, String question, Integer wordLength, Integer currentLine, Integer activeGifts) {
         this.text = question;
-        this.activePrizes = CommonService.getActivePrizes(activeGifts);
-        this.nonActivePrizes = CommonService.getNonActivePrizes(activeGifts);
+        this.activePrizes = state.getActiveText();
+        this.nonActivePrizes = state.getNonActiveText();
         this.letters = letters;
         this.wordLength = wordLength;
         this.currentLine = currentLine;

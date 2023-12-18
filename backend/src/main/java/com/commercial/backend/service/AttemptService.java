@@ -136,7 +136,7 @@ public class AttemptService {
             List<Attempt> currentAttempts = attemptsInTask(user, task);
             List<LetterColor> letters = getLetters(currentAttempts, task);
 
-            return new WaitFeedbackState(letters, currentAttempts.size(), task, user.getActiveGifts());
+            return new WaitFeedbackState(letters, commonService.getTreeState(user.getActiveGifts()), currentAttempts.size(), task, user.getActiveGifts());
         } else if (feedback.isPresent()) {
             Task task = taskRepository
                     .findById(feedback.get().getTaskId())
@@ -145,11 +145,12 @@ public class AttemptService {
                 List<Attempt> currentAttempts = attemptsInTask(user, task);
                 List<LetterColor> letters = getLetters(currentAttempts, task);
 
-                return new WaitFeedbackState(letters, currentAttempts.size(), task, user.getActiveGifts());
+                return new WaitFeedbackState(letters, commonService.getTreeState(user.getActiveGifts()), currentAttempts.size(), task, user.getActiveGifts());
             }
         } else if (optionalTask.isEmpty()) {
             return new WaitLotteryState(
                     user.getActiveGifts(),
+                    commonService.getTreeState(user.getActiveGifts()),
                     configService.getLotteryMessage(),
                     user.getTicketNumber(),
                     configService.getLotteryDate(),
@@ -176,7 +177,7 @@ public class AttemptService {
                 || currentAttempts.size() >= configService.getTasksCount()
                 || isExistWord
         )) {
-            return new WaitFeedbackState(letters, currentAttempts.size(), task, user.getActiveGifts());
+            return new WaitFeedbackState(letters, commonService.getTreeState(user.getActiveGifts()), currentAttempts.size(), task, user.getActiveGifts());
         }
 
         // WaitLottery
@@ -185,6 +186,7 @@ public class AttemptService {
         ) {
             return new WaitLotteryState(
                     user.getActiveGifts(),
+                    commonService.getTreeState(user.getActiveGifts()),
                     configService.getLotteryMessage(),
                     user.getTicketNumber(),
                     configService.getLotteryDate(),
@@ -194,12 +196,13 @@ public class AttemptService {
 
         // WaitNextGame
         if (isExistWord || currentAttempts.size() >= configService.getTasksCount()) {
-            return new WaitNextGameState(configService.getWaitNextGameMessage(), user.getActiveGifts());
+            return new WaitNextGameState(configService.getWaitNextGameMessage(), commonService.getTreeState(user.getActiveGifts()), user.getActiveGifts());
         }
 
         // InGame
         return new InGameState(
                 letters,
+                commonService.getTreeState(user.getActiveGifts()),
                 task.getQuestion(),
                 task.getWord().length(),
                 currentAttempts.size(),
@@ -240,9 +243,7 @@ public class AttemptService {
             feedbackRepository.save(new Feedback(user.getId(), task.getId()));
         }
         attemptRepository.save(new Attempt(user.getId(), word, offsetDateTime));
-        if (word.equals(task.getWord().toLowerCase())) {
-            userRepository.updateUsersById(user.getActiveGifts() + 1L, user.getId());
-        }
+        userRepository.updateUsersById(user.getActiveGifts() + 1L, user.getId());
 
         return new State();
     }

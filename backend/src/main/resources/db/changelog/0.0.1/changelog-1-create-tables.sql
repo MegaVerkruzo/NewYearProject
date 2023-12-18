@@ -131,7 +131,9 @@ WHERE id = 4;
 UPDATE task
 SET feedback_question = 'О каких еще возможностях или сервисах, предоставляемых компанией, вам было бы интересно узнать?'
 WHERE id = 5;
-DELETE FROM config WHERE id = 'feedback_question';
+DELETE
+FROM config
+WHERE id = 'feedback_question';
 --rollback ALTER TABLE task DROP COLUMN feedback_question;
 --rollback INSERT INTO config (id, str_property) VALUES ('feedback_question', 'Как вам вопрос?');
 
@@ -146,3 +148,33 @@ UPDATE task
 SET after_feedback_response = 'Спасибо, что учавствовали и бла-бла-бла'
 WHERE id = 5;
 --rollback ALTER TABLE task DROP COLUMN after_feedback_response;
+
+--changeset GrunskiiAleksei:14
+--comment update users table
+ALTER TABLE users
+    DROP COLUMN username;
+ALTER TABLE users
+    ADD COLUMN username VARCHAR(255);
+
+--changeset GrunskiiAleksei:15
+--comment add new treeState table
+CREATE TABLE tree_state
+(
+    active_gifts_count INTEGER UNIQUE NOT NULL PRIMARY KEY,
+    non_active_text    VARCHAR(255),
+    active_text        VARCHAR(255)
+);
+
+INSERT INTO tree_state (active_gifts_count, non_active_text, active_text)
+VALUES (0, 'Вы пока не учавствуете в розыгрыше', 'Для участия в розыгрыше подарков нужно угадать хотя бы одно слово.'),
+       (1, 'Ура, вы участник розыгрыша подарков 1-го уровня.',
+        'Чтобы участвовать в розыгрше 2-го и более уровней, нужно отгадать больше слов.'),
+       (2, 'Поздравляю! Вы участник розыгрыша подарков 2-го уровня.',
+        'Чтобы участвовать в розыгрше 3-го и более уровней, нужно отгадать больше слов.'),
+       (3, 'И вы снова нас поражаете! Вы участник розыгрыша подарков 3-го уровня.',
+        'Чтобы участвовать в розыгрше 4-го и 5-го уровней, нужно отгадать больше слов.'),
+       (4, 'Вы молодец и участник розыгрыша подарков 4-го уровня.',
+        'Чтобы участвовать во всех розыгрышах, нужно ответить ещё на одно слово.'),
+       (5,
+        'Поздравляем вас! Вы учавствует в розыгрышах всех уровней Поздравляем вас! Вы учавствует в розыгрышах всех уровней :):)',
+        '');

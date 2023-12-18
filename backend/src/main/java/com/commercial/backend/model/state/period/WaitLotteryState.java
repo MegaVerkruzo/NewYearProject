@@ -1,8 +1,8 @@
 package com.commercial.backend.model.state.period;
 
+import com.commercial.backend.db.entities.TreeState;
 import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.model.state.State;
-import com.commercial.backend.service.CommonService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -27,10 +27,10 @@ public class WaitLotteryState extends State {
     private final OffsetDateTime lotteryTime;
     private final String textWithLink;
 
-    public WaitLotteryState(Integer activeGifts, String waitLotteryText, Integer ticketNumber, OffsetDateTime startLotteryTime, String textWithLink) {
+    public WaitLotteryState(Integer activeGifts, TreeState state, String waitLotteryText, Integer ticketNumber, OffsetDateTime startLotteryTime, String textWithLink) {
         this.text = waitLotteryText;
-        this.activePrizes = CommonService.getActivePrizes(activeGifts);
-        this.nonActivePrizes = CommonService.getNonActivePrizes(activeGifts);
+        this.activePrizes = state.getActiveText();
+        this.nonActivePrizes = state.getNonActiveText();
         this.gameState = waitEndLottery;
         this.activeGifts = activeGifts;
         this.ticketNumber = ticketNumber;

@@ -1,10 +1,10 @@
 package com.commercial.backend.model.state.period;
 
 import com.commercial.backend.db.entities.Task;
+import com.commercial.backend.db.entities.TreeState;
 import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.model.game.LetterColor;
 import com.commercial.backend.model.state.State;
-import com.commercial.backend.service.CommonService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -30,11 +30,11 @@ public class WaitFeedbackState extends State {
     private final Integer activeGifts;
     private final Integer currentLine;
 
-    public WaitFeedbackState(List<LetterColor> letters, Integer currentLine, Task task, Integer activeGifts) {
+    public WaitFeedbackState(List<LetterColor> letters, TreeState state, Integer currentLine, Task task, Integer activeGifts) {
         this.letters = letters;
         this.currentLine = currentLine;
-        this.activePrizes = CommonService.getActivePrizes(activeGifts);
-        this.nonActivePrizes = CommonService.getNonActivePrizes(activeGifts);
+        this.activePrizes = state.getActiveText();
+        this.nonActivePrizes = state.getNonActiveText();
         this.text = task.getQuestion();
         this.feedbackQuestion = task.getFeedbackQuestion();
         this.afterFeedbackResponse = task.getAfterFeedbackResponse();
