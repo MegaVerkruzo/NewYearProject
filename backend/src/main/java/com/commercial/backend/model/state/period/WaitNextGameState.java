@@ -1,8 +1,8 @@
 package com.commercial.backend.model.state.period;
 
+import com.commercial.backend.db.entities.TreeState;
 import com.commercial.backend.model.game.GameState;
 import com.commercial.backend.model.state.State;
-import com.commercial.backend.service.CommonService;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
@@ -20,9 +20,9 @@ public class WaitNextGameState extends State {
     private final String nonActivePrizes;
     private final Integer activeGifts;
 
-    public WaitNextGameState(String waitNextGameText, Integer activeGifts) {
-        this.activePrizes = CommonService.getActivePrizes(activeGifts);
-        this.nonActivePrizes = CommonService.getNonActivePrizes(activeGifts);
+    public WaitNextGameState(String waitNextGameText, TreeState state, Integer activeGifts) {
+        this.activePrizes = state.getActiveText();
+        this.nonActivePrizes = state.getNonActiveText();
         this.text = waitNextGameText;
         this.gameState = waitNextGame;
         this.activeGifts = activeGifts;
