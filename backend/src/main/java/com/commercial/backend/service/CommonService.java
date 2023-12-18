@@ -22,7 +22,7 @@ import java.util.function.Function;
 @Service
 @AllArgsConstructor
 public class CommonService {
-    private final Logger logger = LoggerFactory.getLogger(CommonService.class);
+    private static final Logger logger = LoggerFactory.getLogger(CommonService.class);
     private static final ObjectMapper mapper = new ObjectMapper();
     private final ConfigService configService;
     private final TreeStateRepository treeStateRepository;
@@ -64,6 +64,7 @@ public class CommonService {
         if (token == null) {
             throw new NotValidException();
         }
+        logger.error("check it - token :" + token);
         // :TODO add exception handling
         String userJson = URLDecoder.decode(token, StandardCharsets.UTF_8).split("&")[1].split("=")[1];
         T result;
