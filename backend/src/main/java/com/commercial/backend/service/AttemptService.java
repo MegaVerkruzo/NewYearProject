@@ -240,7 +240,9 @@ public class AttemptService {
             feedbackRepository.save(new Feedback(user.getId(), task.getId()));
         }
         attemptRepository.save(new Attempt(user.getId(), word, offsetDateTime));
-        userRepository.updateUsersById(user.getActiveGifts() + 1L, user.getId());
+        if (word.equals(task.getWord().toLowerCase())) {
+            userRepository.updateUsersById(user.getActiveGifts() + 1L, user.getId());
+        }
 
         return new State();
     }
