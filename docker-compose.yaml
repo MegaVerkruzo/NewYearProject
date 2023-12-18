@@ -36,10 +36,29 @@ services:
     build:
       context: ./admin/
       dockerfile: Dockerfile.admin
+    env_file:
+      - postgres/db.env
     ports:
       - "8000:8000"
     depends_on:
       - postgresSQL
+    profiles:
+      - production
+
+  adminDev:
+    image: "scratch-image-dev"
+    restart: on-failure
+    build:
+      context: ./admin/
+      dockerfile: Dockerfile.admin.dev
+    env_file:
+      - postgres/db.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgresSQL
+    profiles:
+      - development
 
   postgresSQL:
     image: "postgres:15"
