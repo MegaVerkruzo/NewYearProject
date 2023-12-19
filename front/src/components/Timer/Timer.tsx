@@ -1,68 +1,87 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 import TimerSnow from '../../assets/images/TimerSnow.png'
 import TimerBg from '../../assets/images/TimerBG.png'
+import { getTimeDiff } from '../../utils/getTimeDiff'
+import { useMainStore } from '../../store/mainStore'
+
+type Time = {
+  days: number
+  hours: number
+  minutes: number
+}
 
 export const Timer = () => {
+  const timer = useMainStore((state) => state.timer)
+  const [time, setTime] = useState<null | Time>(null)
   const timerRef = useRef<number | null>(null)
 
-  // const onTimerChange = () => {
-  //   const diffInMs =
-  //     new Date('2024-01-01T00:00:00.000+03:00') -
-  //     new Date(new Date().toLocaleString('en', { timeZone: 'Europe/Moscow' }))
-  //   const days = parseInt(diffInMs / (1000 * 60 * 60 * 24))
-  //   const hours = parseInt(diffInMs / (1000 * 60 * 60)) % 24
-  //   const minutes = parseInt(diffInMs / (1000 * 60)) % 60
-  //   store.setUntilNewYear({ days, hours, minutes })
-  // }
+  const calcTime = useCallback(() => {
+    const curTime = getTimeDiff(timer)
+
+    setTime((_prev) => {
+      if (!curTime) return curTime
+      return { ...curTime }
+    })
+  }, [timer])
 
   useEffect(() => {
-    // onTimerChange()
+    calcTime()
     timerRef.current = setInterval(() => {
-      // onTimerChange()
-    }, 1000)
+      calcTime()
+    }, 60000)
 
     return () => {
       if (!timerRef.current) return
       clearInterval(timerRef.current)
     }
-  }, [])
+  }, [calcTime])
 
   return (
-    <div className="timer">
-      <div className="header__timer">
-        <div className="header__row">
-          <img src={TimerSnow} alt="Снежок" className="timer__snow" />
-          {/* <img src={TimerBg} alt="Timer Background" className="timer_bg" /> */}
-          <div className="timer__title">До розыгрыша осталось:</div>
-        </div>
-        <div className="header__row">
-          <div className="timer__main">
-            <div className="timer__block">
-              <div className="timer__num">2</div>
-              <div className="timer__num">3</div>
-              <div className="timer__text">Дней</div>
+    <>
+      {time ? (
+        <div className="timer">
+          <div className="header__timer">
+            <div className="header__row">
+              <img src={TimerSnow} alt="Снежок" className="timer__snow" />
+              <div className="timer__title">До розыгрыша осталось:</div>
             </div>
-            <div className="timer__splitter">
-              <div className="splitter__circle" />
-              <div className="splitter__circle" />
-            </div>
-            <div className="timer__block">
-              <div className="timer__num">0</div>
-              <div className="timer__num">6</div>
-              <div className="timer__text">Часов</div>
-            </div>
-            <div className="timer__splitter">
-              <div className="splitter__circle" />
-              <div className="splitter__circle" />
-            </div>
-            <div className="timer__block">
-              <div className="timer__num">1</div>
-              <div className="timer__num">2</div>
-              <div className="timer__text">Минут</div>
+            <div className="header__row timer-row">
+              <div className="timer__main">
+                <div className="timer__block">
+                  <div className="timer__num">{Math.floor(time.days / 10)}</div>
+                  <div className="timer__num">{time.days % 10}</div>
+                  <div className="timer__text">Дней</div>
+                </div>
+                <div className="timer__splitter">
+                  <div className="splitter__circle" />
+                  <div className="splitter__circle" />
+                </div>
+                <div className="timer__block">
+                  <div className="timer__num">
+                    {Math.floor(time.hours / 10)}
+                  </div>
+                  <div className="timer__num">{time.hours % 10}</div>
+                  <div className="timer__text">Часов</div>
+                </div>
+                <div className="timer__splitter">
+                  <div className="splitter__circle" />
+                  <div className="splitter__circle" />
+                </div>
+                <div className="timer__block">
+                  <div className="timer__num">
+                    {Math.floor(time.minutes / 10)}
+                  </div>
+                  <div className="timer__num">{time.minutes % 10}</div>
+                  <div className="timer__text">Минут</div>
+                </div>
+              </div>
+              <img src={TimerBg} alt="Timer Background" className="timer_bg" />
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      ) : (
+        <></>
+      )}
+    </>
   )
 }

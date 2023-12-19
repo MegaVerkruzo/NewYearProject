@@ -81,7 +81,9 @@ export const TreeCanvas: FC<TreeProps> = ({
     <div
       className="canvas-wrapper"
       ref={containerRef}
-      onClick={(e) => e.stopPropagation()}
+      onClick={(e) => {
+        e.stopPropagation()
+      }}
     >
       <TreeMessage text={messageText} />
     </div>
