@@ -14,8 +14,6 @@ export const Main = () => {
     if (isError && error instanceof AxiosError) {
       const err = error as AxiosError<ApiError>
       if (err.response?.data.exception === ApiErrorString.NotRegistered) {
-        navigate('/testPage')
-        return
         navigate('/register')
       }
       return
@@ -23,8 +21,8 @@ export const Main = () => {
 
     if (data) {
       console.log('Main components data ', data)
-      navigate('/testPage')
-      return
+      // navigate('/testPage')
+      // return
       switch (data.gameState) {
         case 'beforeGame':
           navigate('/beforeGame', { state: data })
