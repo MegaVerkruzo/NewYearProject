@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Message } from '../components/Message.tsx/Message'
 import HowToPlay from '../components/HowToPlay/HowToPlay'
 import { Rules } from '../components/Rules/Rules'
@@ -8,8 +8,15 @@ import { Feedback } from '../components/Feedback/Feedback'
 import { Game } from '../components/Game/Game'
 import { Letter } from '../types/game'
 import { Tree } from '../components/Tree/Tree'
+import { useMainStore } from '../store/mainStore'
 
 const TestPage = () => {
+  const setTimer = useMainStore((state) => state.setTimer)
+
+  useLayoutEffect(() => {
+    setTimer('2023-12-21T22:52:27.777Z')
+  }, [setTimer])
+
   const letters: Letter[] = [
     { letter: 'а', state: 'yellow' },
     { letter: 'в', state: 'yellow' },

@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react'
 import Logo from '../../assets/svgs/LogoIcon'
 import NoSound from '../../assets/svgs/NoSoundIcon'
 import Sound from '../../assets/svgs/SoundIcon'
-import TimerSnow from '../../assets/images/TimerSnow.png'
 import { Timer } from '../Timer/Timer'
 import cn from 'classnames'
-import TimerBg from '../../assets/images/TimerBG.png'
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -50,7 +48,7 @@ export const Header = () => {
                 </button>
               </div>
             </div>
-            {/* <Timer /> */}
+            <Timer />
             <div className="header__right">
               <div
                 className={cn('header__burger', {

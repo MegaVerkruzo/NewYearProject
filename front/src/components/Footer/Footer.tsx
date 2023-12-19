@@ -26,7 +26,7 @@ export const Footer = () => {
               <div className="footer__text text__light">Все права защищены</div>
               <div className="footer__text">
                 <a
-                  href="https://telegra.ph/Politika-v-otnoshenii-obrabotki-personalnyh-dannyh-12-17-2"
+                  href="https://telegra.ph/Politika-v-otnoshenii-obrabotki-personalnyh-dannyh-12-18-6"
                   target="_blank"
                   className="underline"
                 >
@@ -83,7 +83,7 @@ export const Footer = () => {
                 </div>
                 <div className="footer__text">
                   <a
-                    href="https://telegra.ph/Politika-v-otnoshenii-obrabotki-personalnyh-dannyh-12-17-2"
+                    href="https://telegra.ph/Politika-v-otnoshenii-obrabotki-personalnyh-dannyh-12-18-6"
                     target="_blank"
                     className="underline"
                   >

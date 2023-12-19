@@ -63,8 +63,6 @@ export class TreeEntity extends PIXI.Application {
     this.mainContainer.sortableChildren = true
     this.mainContainer.interactive = true
     this.mainContainer.on('click', (e) => {
-      console.log(123)
-
       setMessage(null)
     })
 
