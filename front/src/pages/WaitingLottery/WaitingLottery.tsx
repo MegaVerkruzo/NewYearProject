@@ -14,14 +14,14 @@ export const WaitingLottery = () => {
     activeGifts,
     activePrizes,
     nonActivePrizes,
-    lotteryTimer,
+    lotteryTime,
     textWithLink,
     ticketNumber,
   } = location.state
 
   useLayoutEffect(() => {
-    setTimer(lotteryTimer)
-  }, [setTimer, lotteryTimer])
+    setTimer(lotteryTime)
+  }, [setTimer, lotteryTime])
 
   return (
     <div className="main-wrapper">
