@@ -6,4 +6,5 @@ export interface TreeEntityOptions extends Partial<PIXI.IApplicationOptions> {
   activeGifts: number
   activePrizes?: string
   nonActivePrizes?: string
+  setMessage: (text: string | null) => void
 }

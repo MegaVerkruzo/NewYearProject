@@ -14,6 +14,8 @@ export const Main = () => {
     if (isError && error instanceof AxiosError) {
       const err = error as AxiosError<ApiError>
       if (err.response?.data.exception === ApiErrorString.NotRegistered) {
+        navigate('/testPage')
+        return
         navigate('/register')
       }
       return

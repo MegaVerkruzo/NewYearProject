@@ -24,6 +24,7 @@ export class TreeEntity extends PIXI.Application {
   readonly nonActivePrizes?: string
   readonly clientWidth: number
   readonly clientHeight: number
+  readonly setMessage: (text: string | null) => void
 
   mainContainer = new PIXI.Container()
 
@@ -34,6 +35,7 @@ export class TreeEntity extends PIXI.Application {
       activeGifts,
       activePrizes,
       nonActivePrizes,
+      setMessage,
       ...options
     } = treeEntityOptions
     super(options)
@@ -43,6 +45,7 @@ export class TreeEntity extends PIXI.Application {
     this.activeGifts = activeGifts
     this.activePrizes = activePrizes
     this.nonActivePrizes = nonActivePrizes
+    this.setMessage = setMessage
     this.clientWidth = this.screen.width
     this.clientHeight = this.screen.height
 
@@ -58,6 +61,13 @@ export class TreeEntity extends PIXI.Application {
     this.mainContainer.pivot.set(0.5)
     this.mainContainer.x = this.clientWidth / 2 - this.mainContainer.width / 2
     this.mainContainer.sortableChildren = true
+    this.mainContainer.interactive = true
+    this.mainContainer.on('click', (e) => {
+      console.log(123)
+
+      setMessage(null)
+    })
+
     this.stage.addChild(this.mainContainer)
     this.renderer.plugins.interaction.autoPreventDefault = false
 
@@ -79,6 +89,11 @@ export class TreeEntity extends PIXI.Application {
     giftSprite1.x = 13
     giftSprite1.y = 1211
     giftSprite1.zIndex = 4
+    giftSprite1.interactive = true
+    giftSprite1.on('click', (e) => {
+      e.stopPropagation()
+      this.activeGifts < 1 ? this.onDarkGiftClick() : this.onActiveGiftClick()
+    })
     this.mainContainer.addChild(giftSprite1)
 
     const giftTexture2 = this.getTexture(this.getGiftNameByCount(2))
@@ -86,6 +101,11 @@ export class TreeEntity extends PIXI.Application {
     giftSprite2.x = 474
     giftSprite2.y = 1195
     giftSprite2.zIndex = 6
+    giftSprite2.interactive = true
+    giftSprite2.on('click', (e) => {
+      e.stopPropagation()
+      this.activeGifts < 2 ? this.onDarkGiftClick() : this.onActiveGiftClick()
+    })
     this.mainContainer.addChild(giftSprite2)
 
     const giftTexture3 = this.getTexture(this.getGiftNameByCount(3))
@@ -93,6 +113,11 @@ export class TreeEntity extends PIXI.Application {
     giftSprite3.x = 631
     giftSprite3.y = 1158
     giftSprite3.zIndex = 3
+    giftSprite3.interactive = true
+    giftSprite3.on('click', (e) => {
+      e.stopPropagation()
+      this.activeGifts < 3 ? this.onDarkGiftClick() : this.onActiveGiftClick()
+    })
     this.mainContainer.addChild(giftSprite3)
 
     const giftTexture4 = this.getTexture(this.getGiftNameByCount(4))
@@ -100,6 +125,11 @@ export class TreeEntity extends PIXI.Application {
     giftSprite4.x = 168
     giftSprite4.y = 1118
     giftSprite4.zIndex = 4
+    giftSprite4.interactive = true
+    giftSprite4.on('click', (e) => {
+      e.stopPropagation()
+      this.activeGifts < 4 ? this.onDarkGiftClick() : this.onActiveGiftClick()
+    })
     this.mainContainer.addChild(giftSprite4)
 
     const giftTexture5 = this.getTexture(this.getGiftNameByCount(5))
@@ -107,6 +137,11 @@ export class TreeEntity extends PIXI.Application {
     giftSprite5.x = 334
     giftSprite5.y = 1102
     giftSprite5.zIndex = 5
+    giftSprite5.interactive = true
+    giftSprite5.on('click', (e) => {
+      e.stopPropagation()
+      this.activeGifts < 5 ? this.onDarkGiftClick() : this.onActiveGiftClick()
+    })
     this.mainContainer.addChild(giftSprite5)
 
     const shadowGiftTexture = this.getTexture(Textures.ShadowGift)
@@ -116,7 +151,17 @@ export class TreeEntity extends PIXI.Application {
     this.mainContainer.addChild(shadowGiftSptite)
   }
 
-  onGiftClick() {}
+  onDarkGiftClick() {
+    if (this.nonActivePrizes !== undefined) {
+      this.setMessage(this.nonActivePrizes)
+    }
+  }
+
+  onActiveGiftClick() {
+    if (this.activePrizes !== undefined) {
+      this.setMessage(this.activePrizes)
+    }
+  }
 
   getTexture(name: string): PIXI.Texture {
     return this.textures.textures[name] || PIXI.Texture.from('')

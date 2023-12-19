@@ -79,7 +79,6 @@ h3 {
 
 .header__right {
   display: flex;
-  align-items: center;
 }
 .header__right .header__burger {
   display: none;
@@ -105,19 +104,25 @@ h3 {
   align-items: center;
   margin-top: 10px;
 }
-.header__timer .timer_bg {
+
+.header__row {
+  position: relative;
+  text-align: center;
+}
+
+.timer_bg {
   position: absolute;
   display: block;
   z-index: 1;
+  min-width: 350px;
+  left: -50px;
 }
-.header__timer .timer__title {
-  margin-bottom: 10px;
-  z-index: 2;
+.timer__title {
+  position: relative;
+  top: -20px;
 }
 
 .timer__main {
-  z-index: 2;
-  position: relative;
   display: grid;
   grid-template-columns: 5fr 1fr 5fr 1fr 5fr;
 }
@@ -367,9 +372,8 @@ h1 {
 .message {
   min-height: 63px;
   background: white;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
+  border-radius: 15px;
+  border-radius: 15px;
   font-size: 1.2rem;
   box-shadow: 5px 5px 0 #ededed;
   position: relative;
@@ -378,6 +382,10 @@ h1 {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.message.message--angle {
+  border-bottom-left-radius: 0;
 }
 
 .message span {
@@ -395,6 +403,19 @@ h1 {
   bottom: -18px;
   left: 0px;
   z-index: 2;
+}
+
+.tree-message {
+  position: absolute;
+  width: 100%;
+  bottom: 30%;
+  left: 0;
+  opacity: 0;
+  transition: 0.4s opacity ease-out;
+}
+
+.tree-message--visible {
+  opacity: 1;
 }
 
 .main-page__btn {
@@ -801,6 +822,7 @@ h1 {
 
 /* CANVAS */
 .canvas-wrapper {
+  position: relative;
 }
 
 .canvas-wrapper canvas {
@@ -1031,10 +1053,6 @@ h1 {
     padding: 0;
   }
 
-  .header__row:nth-child(2) {
-    margin-top: -7%;
-  }
-
   .timer__snow {
     position: relative;
     display: block;
@@ -1058,16 +1076,8 @@ h1 {
     padding: 20px 50px;
   }
 
-  .timer_bg {
-    max-width: 400px;
-  }
-
   .timer__block {
     gap: 5px 5px;
-  }
-
-  .timer__title {
-    margin-bottom: 5px;
   }
 
   .timer__num {
@@ -1165,10 +1175,6 @@ h1 {
     gap: 10px;
   }
 
-  .timer_bg {
-    max-width: 400px;
-  }
-
   .game-field__wrapper {
     min-width: min(85vw, 95vh);
   }
@@ -1194,10 +1200,6 @@ h1 {
   }
 }
 @media screen and (max-width: 440px) {
-  .timer_bg {
-    max-width: 330px;
-  }
-
   .container {
     padding: 0 10px;
   }

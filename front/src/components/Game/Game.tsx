@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import cn from 'classnames'
 import { Letter } from '../../types/game'
 import { useNewAttempt } from '../../api/newAttempt'
@@ -41,23 +41,6 @@ export const Game: FC<GameProps> = ({
   const [canAttempt, setCanAttempt] = useState(false)
   const clearField = () => setInputWord(new Array(wordLength).fill(''))
 
-  const keyboardHandler = (e: KeyboardEvent) => {
-    if (!isEnd) {
-      if (e.key === 'Backspace') {
-        e.preventDefault()
-        onChangeInput()
-      } else if (e.key === 'Enter') {
-        console.log(e.key, e.key === 'Enter', canAttempt)
-        e.preventDefault()
-        onNewAttempt()
-      } else if (e.key === ' ') {
-        e.preventDefault()
-      } else if (russianLetters.includes(e.key)) {
-        onChangeInput(e.key)
-      }
-    }
-  }
-
   const {
     mutate: sendNewAttempt,
     error: mutateError,
@@ -65,16 +48,35 @@ export const Game: FC<GameProps> = ({
     isPending,
   } = useNewAttempt({ clearField })
 
-  const onNewAttempt = () => {
+  const onNewAttempt = useCallback(() => {
     console.log(inputWord)
 
-    // if (inputWord.some((item) => item === '')) return
+    if (inputWord.some((item) => item === '')) return
     console.log('onNewAttempt', canAttempt)
 
     setError(null)
     const transformedWord = inputWord.join('').toLocaleLowerCase()
     sendNewAttempt({ word: transformedWord })
-  }
+  }, [canAttempt, inputWord, sendNewAttempt])
+
+  const keyboardHandler = useCallback(
+    (e: KeyboardEvent) => {
+      if (!isEnd) {
+        if (e.key === 'Backspace') {
+          e.preventDefault()
+          onChangeInput()
+        } else if (e.key === 'Enter') {
+          e.preventDefault()
+          onNewAttempt()
+        } else if (e.key === ' ') {
+          e.preventDefault()
+        } else if (russianLetters.includes(e.key)) {
+          onChangeInput(e.key)
+        }
+      }
+    },
+    [isEnd, onNewAttempt],
+  )
 
   const onChangeInput = (letter?: string) => {
     if (letter) {
@@ -127,7 +129,7 @@ export const Game: FC<GameProps> = ({
     return () => {
       document.removeEventListener('keydown', keyboardHandler)
     }
-  }, [])
+  }, [keyboardHandler])
 
   return (
     <div className={cn('game', { open: isKeyboardOpen })}>

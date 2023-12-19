@@ -34,7 +34,7 @@ export const Rules = () => {
           </div>
           <div className="rule__title">Нарядите ёлочку</div>
           <div className="rule__text">
-            За каждое угаданное слово на ёлке будут появлятся украшения
+            За каждое угаданное слово на ёлке будут появляться украшения
           </div>
         </div>
         <div className="rules__item">
