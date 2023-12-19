@@ -11,6 +11,10 @@ type NewAttemptData = {
   word: string
 }
 
+type SuccessRes = {
+  shouldSound: boolean
+}
+
 type NewAttemptParams = {
   clearField: () => void
 }
@@ -18,19 +22,19 @@ type NewAttemptParams = {
 export const useNewAttempt = ({ clearField }: NewAttemptParams) => {
   const client = useQueryClient()
   return useMutation({
-    mutationKey: ['newAttepmt'],
+    mutationKey: ['newAttempt'],
     mutationFn: (mutationData: NewAttemptData) => {
-      return baseApiRequest({
+      return baseApiRequest<SuccessRes>({
         url: '/game/new_attempt/v2',
         method: 'POST',
         data: mutationData,
       })
     },
     retry: false,
-    onSuccess: () => {
+    onSuccess: (data: SuccessRes) => {
       client.invalidateQueries({ queryKey: ['getState'] })
       clearField()
-      if (checkSound()) {
+      if (data.shouldSound && checkSound()) {
         audio.play()
       }
     },
