@@ -115,7 +115,7 @@ export const Register = () => {
                   <label htmlFor="checkbox2">
                     Я подтверждаю свое согласие <br />
                     <a
-                      href="https://telegra.ph/Politika-v-otnoshenii-obrabotki-personalnyh-dannyh-12-17-2"
+                      href="https://telegra.ph/Politika-v-otnoshenii-obrabotki-personalnyh-dannyh-12-18-6"
                       target="_blank"
                       className="underline"
                     >
