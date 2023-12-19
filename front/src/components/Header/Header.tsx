@@ -25,7 +25,7 @@ export const Header = () => {
 
   useEffect(() => {
     const value = localStorage.getItem('isSound')
-    if (value !== undefined) {
+    if (value !== null) {
       setIsSound(value === 'true' ? true : false)
     } else {
       localStorage.setItem('isSound', 'true')
