@@ -44,7 +44,7 @@ export type WaitNextGameState = {
 export type WaitEndLotteryState = {
   gameState: 'waitEndLottery'
   text: string
-  lotteryTimer: string | null
+  lotteryTime: string | null
   ticketNumber: number
   textWithLink: string
 } & Gifts
