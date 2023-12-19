@@ -2,6 +2,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { baseApiRequest } from './baseApiRequest'
 import { AxiosError } from 'axios'
 import { ApiError, ApiErrorString } from '../types/error'
+import Sound from '../assets/audio/magic_sound.mp3'
+import { checkSound } from '../utils/checkSound'
+
+const audio = new Audio(Sound)
 
 type NewAttemptData = {
   word: string
@@ -26,6 +30,9 @@ export const useNewAttempt = ({ clearField }: NewAttemptParams) => {
     onSuccess: () => {
       client.invalidateQueries({ queryKey: ['getState'] })
       clearField()
+      if (checkSound()) {
+        audio.play()
+      }
     },
     onError: (error: AxiosError) => {
       const err = error as AxiosError<ApiError>

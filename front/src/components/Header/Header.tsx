@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Logo from '../../assets/svgs/LogoIcon'
 import NoSound from '../../assets/svgs/NoSoundIcon'
 import Sound from '../../assets/svgs/SoundIcon'
@@ -9,10 +9,13 @@ import TimerBg from '../../assets/images/TimerBG.png'
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isSound, setIsSound] = useState(false)
+  const [isSound, setIsSound] = useState(true)
 
   const toggleIsSound = () => {
-    setIsSound((prev) => !prev)
+    setIsSound((prev) => {
+      localStorage.setItem('isSound', (!prev).toString())
+      return !prev
+    })
   }
 
   const onMenuOpen = () => {
@@ -21,6 +24,19 @@ export const Header = () => {
       return !prev
     })
   }
+
+  useEffect(() => {
+    const value = localStorage.getItem('isSound')
+    if (value !== undefined) {
+      setIsSound(value === 'true' ? true : false)
+    } else {
+      localStorage.setItem('isSound', 'true')
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log(isSound, localStorage.getItem('isSound'))
+  }, [isSound])
 
   return (
     <header className="header">
@@ -34,9 +50,7 @@ export const Header = () => {
                 </button>
               </div>
             </div>
-            {/* <div>
-              <img src={TimerSnow} alt="Снежок" className="timer__snow" />
-            </div> */}
+            {/* <Timer /> */}
             <div className="header__right">
               <div
                 className={cn('header__burger', {
@@ -62,20 +76,6 @@ export const Header = () => {
             </div>
           </div>
         </div>
-
-        {/* <div className="header__row">
-          <div className="header__timer">
-            <img src={TimerBg} alt="Timer Background" className="timer_bg" />
-            <div className="timer__title">
-              {window.innerWidth > 1140 && (
-                <img src={TimerSnow} alt="Снежок" className="timer__snow" />
-              )}
-              До нового года осталось:
-            </div>
-            <Timer />
-          </div>
-        </div>
-         */}
       </div>
     </header>
   )

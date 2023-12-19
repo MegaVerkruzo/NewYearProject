@@ -1,7 +1,8 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { TreeEntity } from './TreeEntity'
 import * as PIXI from 'pixi.js'
 import { useLoadAsset } from './useLoadAsset'
+import { TreeMessage } from './TreeMessage'
 
 type TreeProps = {
   activeGifts: number
@@ -18,6 +19,7 @@ export const TreeCanvas: FC<TreeProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [app, setApp] = useState<TreeEntity | null>(null)
+  const [messageText, setMessageText] = useState<string | null>(null)
 
   const TreePath = `/Tree${activeGifts}.png`
   const spritesheet = useLoadAsset<PIXI.Spritesheet>(SpriteSheet)
@@ -39,6 +41,7 @@ export const TreeCanvas: FC<TreeProps> = ({
       activeGifts,
       activePrizes,
       nonActivePrizes,
+      setMessage: setMessageText,
       width: window.innerWidth,
       // height: window.innerHeight,
       resolution: window.devicePixelRatio,
@@ -62,5 +65,25 @@ export const TreeCanvas: FC<TreeProps> = ({
     }
   }, [app])
 
-  return <div className="canvas-wrapper" ref={containerRef}></div>
+  const closeMessageHandler = useCallback(() => {
+    setMessageText(null)
+  }, [setMessageText])
+
+  useEffect(() => {
+    document.addEventListener('click', closeMessageHandler)
+
+    return () => {
+      document.removeEventListener('click', closeMessageHandler)
+    }
+  }, [closeMessageHandler])
+
+  return (
+    <div
+      className="canvas-wrapper"
+      ref={containerRef}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <TreeMessage text={messageText} />
+    </div>
+  )
 }

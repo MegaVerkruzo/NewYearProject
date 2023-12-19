@@ -8,7 +8,7 @@ type MessageProps = {
 export const Message: FC<MessageProps> = ({ text }) => {
   return (
     <div className="message-wrapper">
-      <div className="message">
+      <div className="message message--angle">
         <span dangerouslySetInnerHTML={{ __html: text }}></span>
       </div>
       <div className="message-svg">

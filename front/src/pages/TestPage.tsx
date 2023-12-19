@@ -32,7 +32,7 @@ const TestPage = () => {
     <div className="main-wrapper">
       <div className="main-page__row">
         <Tree
-          activeGifts={5}
+          activeGifts={3}
           activePrizes="Активный подарок"
           nonActivePrizes="Неактивный подарок"
         />
