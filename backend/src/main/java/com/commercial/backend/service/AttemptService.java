@@ -13,6 +13,7 @@ import com.commercial.backend.model.game.LetterColor;
 import com.commercial.backend.model.json.JsonWord;
 import com.commercial.backend.model.state.State;
 import com.commercial.backend.model.state.period.AfterLotteryState;
+import com.commercial.backend.model.state.period.AttemptState;
 import com.commercial.backend.model.state.period.BeforeGameState;
 import com.commercial.backend.model.state.period.InGameState;
 import com.commercial.backend.model.state.period.WaitFeedbackState;
@@ -245,9 +246,10 @@ public class AttemptService {
         attemptRepository.save(new Attempt(user.getId(), word, offsetDateTime));
         if (word.equalsIgnoreCase(task.getWord())) {
             userRepository.updateUsersById(user.getActiveGifts() + 1L, user.getId());
+            return new AttemptState(true);
+        } else {
+            return new AttemptState(false);
         }
-
-        return new State();
     }
 
     private List<LetterColor> getLetters(List<Attempt> attempts, Task task) {
