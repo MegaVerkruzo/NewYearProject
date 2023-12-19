@@ -49,15 +49,12 @@ export const Game: FC<GameProps> = ({
   } = useNewAttempt({ clearField })
 
   const onNewAttempt = useCallback(() => {
-    console.log(inputWord)
-
     if (inputWord.some((item) => item === '')) return
-    console.log('onNewAttempt', canAttempt)
 
     setError(null)
     const transformedWord = inputWord.join('').toLocaleLowerCase()
     sendNewAttempt({ word: transformedWord })
-  }, [canAttempt, inputWord, sendNewAttempt])
+  }, [inputWord, sendNewAttempt])
 
   const keyboardHandler = useCallback(
     (e: KeyboardEvent) => {

@@ -62,7 +62,8 @@ export class TreeEntity extends PIXI.Application {
     this.mainContainer.x = this.clientWidth / 2 - this.mainContainer.width / 2
     this.mainContainer.sortableChildren = true
     this.mainContainer.interactive = true
-    this.mainContainer.on('click', (e) => {
+
+    this.mainContainer.on('pointerdown', (e) => {
       setMessage(null)
     })
 
@@ -88,7 +89,7 @@ export class TreeEntity extends PIXI.Application {
     giftSprite1.y = 1211
     giftSprite1.zIndex = 4
     giftSprite1.interactive = true
-    giftSprite1.on('click', (e) => {
+    giftSprite1.on('pointerdown', (e) => {
       e.stopPropagation()
       this.activeGifts < 1 ? this.onDarkGiftClick() : this.onActiveGiftClick()
     })
@@ -100,7 +101,7 @@ export class TreeEntity extends PIXI.Application {
     giftSprite2.y = 1195
     giftSprite2.zIndex = 6
     giftSprite2.interactive = true
-    giftSprite2.on('click', (e) => {
+    giftSprite2.on('pointerdown', (e) => {
       e.stopPropagation()
       this.activeGifts < 2 ? this.onDarkGiftClick() : this.onActiveGiftClick()
     })
@@ -112,7 +113,7 @@ export class TreeEntity extends PIXI.Application {
     giftSprite3.y = 1158
     giftSprite3.zIndex = 3
     giftSprite3.interactive = true
-    giftSprite3.on('click', (e) => {
+    giftSprite3.on('pointerdown', (e) => {
       e.stopPropagation()
       this.activeGifts < 3 ? this.onDarkGiftClick() : this.onActiveGiftClick()
     })
@@ -124,7 +125,7 @@ export class TreeEntity extends PIXI.Application {
     giftSprite4.y = 1118
     giftSprite4.zIndex = 4
     giftSprite4.interactive = true
-    giftSprite4.on('click', (e) => {
+    giftSprite4.on('pointerdown', (e) => {
       e.stopPropagation()
       this.activeGifts < 4 ? this.onDarkGiftClick() : this.onActiveGiftClick()
     })
@@ -136,7 +137,7 @@ export class TreeEntity extends PIXI.Application {
     giftSprite5.y = 1102
     giftSprite5.zIndex = 5
     giftSprite5.interactive = true
-    giftSprite5.on('click', (e) => {
+    giftSprite5.on('pointerdown', (e) => {
       e.stopPropagation()
       this.activeGifts < 5 ? this.onDarkGiftClick() : this.onActiveGiftClick()
     })

@@ -17,7 +17,6 @@ export const Timer = () => {
 
   const calcTime = useCallback(() => {
     const curTime = getTimeDiff(timer)
-    console.log(curTime)
 
     setTime((_prev) => {
       if (!curTime) return curTime

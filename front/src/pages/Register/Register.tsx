@@ -61,7 +61,6 @@ export const Register = () => {
     }
 
     register(fields)
-    console.log(fields)
   }
 
   useEffect(() => {
