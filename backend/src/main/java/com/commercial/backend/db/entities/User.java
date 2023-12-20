@@ -6,10 +6,7 @@ import com.commercial.backend.security.exception.NotValidException;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +43,7 @@ public class User {
     @Column(name = "ticket_number")
     private int ticketNumber;
 
-    private static int randomNumber = 100;
+    private static int randomNumber = 700;
 
     public User(String token, JsonRegistration json) throws NotRegisteredException, NotValidException {
         this.id = parseId(token);
