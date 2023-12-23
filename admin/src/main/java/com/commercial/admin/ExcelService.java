@@ -77,7 +77,7 @@ public class ExcelService {
                 elem.getId().toString(),
                 elem.getUserId().toString(),
                 elem.getTaskId().toString(),
-                elem.getResponse()
+                elem.getResponse() == null ? "" : elem.getResponse()
         );
     }
 
