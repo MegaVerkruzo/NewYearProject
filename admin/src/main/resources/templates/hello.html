@@ -2,31 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <link rel="stylesheet" th:href="@{/styles/petclinic.css}" />
+    <link rel="stylesheet" th:href="@{/styles/petclinic.css}"/>
 </head>
 <body>
-<p th:text="|Hello, world!|" />
-<h1 href="https://testblago-2023.ru/admin/users">Download all table with data!</h1>
-
-<table id="users" class="table table-striped">
-    <thead>
-    <tr>
-        <th>Name</th>
-        <th>Id</th>
-        <th>Email</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${userList}">
-        <td th:text="${user.getName() + ' ' + user.getSurname() + ' ' + user.getMiddleName()}"></td>
-        <td th:text="${user.getId()}"></td>
-        <td th:text="${user.getEmail()}"></td>
-        <td th:text="${user.getPhone()}"></td>
-    </tr>
-    </tbody>
-</table>
-
+<h1>Ссылки на онлайн таблицы</h1>
+<p>
+    <a href="http://localhost:8000">main page</a>
+    <a href="http://localhost:8000/users">users page</a>
+    <a href="http://localhost:8000/feedbacks">feedbacks page</a>
+</p>
+<h1>Скачать таблицы</h1>
+<p>
+    <a href="http://localhost:8000/tables" download="filename">tables.xlsx</a>
+    <a href="http://localhost:8000/prizes" download="filename">prizes.xlsx</a>
+</p>
 </body>
 </html>

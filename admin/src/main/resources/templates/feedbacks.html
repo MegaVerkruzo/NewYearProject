@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" th:href="@{/styles/petclinic.css}" />
+</head>
+<body>
+<h1>Ссылки на онлайн таблицы</h1>
+<p>
+    <a href="http://localhost:8000">main page</a>
+    <a href="http://localhost:8000/users">users page</a>
+    <a href="http://localhost:8000/feedbacks">feedbacks page</a>
+</p>
+<h1>Обратные отзывы</h1>
+<table id="feedbacks" class="table table-striped">
+    <thead>
+    <tr>
+        <th>Phone</th>
+        <th>Question</th>
+        <th>Answer</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="feedback : ${feedbackList}">
+        <td th:text="${feedback.getPhone()}"></td>
+        <td th:text="${feedback.getQuestion()}"></td>
+        <td th:text="${feedback.getAnswer()}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

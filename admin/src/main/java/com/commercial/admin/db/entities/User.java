@@ -37,8 +37,6 @@ public class User {
     @Column(name = "ticket_number")
     private int ticketNumber;
 
-    private static int randomNumber = 100;
-
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
