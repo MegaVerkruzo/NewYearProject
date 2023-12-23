@@ -35,6 +35,17 @@ public class ExcelService {
         return workbook;
     }
 
+    public XSSFWorkbook getPrizes() {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        List<User> list = userRepository.findAll();
+        updateSheet(ticketNumbers(list, 1), workbook.createSheet("1 level"), List::of);
+        updateSheet(ticketNumbers(list, 2), workbook.createSheet("2 level"), List::of);
+        updateSheet(ticketNumbers(list, 3), workbook.createSheet("3 level"), List::of);
+        updateSheet(ticketNumbers(list, 4), workbook.createSheet("4 level"), List::of);
+        updateSheet(ticketNumbers(list, 5), workbook.createSheet("5 level"), List::of);
+        return workbook;
+    }
+
     private <T> void updateSheet(List<T> list, XSSFSheet sheet, Function<T, List<String>> daoToCells) {
         for (int i = 0; i < list.size(); ++i) {
             Row row = sheet.createRow(i);
@@ -43,6 +54,14 @@ public class ExcelService {
                 row.createCell(j).setCellValue(stringColumns.get(j));
             }
         }
+    }
+
+    private static List<String> ticketNumbers(List<User> list, int activeGifts) {
+        return list.stream()
+                .filter(user -> user.getActiveGifts() >= activeGifts)
+                .map(User::getTicketNumber)
+                .map(Object::toString)
+                .toList();
     }
 
     private static List<String> attemptToCells(Attempt elem) {
