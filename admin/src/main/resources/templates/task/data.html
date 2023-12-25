@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" th:href="@{/styles/petclinic.css}"/>
+</head>
+<body>
+<h1>Ссылки на онлайн таблицы</h1>
+<p>
+    <a href="http://212.60.21.244:8000">main page</a>
+    <a href="http://212.60.21.244:8000/users">users page</a>
+    <a href="http://212.60.21.244:8000/feedbacks">feedbacks page</a>
+    <a href="http://212.60.21.244:8000/tasks">tasks page</a>
+    <a href="http://212.60.21.244:8000/configs">configs page</a>
+</p>
+<h1>Сами конфиг значения</h1>
+<table id="tasks" class="table table-striped">
+    <thead>
+    <tr>
+        <th>task number</th>
+        <th>word</th>
+        <th>question</th>
+        <th>feedback question</th>
+        <th>after feedback response</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="task : ${tasksList}">
+        <td><a th:href="@{'/tasks/edit/' + ${task.getId()}}" th:text="${task.getId()}" /></td>
+        <td th:text="${task.getWord()}"></td>
+        <td th:text="${task.getQuestion()}"></td>
+        <td th:text="${task.getFeedbackQuestion()}"></td>
+        <td th:text="${task.getAfterFeedbackResponse()}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

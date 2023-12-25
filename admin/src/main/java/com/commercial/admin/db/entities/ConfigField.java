@@ -9,8 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Objects;
 
 @Entity
@@ -25,7 +28,8 @@ public class ConfigField {
     @Column(name = "str_property")
     private String stringProperty;
     @Column(name = "date_property")
-    private OffsetDateTime dateTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime dateTime;
     @Column(name = "long_property")
     private Long longProperty;
     @Column(name = "boolean_property")

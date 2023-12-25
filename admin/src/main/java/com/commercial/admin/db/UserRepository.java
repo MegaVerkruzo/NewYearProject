@@ -15,4 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "UPDATE users SET active_gifts = :active_gifts WHERE id = :id", nativeQuery = true)
     @Transactional
     void updateUsersById(Long active_gifts, Long id);
+
+    @Transactional
+    void deleteById(Long id);
 }

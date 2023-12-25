@@ -1,0 +1,49 @@
+<html>
+
+<body>
+<h1>Ссылки на онлайн таблицы</h1>
+<p>
+    <a href="http://212.60.21.244:8000">main page</a>
+    <a href="http://212.60.21.244:8000/users">users page</a>
+    <a href="http://212.60.21.244:8000/feedbacks">feedbacks page</a>
+    <a href="http://212.60.21.244:8000/tasks">tasks page</a>
+    <a href="http://212.60.21.244:8000/configs">configs page</a>
+</p>
+
+<form action="#" th:action="@{/tasks/edit}" th:object="${task}" method="post">
+    <table>
+        <tr>
+            <td>number task:</td>
+            <td><input type="text" th:field="*{id}"/></td>
+            <td th:if="${#fields.hasErrors('id')}" th:errors="*{id}">Name Error</td>
+        </tr>
+        <tr>
+            <td>word:</td>
+            <td><input type="text" th:field="*{word}"/></td>
+            <td th:if="${#fields.hasErrors('word')}" th:errors="*{word}">Name Error</td>
+        </tr>
+        <tr>
+            <td>question:</td>
+            <td><input type="text" th:field="*{question}"/></td>
+            <td th:if="${#fields.hasErrors('question')}" th:errors="*{question}">Name Error</td>
+        </tr>
+        <tr>
+            <td>feedback question:</td>
+            <td><input type="text" th:field="*{feedbackQuestion}"/></td>
+            <td th:if="${#fields.hasErrors('feedbackQuestion')}" th:errors="*{feedbackQuestion}">Name Error</td>
+        </tr>
+        <tr>
+            <td>after feedback response:</td>
+            <td><input type="text" th:field="*{afterFeedbackResponse}"/></td>
+            <td th:if="${#fields.hasErrors('afterFeedbackResponse')}" th:errors="*{afterFeedbackResponse}">Name Error
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit">Submit</button>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

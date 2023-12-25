@@ -1,0 +1,47 @@
+<html>
+<body>
+<h1>Ссылки на онлайн таблицы</h1>
+<p>
+    <a href="http://212.60.21.244:8000">main page</a>
+    <a href="http://212.60.21.244:8000/users">users page</a>
+    <a href="http://212.60.21.244:8000/feedbacks">feedbacks page</a>
+    <a href="http://212.60.21.244:8000/tasks">tasks page</a>
+    <a href="http://212.60.21.244:8000/configs">configs page</a>
+</p>
+
+<form action="#" th:action="@{/configs/edit}" th:object="${config}" method="post">
+    <table>
+        <tr>
+            <td>id name:</td>
+            <td><input type="text" th:field="*{id}"/></td>
+            <td th:if="${#fields.hasErrors('id')}" th:errors="*{id}">Name Error</td>
+        </tr>
+        <tr>
+            <td>str property:</td>
+            <td><input type="text" th:field="*{stringProperty}"/></td>
+            <td th:if="${#fields.hasErrors('stringProperty')}" th:errors="*{stringProperty}">Name Error</td>
+        </tr>
+        <tr>
+            <td>datetime property:</td>
+            <td><input type="datetime-local" th:field="*{dateTime}"/></td>
+            <td th:if="${#fields.hasErrors('dateTime')}" th:errors="*{dateTime}">Name Error</td>
+        </tr>
+        <tr>
+            <td>long property:</td>
+            <td><input type="number" th:field="*{longProperty}"/></td>
+            <td th:if="${#fields.hasErrors('longProperty')}" th:errors="*{longProperty}">Name Error</td>
+        </tr>
+        <tr>
+            <td>boolean property:</td>
+            <td><input type="text" th:field="*{booleanProperty}"/></td>
+            <td th:if="${#fields.hasErrors('booleanProperty')}" th:errors="*{booleanProperty}">Name Error</td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit">Submit</button>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
