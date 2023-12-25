@@ -1,24 +1,32 @@
 package com.commercial.admin;
 
+import com.commercial.admin.db.ConfigRepository;
 import com.commercial.admin.db.FeedbackRepository;
 import com.commercial.admin.db.TaskRepository;
 import com.commercial.admin.db.UserRepository;
-import com.commercial.admin.db.entities.Feedback;
+import com.commercial.admin.db.entities.ConfigField;
 import com.commercial.admin.db.entities.Task;
 import com.commercial.admin.db.entities.User;
+import com.commercial.admin.model.ConfigTable;
 import com.commercial.admin.model.FeedbackTable;
 import com.commercial.admin.model.UserTable;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,6 +38,7 @@ public class Controller {
     private final UserRepository userRepository;
     private final FeedbackRepository feedbackRepository;
     private final TaskRepository taskRepository;
+    private final ConfigRepository configRepository;
     private final ExcelService excelService;
 
     @GetMapping("/")
@@ -37,6 +46,42 @@ public class Controller {
         return "hello";
     }
 
+    @GetMapping("/configs")
+    public String configs(Model model) {
+        List<ConfigTable> result = configRepository
+                .findAllBy()
+                .stream()
+                .map(config -> new ConfigTable(
+                        config.getId(),
+                        config.getStringProperty(),
+                        config.getDateTime(),
+                        config.getLongProperty(),
+                        config.getBooleanProperty()
+                ))
+                .toList();
+
+        model.addAttribute("configList", result);
+        return "config/data";
+    }
+
+    @GetMapping(value = "/configs/edit/{id}")
+    public String showForm(@PathVariable String id, Model model) {
+        model.addAttribute(
+                "config",
+                configRepository.findById(id).orElseThrow(IllegalArgumentException::new)
+        );
+        return "config/form";
+    }
+
+    @PostMapping(value = "/configs/edit")
+    public String checkPersonInfo(@Valid ConfigField config, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "config/form";
+        }
+
+        configRepository.save(config);
+        return "redirect:/configs";
+    }
 
     @GetMapping("/users")
     public String users(Model model) {
