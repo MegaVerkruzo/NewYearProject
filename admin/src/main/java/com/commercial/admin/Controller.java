@@ -186,7 +186,7 @@ public class Controller {
         response.getOutputStream().write(bos.toByteArray());
 
         response.setContentType("application/x-download");
-        response.setHeader("Content-Disposition", "attachment; filename=" + java.net.URLEncoder.encode("XXXX.xlsx", StandardCharsets.UTF_8));
+        response.setHeader("Content-Disposition", "attachment; filename=prizes.xls");
         workbook.write(response.getOutputStream());
     }
 
@@ -204,7 +204,7 @@ public class Controller {
         response.getOutputStream().write(bos.toByteArray());
 
         response.setContentType("application/x-download");
-        response.setHeader("Content-Disposition", "attachment; filename=" + java.net.URLEncoder.encode("XXXX.xlsx", StandardCharsets.UTF_8));
+        response.setHeader("Content-Disposition", "attachment; filename=tables.xls");
         workbook.write(response.getOutputStream());
     }
 
