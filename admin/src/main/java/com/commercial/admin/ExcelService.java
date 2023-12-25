@@ -8,7 +8,9 @@ import com.commercial.admin.db.entities.Feedback;
 import com.commercial.admin.db.entities.User;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ public class ExcelService {
     private final FeedbackRepository feedbackRepository;
 
     public XSSFWorkbook getWorkBook() {
-        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFWorkbook workbook = defaultWorkBook();
         updateSheet(attemptRepository.findAll(), workbook.createSheet("attempts"), ExcelService::attemptToCells);
         updateSheet(feedbackRepository.findAll(), workbook.createSheet("feedbacks"), ExcelService::feedbackToCells);
         updateSheet(userRepository.findAll(), workbook.createSheet("users"), ExcelService::userToCells);
@@ -36,13 +38,22 @@ public class ExcelService {
     }
 
     public XSSFWorkbook getPrizes() {
-        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFWorkbook workbook = defaultWorkBook();
         List<User> list = userRepository.findAll();
         updateSheet(ticketNumbers(list, 1), workbook.createSheet("1 level"), List::of);
         updateSheet(ticketNumbers(list, 2), workbook.createSheet("2 level"), List::of);
         updateSheet(ticketNumbers(list, 3), workbook.createSheet("3 level"), List::of);
         updateSheet(ticketNumbers(list, 4), workbook.createSheet("4 level"), List::of);
         updateSheet(ticketNumbers(list, 5), workbook.createSheet("5 level"), List::of);
+        return workbook;
+    }
+
+    private XSSFWorkbook defaultWorkBook() {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        CellStyle style = workbook.createCellStyle();
+        XSSFFont font = workbook.createFont();
+        font.setFontHeight(14);
+        style.setFont(font);
         return workbook;
     }
 

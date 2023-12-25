@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.ZoneOffset;
@@ -185,9 +188,10 @@ public class Controller {
         }
         response.getOutputStream().write(bos.toByteArray());
 
-        response.setContentType("application/x-download");
+        response.setContentType("application/x-download;charset=UTF-8");
         response.setHeader("Content-Disposition", "attachment; filename=prizes.xls");
         workbook.write(response.getOutputStream());
+        workbook.close();
     }
 
     @GetMapping("/tables")
@@ -203,7 +207,7 @@ public class Controller {
         }
         response.getOutputStream().write(bos.toByteArray());
 
-        response.setContentType("application/x-download");
+        response.setContentType("application/x-download;charset=UTF-8");
         response.setHeader("Content-Disposition", "attachment; filename=tables.xls");
         workbook.write(response.getOutputStream());
     }
