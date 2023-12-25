@@ -1,31 +1,31 @@
 <html>
     <body>
-        <form action="#" th:action="@{/configs/edit}" th:object="${config}" method="post">
+        <form action="#" th:action="@{/tasks/edit}" th:object="${task}" method="post">
             <table>
                 <tr>
-                    <td>id name:</td>
+                    <td>number task:</td>
                     <td><input type="text" th:field="*{id}" /></td>
                     <td th:if="${#fields.hasErrors('id')}" th:errors="*{id}">Name Error</td>
                 </tr>
                 <tr>
-                    <td>str property:</td>
-                    <td><input type="text"  th:field="*{stringProperty}" /></td>
-                    <td th:if="${#fields.hasErrors('stringProperty')}" th:errors="*{stringProperty}">Name Error</td>
+                    <td>word:</td>
+                    <td><input type="text"  th:field="*{word}" /></td>
+                    <td th:if="${#fields.hasErrors('word')}" th:errors="*{word}">Name Error</td>
                 </tr>
                 <tr>
-                    <td>datetime property:</td>
-                    <td><input type="datetime-local" th:field="*{dateTime}" /></td>
-                    <td th:if="${#fields.hasErrors('dateTime')}" th:errors="*{dateTime}">Name Error</td>
+                    <td>question:</td>
+                    <td><input type="text" th:field="*{question}" /></td>
+                    <td th:if="${#fields.hasErrors('question')}" th:errors="*{question}">Name Error</td>
                 </tr>
                 <tr>
-                    <td>long property:</td>
-                    <td><input type="number" th:field="*{longProperty}" /></td>
-                    <td th:if="${#fields.hasErrors('longProperty')}" th:errors="*{longProperty}">Name Error</td>
+                    <td>feedback question:</td>
+                    <td><input type="text" th:field="*{feedbackQuestion}" /></td>
+                    <td th:if="${#fields.hasErrors('feedbackQuestion')}" th:errors="*{feedbackQuestion}">Name Error</td>
                 </tr>
                 <tr>
-                    <td>boolean property:</td>
-                    <td><input type="text" th:field="*{booleanProperty}" /></td>
-                    <td th:if="${#fields.hasErrors('booleanProperty')}" th:errors="*{booleanProperty}">Name Error</td>
+                    <td>after feedback response:</td>
+                    <td><input type="text" th:field="*{afterFeedbackResponse}" /></td>
+                    <td th:if="${#fields.hasErrors('afterFeedbackResponse')}" th:errors="*{afterFeedbackResponse}">Name Error</td>
                 </tr>
                 <tr>
                     <td><button type="submit">Submit</button></td>

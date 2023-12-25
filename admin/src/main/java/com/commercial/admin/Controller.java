@@ -1,13 +1,15 @@
 package com.commercial.admin;
 
+import com.commercial.admin.db.AttemptRepository;
 import com.commercial.admin.db.ConfigRepository;
 import com.commercial.admin.db.FeedbackRepository;
 import com.commercial.admin.db.TaskRepository;
 import com.commercial.admin.db.UserRepository;
+import com.commercial.admin.db.entities.Attempt;
 import com.commercial.admin.db.entities.ConfigField;
+import com.commercial.admin.db.entities.Feedback;
 import com.commercial.admin.db.entities.Task;
 import com.commercial.admin.db.entities.User;
-import com.commercial.admin.model.ConfigTable;
 import com.commercial.admin.model.FeedbackTable;
 import com.commercial.admin.model.UserTable;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,25 +42,41 @@ public class Controller {
     private final TaskRepository taskRepository;
     private final ConfigRepository configRepository;
     private final ExcelService excelService;
+    private final AttemptRepository attemptRepository;
 
     @GetMapping("/")
     public String hello() {
         return "hello";
     }
 
+    @GetMapping("/tasks")
+    public String tasks(Model model) {
+        model.addAttribute("tasksList", taskRepository.findAll());
+        return "task/data";
+    }
+
+    @GetMapping(value = "/tasks/edit/{id}")
+    public String showFormTask(@PathVariable Long id, Model model) {
+        model.addAttribute(
+                "task",
+                taskRepository.findById(id).orElseThrow(IllegalArgumentException::new)
+        );
+        return "task/form";
+    }
+
+    @PostMapping(value = "/tasks/edit")
+    public String checkTaskInfo(@Valid Task task, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "task/form";
+        }
+
+        taskRepository.save(task);
+        return "redirect:/tasks";
+    }
+
     @GetMapping("/configs")
     public String configs(Model model) {
-        List<ConfigTable> result = configRepository
-                .findAllBy()
-                .stream()
-                .map(config -> new ConfigTable(
-                        config.getId(),
-                        config.getStringProperty(),
-                        config.getDateTime(),
-                        config.getLongProperty(),
-                        config.getBooleanProperty()
-                ))
-                .toList();
+        List<ConfigField> result = configRepository.findAllBy();
 
         model.addAttribute("configList", result);
         return "config/data";
@@ -81,6 +99,30 @@ public class Controller {
 
         configRepository.save(config);
         return "redirect:/configs";
+    }
+
+    @GetMapping("/users/{id}")
+    public String users(@PathVariable Long id, Model model) {
+        List<UserTable> singleUserList = List.of(
+                userRepository
+                        .findById(id)
+                        .map(user -> new UserTable(
+                                user.getId(),
+                                user.getPhone(),
+                                user.getName(),
+                                user.getSurname(),
+                                user.getMiddleName(),
+                                user.getEmail(),
+                                user.getPlace(),
+                                user.getDivision(),
+                                user.getActiveGifts(),
+                                user.getTicketNumber()
+                        )).orElseThrow(IllegalArgumentException::new));
+
+        model.addAttribute("singleUserList", singleUserList);
+        model.addAttribute("feedbackList", getActualFeedbacks(feedbackRepository.findFeedbackByUserId(id)));
+        model.addAttribute("attemptList", attemptRepository.findAllByUserIdOrderByDate(id));
+        return "user";
     }
 
     @GetMapping("/users")
@@ -106,27 +148,19 @@ public class Controller {
         return "users";
     }
 
+
+    @PostMapping("/users/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        attemptRepository.deleteAllByUserId(id);
+        feedbackRepository.deleteAllByUserId(id);
+        userRepository.deleteById(id);
+
+        return "redirect:/users";
+    }
+
     @GetMapping("/feedbacks")
     public String feedbacks(Model model) {
-        Map<Long, String> taskIdToQuestionString = taskRepository
-                .findAll()
-                .stream()
-                .collect(Collectors.toMap(Task::getId, Task::getFeedbackQuestion));
-        Map<Long, String> userIdToPhoneString = userRepository
-                .findAll()
-                .stream()
-                .collect(Collectors.toMap(User::getId, User::getPhone));
-
-        List<FeedbackTable> result = feedbackRepository
-                .findAll()
-                .stream()
-                .map(feedback -> new FeedbackTable(
-                        userIdToPhoneString.get(feedback.getUserId()),
-                        taskIdToQuestionString.get(feedback.getTaskId()),
-                        feedback.getResponse()
-                ))
-                .toList();
-        model.addAttribute("feedbackList", result);
+        model.addAttribute("feedbackList", getActualFeedbacks(feedbackRepository.findAll()));
         return "feedbacks";
     }
 
@@ -164,5 +198,25 @@ public class Controller {
         response.setContentType("application/x-download");
         response.setHeader("Content-Disposition", "attachment; filename=" + java.net.URLEncoder.encode("XXXX.xlsx", StandardCharsets.UTF_8));
         workbook.write(response.getOutputStream());
+    }
+
+    private List<FeedbackTable> getActualFeedbacks(List<Feedback> list) {
+        Map<Long, String> taskIdToQuestionString = taskRepository
+                .findAll()
+                .stream()
+                .collect(Collectors.toMap(Task::getId, Task::getFeedbackQuestion));
+        Map<Long, String> userIdToPhoneString = userRepository
+                .findAll()
+                .stream()
+                .collect(Collectors.toMap(User::getId, User::getPhone));
+
+        return list
+                .stream()
+                .map(feedback -> new FeedbackTable(
+                        userIdToPhoneString.get(feedback.getUserId()),
+                        taskIdToQuestionString.get(feedback.getTaskId()),
+                        feedback.getResponse()
+                ))
+                .toList();
     }
 }

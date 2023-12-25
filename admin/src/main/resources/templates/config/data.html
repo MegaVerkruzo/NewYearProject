@@ -25,8 +25,8 @@
     <tbody>
     <tr th:each="config : ${configList}">
         <td><a th:href="@{'/configs/edit/' + ${config.getId()}}" th:text="${config.getId()}"> </a></td>
-        <td th:text="${config.getStrProperty()}"></td>
-        <td th:text="${config.getDateTimeProperty()}"></td>
+        <td th:text="${config.getStringProperty()}"></td>
+        <td th:text="${config.getDateTime()}"></td>
         <td th:text="${config.getLongProperty()}"></td>
         <td th:text="${config.getBooleanProperty()}"></td>
     </tr>

@@ -15,4 +15,7 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     @Query(value = "UPDATE feedback SET response = :response WHERE id = :id", nativeQuery = true)
     @Transactional
     void updateFeedbackById(String response, Long id);
+
+    @Transactional
+    void deleteAllByUserId(Long userId);
 }

@@ -11,7 +11,7 @@
 <p>
 
 </p>
-<h1>Пользователи</h1>
+<h1>Основные данные</h1>
 <table id="users" class="table table-striped">
     <thead>
     <tr>
@@ -28,8 +28,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="user : ${userList}">
-        <td><a th:href="@{'/users/' + ${user.getId()}}" th:text="${user.getId()}" /></td>
+    <tr th:each="user : ${singleUserList}">
+        <td th:text="${user.getId()}"></td>
         <td th:text="${user.getPhone()}"></td>
         <td th:text="${user.getName()}"></td>
         <td th:text="${user.getSurname()}"></td>
@@ -43,5 +43,41 @@
     </tbody>
 </table>
 
+<h1>Обратные отзывы</h1>
+<table id="feedbacks" class="table table-striped">
+    <thead>
+    <tr>
+        <th>Phone</th>
+        <th>Question</th>
+        <th>Answer</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="feedback : ${feedbackList}">
+        <td th:text="${feedback.getPhone()}"></td>
+        <td th:text="${feedback.getQuestion()}"></td>
+        <td th:text="${feedback.getAnswer()}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<h1>Попытки</h1>
+<table id="attempts" class="table table-striped">
+    <thead>
+    <tr>
+        <th>Word</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="attempt : ${attemptList}">
+        <td th:text="${attempt.getWord()}"></td>
+        <td th:text="${attempt.getDate()}"></td>
+    </tr>
+    </tbody>
+</table>
+<form th:action="@{'/users/delete/' + ${singleUserList.get(0).getId()}}" method="post">
+    <button type="submit">Delete user</button>
+</form>
 </body>
 </html>

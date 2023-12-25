@@ -23,12 +23,12 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="task : ${taskList}">
-        <td><a th:href="@{'/configs/edit/' + ${config.getId()}}" th:text="${config.getId()}"> </a></td>
-        <td th:text="${config.getStrProperty()}"></td>
-        <td th:text="${config.getDateTimeProperty()}"></td>
-        <td th:text="${config.getLongProperty()}"></td>
-        <td th:text="${config.getBooleanProperty()}"></td>
+    <tr th:each="task : ${tasksList}">
+        <td><a th:href="@{'/tasks/edit/' + ${task.getId()}}" th:text="${task.getId()}" /></td>
+        <td th:text="${task.getWord()}"></td>
+        <td th:text="${task.getQuestion()}"></td>
+        <td th:text="${task.getFeedbackQuestion()}"></td>
+        <td th:text="${task.getAfterFeedbackResponse()}"></td>
     </tr>
     </tbody>
 </table>
