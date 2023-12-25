@@ -6,7 +6,6 @@ import com.commercial.admin.db.UserRepository;
 import com.commercial.admin.db.entities.Attempt;
 import com.commercial.admin.db.entities.Feedback;
 import com.commercial.admin.db.entities.User;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +27,7 @@ public class ExcelService {
     private final AttemptRepository attemptRepository;
     private final FeedbackRepository feedbackRepository;
 
-    public XSSFWorkbook getWorkBook() {
+    public XSSFWorkbook getTables() {
         XSSFWorkbook workbook = defaultWorkBook();
         updateSheet(attemptRepository.findAll(), workbook.createSheet("attempts"), ExcelService::attemptToCells);
         updateSheet(feedbackRepository.findAll(), workbook.createSheet("feedbacks"), ExcelService::feedbackToCells);

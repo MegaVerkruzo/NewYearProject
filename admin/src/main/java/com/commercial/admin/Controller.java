@@ -5,7 +5,6 @@ import com.commercial.admin.db.ConfigRepository;
 import com.commercial.admin.db.FeedbackRepository;
 import com.commercial.admin.db.TaskRepository;
 import com.commercial.admin.db.UserRepository;
-import com.commercial.admin.db.entities.Attempt;
 import com.commercial.admin.db.entities.ConfigField;
 import com.commercial.admin.db.entities.Feedback;
 import com.commercial.admin.db.entities.Task;
@@ -24,16 +23,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -179,28 +170,18 @@ public class Controller {
 
     @GetMapping("/prizes")
     public void prizes(HttpServletResponse response) throws IOException {
-        XSSFWorkbook workbook = excelService.getPrizes();
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try {
-            workbook.write(bos);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            bos.close();
-        }
-        response.getOutputStream().write(bos.toByteArray());
-
-        response.setContentType("application/x-download;charset=UTF-8");
-        response.setHeader("Content-Disposition", "attachment; filename=prizes.xls");
-        workbook.write(response.getOutputStream());
-        workbook.close();
+        responseExcelTable(excelService.getPrizes(), response, "prizes.xlsx");
     }
 
     @GetMapping("/tables")
     public void tables(HttpServletResponse response) throws IOException {
-        try(XSSFWorkbook workbook = excelService.getWorkBook()){
+        responseExcelTable(excelService.getTables(), response, "tables.xlsx");
+    }
+
+    private void responseExcelTable(XSSFWorkbook workbook, HttpServletResponse response, String filename) {
+        try {
             String headerKey = "Content-Disposition";
-            String headerValue = "attachment; filename=tables.xlsx";
+            String headerValue = "attachment; filename=" + filename;
             response.setContentType("application/x-download;charset=UTF-8");
             response.setHeader(headerKey, headerValue);
 
