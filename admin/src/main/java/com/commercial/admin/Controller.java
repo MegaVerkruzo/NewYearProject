@@ -12,6 +12,7 @@ import com.commercial.admin.db.entities.Task;
 import com.commercial.admin.db.entities.User;
 import com.commercial.admin.model.FeedbackTable;
 import com.commercial.admin.model.UserTable;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -196,20 +198,19 @@ public class Controller {
 
     @GetMapping("/tables")
     public void tables(HttpServletResponse response) throws IOException {
-        XSSFWorkbook workbook = excelService.getWorkBook();
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try {
-            workbook.write(bos);
+        try(XSSFWorkbook workbook = excelService.getWorkBook()){
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename=tables.xlsx";
+            response.setContentType("application/x-download;charset=UTF-8");
+            response.setHeader(headerKey, headerValue);
+
+            ServletOutputStream out = response.getOutputStream();
+            out.flush();
+            workbook.write(out);
+            out.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            bos.close();
         }
-        response.getOutputStream().write(bos.toByteArray());
-
-        response.setContentType("application/x-download;charset=UTF-8");
-        response.setHeader("Content-Disposition", "attachment; filename=tables.xls");
-        workbook.write(response.getOutputStream());
     }
 
     private List<FeedbackTable> getActualFeedbacks(List<Feedback> list) {
