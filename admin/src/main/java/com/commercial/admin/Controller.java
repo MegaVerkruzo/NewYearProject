@@ -148,6 +148,14 @@ public class Controller {
         return "users";
     }
 
+    @PostMapping("/users/delete/all")
+    public String deleteUser() {
+        attemptRepository.deleteAll();
+        feedbackRepository.deleteAll();
+        userRepository.deleteAll();
+
+        return "redirect:/";
+    }
 
     @PostMapping("/users/delete/{id}")
     public String deleteUser(@PathVariable Long id) {

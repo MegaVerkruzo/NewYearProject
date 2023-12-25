@@ -9,8 +9,18 @@
 <body>
 <h1>Ссылки на онлайн таблицы</h1>
 <p>
-
+    <a href="http://localhost:8000">main page</a>
+    <a href="http://localhost:8000/users">users page</a>
+    <a href="http://localhost:8000/feedbacks">feedbacks page</a>
+    <a href="http://localhost:8000/tasks">tasks page</a>
+    <a href="http://localhost:8000/configs">configs page</a>
 </p>
+
+<h1>Удалить пользователя</h1>
+<form th:action="@{'/users/delete/' + ${singleUserList.get(0).getId()}}" method="post">
+    <button type="submit">Delete user</button>
+</form>
+
 <h1>Основные данные</h1>
 <table id="users" class="table table-striped">
     <thead>
@@ -76,8 +86,6 @@
     </tr>
     </tbody>
 </table>
-<form th:action="@{'/users/delete/' + ${singleUserList.get(0).getId()}}" method="post">
-    <button type="submit">Delete user</button>
-</form>
+
 </body>
 </html>
