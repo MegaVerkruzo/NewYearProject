@@ -37,7 +37,9 @@ You need to write database info like `db.example` in `db.env`
 
 # How to launch for developing frontend?
 
-You need to add new file '.env' with because in another case you couldn't make requests to backend
+### In folder "frontend"
+
+You need to add new file '.env' with because in another case you couldn't make requests to backend (now it's not available, but later we add this functionality)
 ```
 REACT_APP_API_URL='http://localhost:8080/api'
 ```
