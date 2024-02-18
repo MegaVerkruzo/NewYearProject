@@ -24,8 +24,6 @@ REACT_APP_API_URL='http://localhost:8080/api'
 
 ```bash
 npm i
-
-npm run start
 ```
 
 ### In folder "postgres"
@@ -34,6 +32,8 @@ You need to write database info like `db.example` in `db.env`
 
 ### In main folder
 `docker compose --build --profile production up`
+
+### Also you need to configure ssl certificates for it and paste inside "frontend" folder
 
 # How to launch for developing frontend?
 
@@ -45,8 +45,10 @@ REACT_APP_API_URL='http://localhost:8080/api'
 ```bash
 npm i
 
-npm run start
+npm run dev
 ```
+
+When you launch it in `https://localhost:5173/testpage` you will see React components from `src/pages/TestPage.tsx`
 
 # How to launch for developing backend?
 
